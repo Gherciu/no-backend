@@ -7,8 +7,15 @@ const noBackendDb = (options)=>{
     this.getSchema = () => {
 
         const schema = buildSchema(`
+            type Message {
+               content:String
+            }
             type Query {
-                hello: String
+                getMessage: Message,
+                getAnswer: Message,
+            }
+            type Mutation {
+               setMessage(content:String):Message
             }
         `);
 
@@ -19,8 +26,20 @@ const noBackendDb = (options)=>{
     this.getRootValue = () => {
 
         const rootValue = {
-            hello : () => {
-                return 'Hello world!';
+            getMessage : () => {
+                return {
+                    content: 'Hello world'
+                };
+            },
+            getAnswer : () => {
+                return {
+                    content: 'Hello world'
+                };
+            },
+            setMessage : ({content}) => {
+                return {
+                    content:content
+                };
             }
         }
 
