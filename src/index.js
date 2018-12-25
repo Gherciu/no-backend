@@ -1,20 +1,26 @@
-const graphqlHTTP = require('express-graphql');
-const noBackendDb = require('./db/index')
 
-const noBackend = {
-
-    db:(options)=>{
-
-        const db = noBackendDb(Object.assign({},options))
-
-        return graphqlHTTP({
-            schema : db.getSchema(),
-            rootValue : db.getRootValue(),
-            graphiql : options.graphiql || false
-        })
-
+export default class NoBackend{
+	constructor(){
+      if (this.self===null) {
+          this.self = this;
+          console.log('Not singleton!')
+      }
+      return this.self;
     }
-    
-}
+    db(options) {
+         return function(req,res) {
+             console.log(options)
+         }
+    }
+    files(options)  {
+        return function(req,res) {
+            console.log(options)
+        }
+    }
+    auth(options)  {
+        return function(req,res) {
+            console.log(options)
+        }
+    }
 
-module.exports = noBackend;
+};
