@@ -11,14 +11,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "express-graphql": "^0.7.1",
     "graphql": "^14.0.2"
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "express": "^4.16.4",
-    "webpack": "^4.16.1",
-    "webpack-cli": "^3.0.8"
+    "babel-preset-env": "^1.7.0"
   }
 }
