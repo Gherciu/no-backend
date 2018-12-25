@@ -1,26 +1,5 @@
+import db from './middlewares/db/index'
+import files from './middlewares/files/index'
 
-export default class NoBackend{
-	constructor(){
-      if (this.self===null) {
-          this.self = this;
-          console.log('Not singleton!')
-      }
-      return this.self;
-    }
-    db(options) {
-         return function(req,res) {
-             console.log(options)
-         }
-    }
-    files(options)  {
-        return function(req,res) {
-            console.log(options)
-        }
-    }
-    auth(options)  {
-        return function(req,res) {
-            console.log(options)
-        }
-    }
-
-};
+export const dbMiddleware = db
+export const filesMiddleware = files
