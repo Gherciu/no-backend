@@ -1,7 +1,7 @@
-const files = (options)=>{
+const filesMiddleware = (options)=>{
     return (req,res)=>{
         res.json(options)
     }
 }
 
-export default files
+export default filesMiddleware
