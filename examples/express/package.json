@@ -1,0 +1,19 @@
+{
+  "name": "no-backend-express",
+  "version": "1.0.0",
+  "description": "example of usage of no-backend middlewares for express",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "keywords": [
+    "express",
+    "no-backend"
+  ],
+  "author": "Gherciu Gheorghe",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4"
+  }
+}
