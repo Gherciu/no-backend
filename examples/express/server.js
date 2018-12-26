@@ -1,10 +1,19 @@
 const express = require('express');
-const {dbMiddleware,filesMiddleware} = require('./../../dist/index')
-const tablesSchema = require('./tablesSchema')
+const {dbMiddleware} = require('./../../dist/index')
 
 const app = express();
 const port = process.env.port || 2626;
+const tablesRules = {
+    products:{
+        limit:100,
+        create:true,
+        read:true,
+        update:true,
+        delete:true
+    }
+}
 
+app.use(express.json());
 app.use('/db',dbMiddleware({
     db:{
         driver:'mysql',
@@ -13,10 +22,7 @@ app.use('/db',dbMiddleware({
         user:'root',
         password:'123456789'
     },
-    tablesSchema:tablesSchema,
-    graphiql:true
-}));
-app.use('/files',filesMiddleware({
+    tablesRules:tablesRules,
     graphiql:true
 }));
 
