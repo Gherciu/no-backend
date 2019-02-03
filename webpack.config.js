@@ -10,13 +10,19 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.jsx$/,
+        test: /\.(flow|graphql)$/,
+        use:{
+          loader: 'ignore-loader'
+        }
+      },
+      {
+        test: /\.(jsx|js)$/,
         exclude: /node_modules/,
         use: {
           loader: 'babel-loader'
         }
       },
-        {
+      {
           test: /\.css$/,
           use: [
               "style-loader", // creates style nodes from JS strings

@@ -1,6 +1,4 @@
 import buildGraphQlSchemaAndResolvers from './buildGraphQlSchemaAndResolvers'
-import { graphql} from 'graphql'
-import renderGraphiql from './renderGraphiql'
 import graphQlMiddleware from './../../common/graphQlMiddleware'
 
 const middleware = (options) => {

@@ -6,7 +6,7 @@ const remderGraphiQl = (options,req) => {
               <title>no-backend</title>
             </head>
             <body>
-                <div id="graphiql">Loading...</div>
+                <div id="root">Loading...</div>
                 <script src="${options.route}?getGraphiQlScript=true"></script>
             </body>
         </html>`

@@ -2,4 +2,3 @@
 
 **API:**
 -dbMiddleware
--filesMiddleware
