@@ -7,6 +7,7 @@ const buildGraphQlSchemaAndResolvers = (options) => {
             hello: String
         }`
     );
+    
     const resolvers = {
         hello: () => {
              return 'Hello world!';
