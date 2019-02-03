@@ -1,13 +1,13 @@
 import optionsValidator from './optionsValidator'
 import middleware from './middleware'
-import errorMiddleware from './errorMiddleware'
+import graphQlErrorMiddleware from './../../common/graphQlErrorMiddleware'
 
 const dbMiddleware = (options)=>{
 
     const optionsValidatorMessage = optionsValidator(options)
 
     if(optionsValidatorMessage){
-        return errorMiddleware(options,optionsValidatorMessage)
+        return graphQlErrorMiddleware(options,optionsValidatorMessage)
     }
     else{
         return middleware(options)

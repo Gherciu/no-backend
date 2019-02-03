@@ -1,14 +1,20 @@
 const optionsValidator = (options)=>{
 
-    if(options.db){
-        if(typeof options.db !== 'object')
-            return 'Error:Option db is not an object!'
+    if(options.connection){
+        if(typeof options.connection !== 'object')
+            return 'Error:Option connection is not an object!'
     }else{
-        return 'Error:Option db is required!'
+        return 'Error:Option connection is required!'
     }
-    if(options.tablesRules){
-        if(typeof options.tablesRules !== 'object')
-            return 'Error:Option tablesRules is not an object!'
+    if(options.route){
+        if(typeof options.route !== 'string')
+            return 'Error:Option route is not an string!'
+    }else{
+        return 'Error:Option route is required!'
+    }
+    if(options.rules){
+        if(typeof options.rules !== 'object')
+            return 'Error:Option rules is not an object!'
     }
 
     return false
