@@ -20,7 +20,7 @@ const GraphiQlTab = ()=>{
                         onClick={()=>{}}
                         label="History"
                     />
-                    <input type="text" style={{width:'100%'}}/>
+                    <input type="text" placeholder='Search query in history...' style={{width:'100%'}}/>
                     <GraphiQL.Button
                         onClick={()=>{}}
                         label="Settings"
