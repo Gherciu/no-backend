@@ -1,0 +1,34 @@
+body {
+    height: 100%;
+    margin: 0;
+    width: 100%;
+    overflow: hidden;
+    *{
+        font-family: Arial;
+        /* width */
+        &::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        /* Track */
+        &::-webkit-scrollbar-track {
+            border-radius: 5px;
+        }
+        
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: #0B1924;
+            border-radius: 5px;
+        }
+        
+        /* Handle on hover */
+        &::-webkit-scrollbar-thumb:hover {
+            background: #0B1924; 
+        }
+    }
+}
+#root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}

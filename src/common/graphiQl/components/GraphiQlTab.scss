@@ -1,16 +1,66 @@
 .graphiql{
-    height:100%;
-
+    flex:1;
   &.graphiql-tab{
     .docExplorerWrap{
-      border-left:10px solid #2A7ED2;
+      .doc-explorer{
+        background: rgb(24, 49, 68);
+        .doc-explorer-title-bar{
+          background: rgb(24, 49, 68);
+          color: #dadada; 
+          .doc-explorer-back{
+            color: #dadada; 
+            &:before{
+              border-color:#dadada;
+            }
+          }
+        }
+        .doc-explorer-contents{
+          background: rgb(24, 49, 68);
+          color: #dadada; 
+          border:none;
+          .search-box{
+            width: 100%;
+            border:none;
+            padding: 15px 0px 20px;
+            &:before{
+              left:10px;
+              top: 19px;
+            }
+            .search-box-clear{
+              background:#D46A6A;
+              top: 27px;
+              right:10px;
+            }
+            input{
+              box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+              width: 100%;
+              border:none;
+              padding-left: 35px;
+              color: #dadada; 
+              background: rgb(31, 53, 70);
+              outline: none;
+              height:40px;
+            }
+          }
+          .doc-category{
+            .keyword{
+              color:#D46A6A;
+            }
+            .type-name{
+              color:#f1fa8c;
+            }
+            .field-name{
+              color: rgb(42, 114, 173);
+            }
+          }
+        }
+      }
     }
     //top bar
     .topBarWrap{
       position: relative;
       overflow: visible !important;
       .docExplorerShow{
-        background: #0F202D;
         border:none;
         box-shadow: none;
         color: rgba(255, 255, 255, 0.6);
@@ -19,9 +69,9 @@
         transform:rotate(-90deg);
         top:270px;
         padding:7px 51px;
-        background: #2A7ED2;
+        background: #0F202D;
         z-index: 999;
-        border-radius:10px 10px 0px 0px;
+        border-radius:5px 5px 0px 0px;
         font-weight:bold;
         font-size: 16px;  
         &:before{
@@ -106,6 +156,9 @@
       border-left:3px solid #172B3A;
     }
     .result-window{
+      .CodeMirror-vscrollbar{
+        right:5px;
+      }
       .CodeMirror{
         background: #172B3A !important;
       }
