@@ -88,12 +88,24 @@
           height:60px;
           width:60px;
           .execute-button{
+            &.timmer-active{
+              color: green;
+              &:before{
+                display: none;
+              }
+            }
+            &.timmer-red{
+              color: red;
+            }
             border:none;
             box-shadow: none;
             background: #0F202D;
             height:100%;
             width:100%;
             position: relative;
+            color: #fff;
+            font-size: 24px;
+            font-weight: bold;
             &:before{
               position:absolute;
               content:'';
