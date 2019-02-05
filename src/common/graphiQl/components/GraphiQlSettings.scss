@@ -1,0 +1,13 @@
+.graphiql-settings{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    height:30px;
+    width:30px;
+    margin-left: 20px;
+    svg{
+        width:100%;
+        height:100%;
+    }
+}

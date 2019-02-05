@@ -1,6 +1,8 @@
 import React from 'react'
 import GraphiQL from 'graphiql'
 import graphQLFetcher from './../helpers/graphQlFetcher.jsx'
+import GraphiQlSearch from './GraphiQlSearch.jsx'
+import GraphiQlSettings from './GraphiQlSettings.jsx'
 
 import 'graphiql/graphiql.css'
 import './GraphiQlTab.scss'
@@ -14,17 +16,17 @@ const GraphiQlTab = ()=>{
                     <GraphiQL.Button
                         onClick={()=>{}}
                         label="Prettify"
-                        title="Prettify Query (Shift-Ctrl-P)"
                     />
                     <GraphiQL.Button
                         onClick={()=>{}}
                         label="History"
                     />
-                    <input type="text" placeholder='Search query in history...' style={{width:'100%'}}/>
+                    <GraphiQlSearch />
                     <GraphiQL.Button
                         onClick={()=>{}}
-                        label="Settings"
+                        label="Copy CURL"
                     />
+                    <GraphiQlSettings />
                 </GraphiQL.Toolbar>
             </GraphiQL>
         </div>

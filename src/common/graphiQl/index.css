@@ -3,6 +3,9 @@ body {
     margin: 0;
     width: 100%;
     overflow: hidden;
+    *{
+        font-family: Arial;
+    }
 }
 #root {
     height: 100vh;

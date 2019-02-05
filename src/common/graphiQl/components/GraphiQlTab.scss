@@ -15,10 +15,10 @@
         box-shadow: none;
         color: rgba(255, 255, 255, 0.6);
         position:absolute;
-        right:-23px;
+        right:-51px;
         transform:rotate(-90deg);
-        top:200px;
-        padding:5px 21px;
+        top:270px;
+        padding:7px 51px;
         background: #2A7ED2;
         z-index: 999;
         border-radius:10px 10px 0px 0px;
@@ -70,8 +70,11 @@
             box-shadow: none;
             padding:6px 30px;
             color: rgba(255, 255, 255, 0.6);
-            font-weight:bold;
             border-radius:0px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius:5px;
           }
         }
       }
@@ -148,4 +151,34 @@
 
   .cm-s-dracula .CodeMirror-activeline-background { background: rgba(255,255,255,0.1); }
   .cm-s-dracula .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }
+}
+.CodeMirror-info{
+  color: #dadada !important; 
+  background: rgb(20, 39, 54) !important;
+}
+.CodeMirror-lint-tooltip{
+  color: #dadada !important; 
+  background: rgb(20, 39, 54) !important;
+}
+.CodeMirror-hints{
+  background: #172B3A;
+  .CodeMirror-hint{
+    &-active{
+      background: rgb(16, 45, 66);
+    }
+    &:hover{
+      background: rgb(20, 39, 54);
+    }
+    color: #dadada; 
+    padding: 7px;
+    border:none;
+  }
+  .CodeMirror-hint-information{
+    .content{
+      color: #dadada; 
+      .infoType{
+        color: #f1fa8c;
+      }
+    }
+  }
 }
