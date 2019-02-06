@@ -1,17 +1,18 @@
-import React,{useRef} from 'react'
+import React,{useRef,useContext,Component} from 'react'
 import GraphiQL from 'graphiql'
 import { parse, print } from 'graphql'
 import graphQLFetcher from './../helpers/graphQlFetcher.jsx'
 import GraphiQlSearch from './GraphiQlSearch.jsx'
 import GraphiQlSettings from './GraphiQlSettings.jsx'
+import {AppContext} from './App.jsx'
 
 import 'graphiql/graphiql.css'
 import './GraphiQlTab.scss'
 
 let fetcherOnTick = null
 let ticks = 0
-const GraphiQlTab = ()=>{
-
+const GraphiQlTab = ({activeTab})=>{
+    const {state,dispatch} = useContext(AppContext)
     let graphiqlEditorRef = useRef(null)
 
     const prettifySchema = (event) => {
@@ -59,9 +60,16 @@ const GraphiQlTab = ()=>{
         execButton.classList.remove('timmer-red')
         execButton.classList.remove('timmer-active')
         ticks = 0
+        if(response.data && !response.data.__schema){
+            dispatch({type:'CHANGE_TAB_RESPONSE',payload:activeTab.id,value:JSON.stringify(response,null,2)})
+        }
+        if(response.errors){
+            dispatch({type:'CHANGE_TAB_RESPONSE',payload:activeTab.id,value:JSON.stringify(response,null,2)}) 
+        }
     }
 
-    const onErrorFetch = () => {
+    const onErrorFetch = (error) => {
+        console.log(error)
         const execButton = document.querySelector('.execute-button-wrap > .execute-button')
         execButton.innerHTML = ((ticks % 60000) / 1000).toFixed(2)
         clearInterval(fetcherOnTick)
@@ -73,10 +81,17 @@ const GraphiQlTab = ()=>{
             ticks = 0
         },3000)
     }
-
     return(
         <div className='graphiql graphiql-tab'>
-            <GraphiQL ref={ref =>graphiqlEditorRef = ref} fetcher={graphQLFetcher(window.location.pathname,beforeFetch,afterFetch,onErrorFetch)} editorTheme="dracula">
+            <GraphiQL 
+                ref={ref =>graphiqlEditorRef = ref}     
+                fetcher={graphQLFetcher(window.location.pathname,beforeFetch,afterFetch,onErrorFetch)}  
+                editorTheme="dracula"
+                defaultQuery={activeTab.query}
+                query={activeTab.query}
+                onEditQuery={(e)=>dispatch({type:'CHANGE_TAB_QUERY',payload:activeTab.id,value:e})}
+                response={activeTab.response}
+            >
                 <GraphiQL.Logo> <></> </GraphiQL.Logo>
                 <GraphiQL.Toolbar>
                     <GraphiQL.Button

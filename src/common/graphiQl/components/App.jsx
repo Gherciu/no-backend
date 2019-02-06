@@ -58,6 +58,54 @@ const reducer = (state = initialState, action) => {
             registerLocalStorageNoBackendValues(newState)
             return newState
         }
+        case 'CHANGE_TAB_TITLE':{
+            let newStateTabs = [...state.tabs]
+            newStateTabs = newStateTabs.map((item,index)=>{
+                if(item.id === action.payload){
+                    return {...item,title:action.title}
+                }
+                return item
+            })
+            let newState = {...state,tabs:[...newStateTabs]}
+            registerLocalStorageNoBackendValues(newState)
+            return newState
+        }
+        case 'CHANGE_TAB_STORAGE':{
+            let newStateTabs = [...state.tabs]
+            newStateTabs = newStateTabs.map((item,index)=>{
+                if(item.id === action.payload){
+                    return {...item,...action.value}
+                }
+                return item
+            })
+            let newState = {...state,tabs:[...newStateTabs]}
+            registerLocalStorageNoBackendValues(newState)
+            return newState
+        }
+        case 'CHANGE_TAB_QUERY':{
+            let newStateTabs = [...state.tabs]
+            newStateTabs = newStateTabs.map((item,index)=>{
+                if(item.id === action.payload){
+                    return {...item,query:action.value}
+                }
+                return item
+            })
+            let newState = {...state,tabs:[...newStateTabs]}
+            registerLocalStorageNoBackendValues(newState)
+            return newState
+        }
+        case 'CHANGE_TAB_RESPONSE':{
+            let newStateTabs = [...state.tabs]
+            newStateTabs = newStateTabs.map((item,index)=>{
+                if(item.id === action.payload){
+                    return {...item,response:action.value}
+                }
+                return item
+            })
+            let newState = {...state,tabs:[...newStateTabs]}
+            registerLocalStorageNoBackendValues(newState)
+            return newState
+        }
         default:
             return state
     }
@@ -73,11 +121,14 @@ const App = ()=>{
            dispatch({type:'SET_INITIAL_STATE',payload:{...initialState,tabs:[{id:new Date().getTime(),...defaultTabValues}]}})
         }
     },[])
+    const activeTab = state.tabs.length>0 ? state.tabs.filter((item)=>item.active)[0] :null
     return(
         <>
             <AppContext.Provider value={{state,dispatch}}>
                 <GraphiQlTabsBar />
-                <GraphiQlTab />
+                {activeTab &&
+                    <GraphiQlTab activeTab={activeTab} />
+                }
             </AppContext.Provider>
         </>
     )

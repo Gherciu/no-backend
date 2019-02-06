@@ -12,7 +12,7 @@ const GraphiQlTabsBar = ()=>{
             <div key={item.id} className="graphiql-tab-item">
                 <div className={`graphiql-tab-item-content ${item.active?'active':''}`}>
                     {item.active ?
-                        <input className="graphiql-tab-item-title" type="text" onChange={()=>{}} placeholder={item.title || 'New tab'} value={item.title || 'New tab'} />
+                        <input className="graphiql-tab-item-title" type="text" onChange={(e)=>dispatch({type:'CHANGE_TAB_TITLE',payload:item.id,title:e.target.value})} placeholder={item.title || 'New tab'} value={item.title || ''} />
                         :
                         <div className="graphiql-tab-item-title" onClick={()=>dispatch({type:'ACTIVATE_TAB',payload:item.id})}>{item.title || 'New tab'}</div>
                     }
