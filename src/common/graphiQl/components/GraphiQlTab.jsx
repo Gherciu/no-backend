@@ -4,6 +4,7 @@ import { parse, print } from 'graphql'
 import graphQLFetcher from './../helpers/graphQlFetcher.jsx'
 import GraphiQlSearch from './GraphiQlSearch.jsx'
 import GraphiQlSettings from './GraphiQlSettings.jsx'
+import GraphiQlWorkspaceManage from './GraphiQlWorkspaceManage.jsx'
 import {AppContext} from './App.jsx'
 import toast from './../helpers/toast.jsx'
 
@@ -103,8 +104,8 @@ const GraphiQlTab = ({activeTab})=>{
                 onEditVariables={(e)=>dispatch({type:'CHANGE_TAB_VARIABLES',payload:activeTab.id,value:e})}
                 editorTheme="dracula"
                 ref={ref =>graphiqlEditorRef = ref}     
-                defaultQuery={activeTab.query || ''}
-                query={activeTab.query || ''}
+                defaultQuery={activeTab.query || '# Write your query or mutation here'}
+                query={activeTab.query || '# Write your query or mutation here'}
                 response={activeTab.response || ''}
                 variables={activeTab.variables || ''}
             >
@@ -123,6 +124,7 @@ const GraphiQlTab = ({activeTab})=>{
                         onClick={()=>copyCURL()}
                         label="Copy CURL"
                     />
+                    <GraphiQlWorkspaceManage />
                     <GraphiQlSettings />
                 </GraphiQL.Toolbar>
             </GraphiQL>
