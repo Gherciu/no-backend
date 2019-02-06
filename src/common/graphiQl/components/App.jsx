@@ -118,6 +118,19 @@ const reducer = (state = initialState, action) => {
             registerLocalStorageNoBackendValues(newState)
             return newState
         }
+        case 'CHANGE_TAB_ROUTE':{
+            let newStateTabs = [...state.tabs]
+            newStateTabs = newStateTabs.map((item,index)=>{
+                if(item.id === action.payload){
+                    return {...item,route:action.value}
+                }
+                return item
+            })
+            let newState = {...state,tabs:[...newStateTabs]}
+            registerLocalStorageNoBackendValues(newState)
+            console.log(newState)
+            return newState
+        }
         default:
             return state
     }

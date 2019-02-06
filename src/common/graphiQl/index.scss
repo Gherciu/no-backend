@@ -32,3 +32,16 @@ body {
     display: flex;
     flex-direction: column;
 }
+.toast{
+    position: fixed;
+    z-index: 999;
+    left:30px;
+    bottom: 40px;
+    padding:20px;
+    background: #172B3A;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+    color:#fff;
+    &.info{
+        color:#fafafa;
+    }
+}

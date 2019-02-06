@@ -5,6 +5,7 @@ import graphQLFetcher from './../helpers/graphQlFetcher.jsx'
 import GraphiQlSearch from './GraphiQlSearch.jsx'
 import GraphiQlSettings from './GraphiQlSettings.jsx'
 import {AppContext} from './App.jsx'
+import toast from './../helpers/toast.jsx'
 
 import 'graphiql/graphiql.css'
 import './GraphiQlTab.scss'
@@ -81,6 +82,19 @@ const GraphiQlTab = ({activeTab})=>{
             ticks = 0
         },3000)
     }
+
+    const copyCURL = () => {
+        let curl = `curl '${activeTab.route || window.location.origin}' -H 'Accept-Encoding: gzip, deflate, br' -H 'Content-Type: application/json' -H 'Accept: application/json' -H 'Connection: keep-alive' -H 'DNT: 1' -H 'Origin: ${activeTab.route || window.location.origin}' --data-binary '{"query":${JSON.stringify(activeTab.query)}}' --compressed`
+        if (!navigator.clipboard) {
+            toast.info('Could not copy curl!')
+        }else{
+            navigator.clipboard.writeText(curl).then(function() {
+                toast.info('Copying to clipboard was successful!');
+            }, function(err) {
+                toast.info('Could not copy curl: ', err);
+            });
+        }
+    }
     return(
         <div className='graphiql graphiql-tab'>
             <GraphiQL 
@@ -106,7 +120,7 @@ const GraphiQlTab = ({activeTab})=>{
                     />
                     <GraphiQlSearch activeTab={activeTab}/>
                     <GraphiQL.Button
-                        onClick={()=>{}}
+                        onClick={()=>copyCURL()}
                         label="Copy CURL"
                     />
                     <GraphiQlSettings />
