@@ -76,7 +76,7 @@ const GraphiQlTab = ()=>{
 
     return(
         <div className='graphiql graphiql-tab'>
-            <GraphiQL ref={ref =>graphiqlEditorRef = ref} fetcher={graphQLFetcher(beforeFetch,afterFetch,onErrorFetch)} editorTheme="dracula">
+            <GraphiQL ref={ref =>graphiqlEditorRef = ref} fetcher={graphQLFetcher(window.location.pathname,beforeFetch,afterFetch,onErrorFetch)} editorTheme="dracula">
                 <GraphiQL.Logo> <></> </GraphiQL.Logo>
                 <GraphiQL.Toolbar>
                     <GraphiQL.Button

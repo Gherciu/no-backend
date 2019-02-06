@@ -8,6 +8,9 @@ const remderGraphiQl = (options,req) => {
             </head>
             <body>
                 <div id="root">Loading...</div>
+                <script>
+                   window.__noBackend = ${JSON.stringify(global.__noBackend)}
+                </script>
                 <script src="${options.route}?getGraphiQlScript=true"></script>
             </body>
         </html>`
