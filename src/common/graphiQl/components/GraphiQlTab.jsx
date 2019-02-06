@@ -84,13 +84,15 @@ const GraphiQlTab = ({activeTab})=>{
     return(
         <div className='graphiql graphiql-tab'>
             <GraphiQL 
-                ref={ref =>graphiqlEditorRef = ref}     
-                fetcher={graphQLFetcher(window.location.pathname,beforeFetch,afterFetch,onErrorFetch)}  
-                editorTheme="dracula"
-                defaultQuery={activeTab.query}
-                query={activeTab.query}
+                fetcher={graphQLFetcher(activeTab.route || window.location.href,beforeFetch,afterFetch,onErrorFetch)}  
                 onEditQuery={(e)=>dispatch({type:'CHANGE_TAB_QUERY',payload:activeTab.id,value:e})}
-                response={activeTab.response}
+                onEditVariables={(e)=>dispatch({type:'CHANGE_TAB_VARIABLES',payload:activeTab.id,value:e})}
+                editorTheme="dracula"
+                ref={ref =>graphiqlEditorRef = ref}     
+                defaultQuery={activeTab.query || ''}
+                query={activeTab.query || ''}
+                response={activeTab.response || ''}
+                variables={activeTab.variables || ''}
             >
                 <GraphiQL.Logo> <></> </GraphiQL.Logo>
                 <GraphiQL.Toolbar>
@@ -102,7 +104,7 @@ const GraphiQlTab = ({activeTab})=>{
                         onClick={()=>{}}
                         label="History"
                     />
-                    <GraphiQlSearch />
+                    <GraphiQlSearch activeTab={activeTab}/>
                     <GraphiQL.Button
                         onClick={()=>{}}
                         label="Copy CURL"
