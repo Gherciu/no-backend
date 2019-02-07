@@ -6,6 +6,7 @@ import GraphiQlSearch from './GraphiQlSearch.jsx'
 import GraphiQlSettings from './GraphiQlSettings.jsx'
 import GraphiQlWorkspaceManage from './GraphiQlWorkspaceManage.jsx'
 import {AppContext} from './App.jsx'
+import GraphiQlHistory from './GraphiQlHistory.jsx'
 import toast from './../helpers/toast.jsx'
 
 import 'graphiql/graphiql.css'
@@ -64,6 +65,7 @@ const GraphiQlTab = ({activeTab})=>{
         ticks = 0
         if(response.data && !response.data.__schema){
             dispatch({type:'CHANGE_TAB_RESPONSE',payload:activeTab.id,value:JSON.stringify(response,null,2)})
+            dispatch({type:'ADD_TO_HISTORY',payload:{...activeTab,id:new Date().getTime()}})
         }
         if(response.errors){
             dispatch({type:'CHANGE_TAB_RESPONSE',payload:activeTab.id,value:JSON.stringify(response,null,2)}) 
@@ -102,7 +104,7 @@ const GraphiQlTab = ({activeTab})=>{
                 fetcher={graphQLFetcher(activeTab.route || window.location.href,beforeFetch,afterFetch,onErrorFetch)}  
                 onEditQuery={(e)=>dispatch({type:'CHANGE_TAB_QUERY',payload:activeTab.id,value:e})}
                 onEditVariables={(e)=>dispatch({type:'CHANGE_TAB_VARIABLES',payload:activeTab.id,value:e})}
-                editorTheme="dracula"
+                editorTheme={activeTab.theme || 'dracula'}
                 ref={ref =>graphiqlEditorRef = ref}     
                 defaultQuery={activeTab.query || '# Write your query or mutation here'}
                 query={activeTab.query || '# Write your query or mutation here'}
@@ -115,10 +117,7 @@ const GraphiQlTab = ({activeTab})=>{
                         onClick={prettifySchema}
                         label="Prettify"
                     />
-                    <GraphiQL.Button
-                        onClick={()=>{}}
-                        label="History"
-                    />
+                    <GraphiQlHistory activeTab={activeTab} />
                     <GraphiQlSearch activeTab={activeTab}/>
                     <GraphiQL.Button
                         onClick={()=>copyCURL()}

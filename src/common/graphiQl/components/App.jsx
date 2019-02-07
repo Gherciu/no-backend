@@ -5,7 +5,12 @@ import GraphiQlTabsBar from './GraphiQlTabsBar.jsx'
 
 const defaultTabValues = {active:true}
 const initialState = {
-    tabs:  []
+    tabs:  [],
+    settings:{
+        syncWithLocalstorage:true,
+        maxItemsInHistory:10
+    },
+    history:[]
 }
 const reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -22,8 +27,15 @@ const reducer = (state = initialState, action) => {
                 }
                 return item
             })
-            let newState = {...state,tabs:[...newStateTabs,{id:new Date().getTime(),...defaultTabValues}]}
-            registerLocalStorageNoBackendValues(newState)
+            let newState = {}
+            if(action.payload){
+                newState = {...state,tabs:[...newStateTabs,{...action.payload,id:new Date().getTime(),...defaultTabValues}]}
+            }else{
+                newState = {...state,tabs:[...newStateTabs,{id:new Date().getTime(),...defaultTabValues}]}
+            }
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'REMOVE_TAB':{
@@ -42,7 +54,9 @@ const reducer = (state = initialState, action) => {
              })
             }
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'ACTIVATE_TAB':{
@@ -55,7 +69,9 @@ const reducer = (state = initialState, action) => {
                 }
             })
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'CHANGE_TAB_TITLE':{
@@ -67,19 +83,9 @@ const reducer = (state = initialState, action) => {
                 return item
             })
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
-            return newState
-        }
-        case 'CHANGE_TAB_STORAGE':{
-            let newStateTabs = [...state.tabs]
-            newStateTabs = newStateTabs.map((item,index)=>{
-                if(item.id === action.payload){
-                    return {...item,...action.value}
-                }
-                return item
-            })
-            let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'CHANGE_TAB_QUERY':{
@@ -91,7 +97,9 @@ const reducer = (state = initialState, action) => {
                 return item
             })
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'CHANGE_TAB_VARIABLES':{
@@ -103,7 +111,9 @@ const reducer = (state = initialState, action) => {
                 return item
             })
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'CHANGE_TAB_RESPONSE':{
@@ -115,7 +125,9 @@ const reducer = (state = initialState, action) => {
                 return item
             })
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         case 'CHANGE_TAB_ROUTE':{
@@ -127,8 +139,42 @@ const reducer = (state = initialState, action) => {
                 return item
             })
             let newState = {...state,tabs:[...newStateTabs]}
-            registerLocalStorageNoBackendValues(newState)
-            console.log(newState)
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
+            return newState
+        }
+        case 'STOP_SYNC_WITH_LOCALSTORAGE':{
+           let newState = {...state,settings:{...state.settings,syncWithLocalstorage:!state.settings.syncWithLocalstorage}}
+           registerLocalStorageNoBackendValues(newState)
+           return  newState
+        }
+        case 'CHANGE_HISTORY_MAX_ITEMS':{
+            let newState = {...state,settings:{...state.settings,maxItemsInHistory:action.payload}}
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
+            return  newState
+        }
+        case 'ADD_TO_HISTORY':{
+            let newState = {...state}
+            if(newState.history.length<state.settings.maxItemsInHistory){
+                newState.history = [...newState.history,{...action.payload}]
+            }
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
+            return newState
+        }
+        case 'REMOVE_ITEM_FROM_HISTORY':{
+            let newStateHistory = [...state.history]
+            newStateHistory = newStateHistory.filter((item,index)=>{
+                return item.id !== action.payload
+            })
+            let newState = {...state,history:[...newStateHistory]}
+            if(state.settings.syncWithLocalstorage){
+                registerLocalStorageNoBackendValues(newState)
+            }
             return newState
         }
         default:
