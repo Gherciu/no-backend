@@ -10,7 +10,6 @@ const remderGraphiQl = (options,req) => {
                 <script>
                    window.__noBackend = ${JSON.stringify(global.__noBackend)}
                 </script>
-                <script src="${options.route}?getGraphiQlScript=true"></script>
             </body>
         </html>`
 
