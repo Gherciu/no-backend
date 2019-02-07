@@ -3,6 +3,8 @@ import GraphiQlTab from './GraphiQlTab.jsx'
 import registerLocalStorageNoBackendValues from './../helpers/registerLocalStorageNoBackendValues.jsx'
 import GraphiQlTabsBar from './GraphiQlTabsBar.jsx'
 
+import './App.scss'
+
 let defaultTabValues = {active:true}
 const initialState = {
     tabs:  [],
