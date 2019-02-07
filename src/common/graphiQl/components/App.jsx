@@ -159,7 +159,10 @@ const reducer = (state = initialState, action) => {
         case 'ADD_TO_HISTORY':{
             let newState = {...state}
             if(newState.history.length<state.settings.maxItemsInHistory){
-                newState.history = [...newState.history,{...action.payload}]
+                newState.history = [{...action.payload},...newState.history]
+            }else{
+                newState.history.pop()  
+                newState.history = [{...action.payload},...newState.history]
             }
             if(state.settings.syncWithLocalstorage){
                 registerLocalStorageNoBackendValues(newState)
