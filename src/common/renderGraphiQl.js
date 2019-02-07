@@ -4,7 +4,6 @@ const remderGraphiQl = (options,req) => {
         <html>
             <head>
                 <title>no-backend</title>
-                 <link rel="icon" sizes="any" type="image/png" href="https://github.com/Gherciu/moldstarter/blob/master/app/img/favicon/apple-touch-icon-180x180.png?raw=true"/>
             </head>
             <body>
                 <div id="root">Loading...</div>

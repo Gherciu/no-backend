@@ -14,7 +14,6 @@ const dbMiddleware = (options)=>{
     else{
         registerGlobalNoBackendValues(globalNoBackendKeyNameOfMiddlewaresRoutes,[
             {
-                type:'db',
                 route:options.route
             }
         ])

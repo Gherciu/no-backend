@@ -4,4 +4,4 @@ import App from './components/App.jsx'
 
 import './index.scss'
 
-render(<App />,document.getElementById('root'))
+render(<App endpoints={window.__noBackend.middlewaresRoutes} />,document.getElementById('root'))

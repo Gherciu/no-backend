@@ -14,7 +14,7 @@ import './GraphiQlTab.scss'
 
 let fetcherOnTick = null
 let ticks = 0
-const GraphiQlTab = ({activeTab})=>{
+const GraphiQlTab = ({activeTab,endpoints})=>{
     const {state,dispatch} = useContext(AppContext)
     let graphiqlEditorRef = useRef(null)
 
@@ -118,7 +118,7 @@ const GraphiQlTab = ({activeTab})=>{
                         label="Prettify"
                     />
                     <GraphiQlHistory activeTab={activeTab} />
-                    <GraphiQlSearch activeTab={activeTab}/>
+                    <GraphiQlSearch activeTab={activeTab} endpoints={endpoints || []}/>
                     <GraphiQL.Button
                         onClick={()=>copyCURL()}
                         label="Copy CURL"

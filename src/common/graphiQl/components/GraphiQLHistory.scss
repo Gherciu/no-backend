@@ -44,18 +44,18 @@
                 .item-preview{
                     max-height: 400px;
                     min-width: 250px;
-                    overflow-y: auto;
-                    overflow-x: hidden;
+                    max-width: 400px;
+                    overflow: hidden auto;
                     position: fixed;
                     z-index: 99999;
                     display: block;
                     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
                     background: #172B3A;
                     left:100px;
-                    padding-left: 15px;
+                    padding:10px 15px;
                     pre{
                         width: 100%;
-                        padding-left: 10px; 
+                        padding:0px 10px; 
                         box-sizing: border-box;
                         color:#61D9EF;
                     }

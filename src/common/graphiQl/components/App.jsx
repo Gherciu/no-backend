@@ -3,7 +3,7 @@ import GraphiQlTab from './GraphiQlTab.jsx'
 import registerLocalStorageNoBackendValues from './../helpers/registerLocalStorageNoBackendValues.jsx'
 import GraphiQlTabsBar from './GraphiQlTabsBar.jsx'
 
-const defaultTabValues = {active:true}
+let defaultTabValues = {active:true}
 const initialState = {
     tabs:  [],
     settings:{
@@ -186,9 +186,10 @@ const reducer = (state = initialState, action) => {
 }
 
 export const AppContext = React.createContext()
-const App = ()=>{
+const App = ({endpoints})=>{
     const [state,dispatch] = useReducer(reducer,initialState)
     useEffect(()=>{
+        defaultTabValues = {...defaultTabValues,route:endpoints[0].route}
         if(localStorage.getItem('__noBackend')){
            dispatch({type:'SET_INITIAL_STATE',payload:JSON.parse(localStorage.getItem('__noBackend'))})
         }else{
@@ -201,10 +202,11 @@ const App = ()=>{
             <AppContext.Provider value={{state,dispatch}}>
                 <GraphiQlTabsBar />
                 {activeTab &&
-                    <GraphiQlTab activeTab={activeTab} />
+                    <GraphiQlTab endpoints={endpoints || []} activeTab={activeTab} />
                 }
             </AppContext.Provider>
         </>
     )
 }
+
 export default App
