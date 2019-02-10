@@ -10,7 +10,6 @@
   "author": "Gherciu Gheorghe",
   "license": "ISC",
   "dependencies": {
-    "graphiql-storm": "^1.0.4",
     "graphql": "^14.0.2"
   },
   "devDependencies": {
