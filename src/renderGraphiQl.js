@@ -6,8 +6,9 @@ const remderGraphiQl = (options,req) => {
                 <title>GraphiQl Storm</title>
             </head>
             <body>
-                <script src='https://cdn.jsdelivr.net/npm/graphiql-storm@1.1.0/dist/index.js'></script>
+                <script src='https://cdn.jsdelivr.net/npm/graphiql-storm@1.1.4/dist/index.js'></script>
                 <script>
+                    graphiQlStorm([{route:'${req.protocol + '://' + req.get('host') + req.originalUrl}'}])
                 </script>
             </body>
         </html>`
