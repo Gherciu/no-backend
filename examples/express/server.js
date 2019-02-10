@@ -1,11 +1,10 @@
 const express = require('express');
-const {dbMiddleware} = require('./../../dist/index')
+const noBackend = require('./../../dist/index')
 
 const app = express();
 
 app.use(express.json());
-app.use(dbMiddleware({
-    route:'/db',
+app.use('/api',noBackend({
     connection:{
         driver:'mysql',
         host:'localhost',
