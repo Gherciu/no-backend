@@ -1,16 +1,15 @@
 import optionsValidator from './optionsValidator'
 import buildGraphQlSchemaAndResolvers from './buildGraphQlSchemaAndResolvers'
-import graphQlMiddleware from './graphQlMiddleware'
+import registerMiddleware from './registerMiddleware'
 
-const noBackend = (options)=>{
+const noBackend = async ( options )=>{
+    const optionsValidatorMessage = optionsValidator( options )
 
-    const optionsValidatorMessage = optionsValidator(options)
-
-    if(optionsValidatorMessage){
-        throw new Error(optionsValidatorMessage)
+    if( optionsValidatorMessage ){
+        throw new TypeError( optionsValidatorMessage )
     }else{
-        const { schema, resolvers } = buildGraphQlSchemaAndResolvers(options)
-        return graphQlMiddleware( options,schema,resolvers )
+        let { schema,resolvers } = await buildGraphQlSchemaAndResolvers( options )
+        registerMiddleware( options,schema,resolvers )
     }
 
 }

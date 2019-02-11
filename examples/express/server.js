@@ -4,25 +4,26 @@ const noBackend = require('./../../dist/index')
 const app = express();
 
 app.use(express.json());
-app.use('/api',noBackend({
+
+noBackend({
+    app:app,
+    route:'/api',
+    graphiql:true,
     connection:{
         driver:'mysql',
         host:'localhost',
-        port:'3036',
+        port:'3306',
         user:'root',
-        password:'123456789'
+        password:'gherciu1',
+        database:'test'
     },
     rules:{
-        limit:100,
-        create:true,
-        read:true,
+        insert:true,
+        select:true,
         update:true,
         delete:true
-    },
-    graphiql:true
-}));
-
-
+    }
+})
 
 const port = process.env.port || 2626;
 app.listen(port);

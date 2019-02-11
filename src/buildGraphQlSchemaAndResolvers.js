@@ -1,14 +1,13 @@
 import { buildSchema } from 'graphql'
 
-const buildGraphQlSchemaAndResolvers = (options) => {
-
-    const schema = buildSchema(`
+const buildGraphQlSchemaAndResolvers = async (options) => {
+    const schema = await buildSchema(`
         type Query {
             hello: String
         }`
     );
     
-    const resolvers = {
+    const resolvers = await {
         hello: () => {
              return 'Hello world!';
         }
