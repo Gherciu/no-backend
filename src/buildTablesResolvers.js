@@ -1,10 +1,12 @@
 const buildTablesResolvers = async (options,tables,db) => {
 
-    let schema = {
-       
+    let resolvers = {
+       hello: ()=>{
+           return 'Hello!'
+       }
     }
 
-    return schema
+    return resolvers
 
 }
 
