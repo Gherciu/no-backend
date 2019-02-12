@@ -1,19 +1,13 @@
-import { buildSchema } from 'graphql'
 import dbProvider from './dbProvider'
+import buildTablesSchema from './buildTablesSchema'
+import buildTablesResolvers from './buildTablesResolvers'
+
 const buildGraphQlSchemaAndResolvers = async (options) => {
-    const db = new dbProvider(options)
-    console.log(await db.exec('select * from users'))
-    const schema = await buildSchema(`
-        type Query {
-            hello: String
-        }`
-    );
-    
-    const resolvers = await {
-        hello: () => {
-             return 'Hello world!';
-        }
-    };
+
+    const db      = new dbProvider(options)
+    const tables  = await db.exec('show tables')
+    let schema    = await buildTablesSchema(options,tables,db)
+    let resolvers = await buildTablesResolvers(options,tables,db);
 
     return {
         schema,

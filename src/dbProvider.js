@@ -1,4 +1,5 @@
 import mysql from  'mysql'
+import squel from 'squel'
 import util from 'util'
 export default class dbProvider {
     constructor({connection}){
@@ -24,9 +25,14 @@ export default class dbProvider {
                 return
             })
         }
+        this.registerProperties()
         return this
     }
-    exec(sql){
-        return this.pool.query(sql)
+    exec(query){
+        return this.pool.query( typeof query === 'string' ? query : query.toString() )
+    }
+    registerProperties(){
+        this.squel  = squel 
+        this.select = this.squel.select()
     }
 }
