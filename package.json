@@ -10,7 +10,10 @@
   "author": "Gherciu Gheorghe",
   "license": "ISC",
   "dependencies": {
-    "graphql": "^14.0.2"
+    "@babel/polyfill": "^7.2.5",
+    "graphql": "^14.0.2",
+    "mysql": "^2.16.0",
+    "squel": "^5.12.2"
   },
   "devDependencies": {
     "@babel/cli": "^7.2.3",

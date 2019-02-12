@@ -1,17 +1,32 @@
-import mysql from 'mysql'
-
+import mysql from  'mysql'
+import util from 'util'
 export default class dbProvider {
-     constructor( {connection} ) {
+    constructor({connection}){
         if(connection.driver === 'mysql'){
             this.pool = mysql.createPool({
-                connectionLimit: 10,
+                connectionLimit: connection.connectionLimit || 10,
                 ...connection
+            })
+            this.pool.query = util.promisify(this.pool.query)
+            this.pool.getConnection((err, connection) => {
+                if (err) {
+                    if (err.code === 'PROTOCOL_CONNECTION_LOST') {
+                        console.error('Database connection was closed.')
+                    }
+                    if (err.code === 'ER_CON_COUNT_ERROR') {
+                        console.error('Database has too many connections.')
+                    }
+                    if (err.code === 'ECONNREFUSED') {
+                        console.error('Database connection was refused.')
+                    }
+                }
+                if (connection) connection.release()
+                return
             })
         }
         return this
     }
     exec(sql){
-        return self.pool.query(sql)
+        return this.pool.query(sql)
     }
-    
 }

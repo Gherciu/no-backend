@@ -5,7 +5,7 @@ const app = express();
 
 app.use(express.json());
 
-noBackend({
+noBackend({ 
     app:app,
     route:'/api',
     graphiql:true,
