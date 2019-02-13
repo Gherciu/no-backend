@@ -1,6 +1,7 @@
 import { GraphQLList,GraphQLNonNull,GraphQLObjectType } from 'graphql'
 import buildTableRowType from './buildTableRowType'
 import { singularToPlural,pluralToSingular } from './textHelpers'
+import getTablesQueryTypeArgs from './getTablesQueryTypeArgs'
 
 const buildTablesQueries = (tables) => {
 
@@ -41,7 +42,10 @@ const buildTablesQueries = (tables) => {
                 }else{//register table type to types and row types
 
                     tablesRowsTypes[pluralToSingular(tableName)] = {type : buildTableRowType(tableName,tableDesc,tablesRowsTypes) }//singular row type
-                    tablesTypes[tableName] = {type :new GraphQLNonNull(new GraphQLList( tablesRowsTypes[pluralToSingular(tableName)].type ))}//plural table type
+                    tablesTypes[tableName] = {
+                        type :new GraphQLNonNull(new GraphQLList( tablesRowsTypes[pluralToSingular(tableName)].type )),
+                        ...getTablesQueryTypeArgs()
+                    }//plural table type
                 
                 }
             }
