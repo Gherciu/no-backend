@@ -1,12 +1,13 @@
 import { GraphQLList,GraphQLNonNull,GraphQLObjectType } from 'graphql'
-import { tablesSuffix } from './strings'
 import buildTableRowType from './buildTableRowType'
 import { singularToPlural,pluralToSingular } from './textHelpers'
 
 const buildTablesQueries = (tables) => {
+
     let tablesTypes  = {}//tables types with args
     let tablesRowsTypes = {}//tables row types
     const recursiveRegisterTableType = (tableName,tableDesc) => {
+
         if( new RegExp(/\_/ig).test(tableName) ){//if is a table with relation(one-to-many)
             console.log("o-t-m",tableName.split('_'))
         }else{
@@ -15,16 +16,16 @@ const buildTablesQueries = (tables) => {
 
                 let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
                 let hasAddedRelationsTablesToTypes = false
-                relationsFields.forEach((relationFieldObjectItem)=>{//ceck if relation table is in types
+                relationsFields.forEach((relationFieldObjectItem)=>{//ceck if relation table is in tables types
 
-                    if(tablesTypes[`${relationFieldObjectItem.Field.split('_')[0]}${tablesSuffix}`]){
+                    if( tablesTypes[singularToPlural(relationFieldObjectItem.Field.split('_')[0])] ){
                         hasAddedRelationsTablesToTypes = true
                     }
 
                 })
-                if(relationsFields.length > 0 && !hasAddedRelationsTablesToTypes){//if has relations fields (many-to-one)
+                if(relationsFields.length > 0 && !hasAddedRelationsTablesToTypes){//if table has relations fields (many-to-one)
 
-                    relationsFields.forEach((relationFieldObjectItem)=>{//add all relationsFields --> tables to types
+                    relationsFields.forEach((relationFieldObjectItem)=>{//register all relations fields to tables types (ex:category_id->>categorys table type)
 
                         let relationTableDesc = []
                         tables.forEach(tableObjectItem=>{
@@ -32,15 +33,15 @@ const buildTablesQueries = (tables) => {
                                 relationTableDesc = Object.values(tableObjectItem)[1]/*table desc*/
                             }
                         })
-                        recursiveRegisterTableType(`${relationFieldObjectItem.Field.split('_')[0]}${tablesSuffix}`,relationTableDesc)
+                        recursiveRegisterTableType( singularToPlural(relationFieldObjectItem.Field.split('_')[0]),relationTableDesc )
 
                     })
                     recursiveRegisterTableType( tableName,tableDesc )//add table initiator to types 
 
                 }else{//register table type to types and row types
 
-                    tablesRowsTypes[tableName.substr(0,tableName.length-1)] = {type : buildTableRowType(tableName,tableDesc,tablesRowsTypes) }//singular row type
-                    tablesTypes[tableName] = {type :new GraphQLNonNull(new GraphQLList( tablesRowsTypes[tableName.substr(0,tableName.length-1)].type ))}//plural table type
+                    tablesRowsTypes[pluralToSingular(tableName)] = {type : buildTableRowType(tableName,tableDesc,tablesRowsTypes) }//singular row type
+                    tablesTypes[tableName] = {type :new GraphQLNonNull(new GraphQLList( tablesRowsTypes[pluralToSingular(tableName)].type ))}//plural table type
                 
                 }
             }

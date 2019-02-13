@@ -1,1 +1,1 @@
-export const tablesSuffix = 's'
+export const tablesPluralSuffix = 's'

@@ -1,6 +1,7 @@
 import dbProvider from './dbProvider'
 import buildTablesSchema from './buildTablesSchema'
 import buildTablesResolvers from './buildTablesResolvers'
+import tablesValidator from './helpers/tablesValidator'
 
 const buildGraphQlSchemaAndResolvers = async (options) => {
 
@@ -11,13 +12,22 @@ const buildGraphQlSchemaAndResolvers = async (options) => {
         let tableName = Object.values(tables[i])[0]
         tables[i] = {...tables[i],desc:await db.exec(`desc ${tableName}`)}
     }
-   
-    let schema    = await buildTablesSchema(options,tables,db)
-    let resolvers = await buildTablesResolvers(options,tables,db);
+    const tablesValidatorMessage = tablesValidator(tables)
 
-    return {
-        schema,
-        resolvers
+    if(tablesValidatorMessage){
+
+        throw new TypeError(tablesValidatorMessage)
+
+    }else{
+
+        let schema    = await buildTablesSchema(options,tables,db)
+        let resolvers = await buildTablesResolvers(options,tables,db);
+    
+        return {
+            schema,
+            resolvers
+        }
+
     }
 
 }
