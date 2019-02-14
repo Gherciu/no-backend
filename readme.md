@@ -1,2 +1,2 @@
-#No-Backend#
-SET GLOBAL time_zone = '+3:00';
+# No-Backend
+** Transform your database into working GraphQl schema **
