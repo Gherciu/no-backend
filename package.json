@@ -1,12 +1,13 @@
 {
   "name": "no-backend",
   "version": "1.0.0",
-  "description": "A database schema parser in graphQl",
+  "description": "Transform your database into working GraphQl schema",
   "main": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack --progress",
     "watch": "./node_modules/.bin/webpack --progress --watch"
   },
+  "keywords":"graphql,grpahiql-storm,dynamic-database",
   "author": "Gherciu Gheorghe",
   "license": "ISC",
   "dependencies": {
