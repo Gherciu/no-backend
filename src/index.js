@@ -25,7 +25,7 @@ const noBackend = async ( options )=>{
         const tablesValidatorMessage = tablesValidator(tables)
     
         if(tablesValidatorMessage){
-    
+
             throw new TypeError(tablesValidatorMessage)
     
         }else{
