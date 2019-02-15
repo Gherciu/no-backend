@@ -1,6 +1,6 @@
 {
   "name": "no-backend",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Transform your database into working GraphQl schema",
   "main": "dist/index.js",
   "scripts": {

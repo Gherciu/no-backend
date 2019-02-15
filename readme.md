@@ -32,7 +32,7 @@ const port = process.env.port || 3000;
 app.listen(port);
 console.log(`Server started at port : ${port}`)
 ```
-and open browser on ```http://localhost:YOUR-PORT```
+and open browser on ```http://localhost:YOUR-PORT/api```
 
 #### If you like this repository star⭐ and watch👀 on  [GitHub](https://github.com/Gherciu/no-backend)
 
