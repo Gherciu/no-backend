@@ -1,5 +1,5 @@
 <p align="center"><img align="center" style="width:128px" src="https://github.com/Gherciu/no-backend/blob/master/no-backend.png?raw=true"/></p>
-<h1 align="center"> no-backend </h1>
+<center><h1 align="center"> no-backend </h1></center>
 
 ### What do no-backend :
 * Transform your database into working GraphQl schema and create (queries,mutations) for this tables
