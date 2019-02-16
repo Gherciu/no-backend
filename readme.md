@@ -8,8 +8,6 @@
 
 ### Look at this small example 
 
-**database tables**
-
 products table:
 ------------------------------------
 | id | title | price | category_id |
