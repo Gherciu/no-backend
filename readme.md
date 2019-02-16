@@ -52,7 +52,7 @@ const port = 3000;
 app.listen(port);
 console.log(`Server started at port : ${port}`)
 ```
-**open browser on ```http://localhost:3000/api``` and wiev the resultat**
+**open browser on ```http://localhost:3000/api``` and see the result**
 
 ![no-backend](/no-backend-resultat.png)
 
