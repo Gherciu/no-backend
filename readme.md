@@ -58,8 +58,9 @@ console.log(`Server started at port : ${port}`)
 
 
 ## Links
-* 📘 [Documentation](/docs)
+* 📘 [Documentation](https://github.com/Gherciu/no-backend/tree/master/docs)
 * 🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
+* 👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
 
 -------------------------------------------------------------------------------------------------------
 
