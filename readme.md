@@ -1,7 +1,7 @@
 <p align="center"><img align="center" style="width:320px" src="/no-backend.png"/></p>
 <h1 align="center"> no-backend </h1>
 
-## What do no-backend :
+### What do no-backend :
 * Transform your database into working GraphQl schema and create (queries,mutations) for this tables
 * Add tables to your database for users authentication and also create (queries,mutations) for this tables
 * Add (mutations) for files upload with GraphQl
