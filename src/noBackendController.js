@@ -1,9 +1,9 @@
 import { graphql } from 'graphql'
 import renderGraphiQl from './renderGraphiQl'
 
-const registerMiddleware = ( options,schema,resolvers ) => {
+const noBackendController = ( options,schema,resolvers ) => {
 
-    options.app.use(options.route,( req,res,next ) => {
+    return ( req,res,next ) => {
 
         if( req.method === 'POST' ){
             graphql( schema,req.body.query,resolvers )
@@ -12,7 +12,7 @@ const registerMiddleware = ( options,schema,resolvers ) => {
                     res.status(200).json(response)
                 });
         }else if( req.method === 'GET' ){
-            if(options.graphiql){
+            if(options.graphiql_storm){
                 //if graghiql is enabled and req type is get send this
                 res.status(200).send(renderGraphiQl(options,req))
             }else{
@@ -24,8 +24,8 @@ const registerMiddleware = ( options,schema,resolvers ) => {
             res.status(400).send(`This request method  is not allowed !`)
         } 
 
-    })
+    }
 
 }
 
-export default registerMiddleware
+export default noBackendController

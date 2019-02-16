@@ -1,5 +1,5 @@
 import optionsValidator from './optionsValidator'
-import registerMiddleware from './registerMiddleware'
+import noBackendController from './noBackendController'
 import dbProvider from './dbProvider'
 import buildTablesGraphQlSchema from './buildTablesGraphQlSchema'
 import buildTablesGraphQlResolvers from './buildTablesGraphQlResolvers'
@@ -33,7 +33,7 @@ const noBackend = async ( options )=>{
             let schema    = await buildTablesGraphQlSchema(options,tables,db)
             let resolvers = await buildTablesGraphQlResolvers(options,tables,db);
           
-            registerMiddleware( options,schema,resolvers )
+            return noBackendController( options,schema,resolvers )
     
         }
     }

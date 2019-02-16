@@ -6,9 +6,7 @@ const app = express();
 app.use(express.json());
 
 noBackend({ 
-    app:app,
-    route:'/api',
-    graphiql:true,
+    graphiql_storm:true,
     connection:{
         driver:'mysql',
         host:'localhost',
@@ -16,13 +14,11 @@ noBackend({
         user:'root',
         password:'gherciu1',
         database:'test'
-    },
-    rules:{
-        insert:true,
-        select:true,
-        update:true,
-        delete:true
     }
+}).then((noBackendController) => {
+
+    app.use('/api',noBackendController)
+
 })
 
 const port = process.env.port || 2626;
