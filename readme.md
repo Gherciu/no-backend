@@ -1,4 +1,4 @@
-<p align="center"><img align="center" style="width:320px" src="/no-backend.png"/></p>
+<p align="center"><img align="center" style="width:128px" src="https://github.com/Gherciu/no-backend/blob/master/no-backend.png?raw=true"/></p>
 <h1 align="center"> no-backend </h1>
 
 ### What do no-backend :

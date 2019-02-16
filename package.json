@@ -1,13 +1,13 @@
 {
   "name": "no-backend",
-  "version": "1.0.1",
-  "description": "Transform your database into working GraphQl schema",
+  "version": "1.0.4",
+  "description": "A fast, simple and self-hosted backend as a service for your projects",
   "main": "dist/index.js",
   "scripts": {
     "build": "./node_modules/.bin/webpack --progress",
     "watch": "./node_modules/.bin/webpack --progress --watch"
   },
-  "keywords":"graphql,grpahiql-storm,dynamic-database",
+  "keywords":["graphql","grpahiql-storm","dynamic-database"],
   "author": "Gherciu Gheorghe",
   "license": "ISC",
   "dependencies": {
