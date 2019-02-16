@@ -3,7 +3,9 @@
 
 ## What do no-backend :
 **1.Transform your database into working GraphQl schema and create (queries,mutations) for this tables**
+
 **2.Add tables to your database for users authentication and also create (queries,mutations) for this tables**
+
 **3.Add (mutations) for files upload with GraphQl**
 
 ### Look at this small example 
