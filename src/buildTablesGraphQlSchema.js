@@ -6,7 +6,7 @@ import buildTablesGraphQlMutations from './buildTablesGraphQlMutations'
 const buildTablesGraphQlSchema = async (options,tables,db) => {
     
     let { tablesTypes,tablesRowTypes } = await buildTablesGraphQlTypes( tables )
-    let { query } = await buildTablesGraphQlQueries( tablesTypes )
+    let { query } = await buildTablesGraphQlQueries( tables,tablesTypes )
     let { mutation } = await buildTablesGraphQlMutations( tables,tablesTypes,tablesRowTypes )
 
     return new GraphQLSchema({ query,mutation })

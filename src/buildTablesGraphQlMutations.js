@@ -9,11 +9,14 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes,tablesRowTypes ) => {
 
     for (const tableTypeKey in tablesTypes) {
 
+        let tableDesc = tables.filter((tableObject)=> /*tableName*/Object.values(tableObject)[0] === tableTypeKey)
+            tableDesc = tableDesc[0].desc
+
         mutationsMethods.forEach((mutationMethod) => {
             tablesMutationTypes[`${mutationMethod}${firstToUpperCase(tableTypeKey)}`] = {
                 ...tablesTypes[tableTypeKey],
                args: {
-                   ...buildGraphQlArgs()
+                   ...buildGraphQlArgs(tableDesc,'mutation',mutationMethod)
                }
            }
         })

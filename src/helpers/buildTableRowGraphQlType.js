@@ -12,12 +12,12 @@ const buildTableRowGraphQlType = (tableName,tableDesc,tablesRowsTypes) =>{
         description:`Table row graphql type for table : ${tableName}`,
         fields: () => {
             let tableColumns = {}
-            tableDesc.forEach((fieldObject) => {
+            tableDesc.forEach((tableDescObject) => {
 
-                if( new RegExp(/\_/ig).test(fieldObject.Field) ){//add table type to this field
-                    tableColumns[`${fieldObject.Field.split('_')[0]}`] = {type: new GraphQLNonNull(tablesRowsTypes[`${fieldObject.Field.split('_')[0]}`].type)}
+                if( new RegExp(/\_/ig).test(tableDescObject.Field) ){//add table type to this field
+                    tableColumns[`${tableDescObject.Field.split('_')[0]}`] = {type: new GraphQLNonNull(tablesRowsTypes[`${tableDescObject.Field.split('_')[0]}`].type)}
                 }else{//add graphQl type to this field (table column)
-                    tableColumns[fieldObject.Field] = getColumnGraphQlType(fieldObject.Type.toLowerCase(),fieldObject.Null.toLowerCase()==='yes' ? true : false)
+                    tableColumns[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
                 }
 
             })
