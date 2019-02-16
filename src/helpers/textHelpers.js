@@ -21,3 +21,7 @@ export const pluralToSingular = (text) => {
     else
         return `${text.substr(0,text.length-1)}`
 }
+
+export const firstToUpperCase = (text) => {
+    return text.split('').map((char,index)=>index===0 ? char.toUpperCase() : char ).join('')
+}
