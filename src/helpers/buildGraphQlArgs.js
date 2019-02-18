@@ -10,6 +10,7 @@ const filterArgs = {
                     new GraphQLInputObjectType({
                         name:'WHEREstatement',
                         fields:{
+                            WHERE: { type: new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( GraphQLString ) ) ) },
                             AND: { type: new GraphQLList( new GraphQLNonNull( GraphQLString ) ) },
                             OR: { type: new GraphQLList( new GraphQLNonNull( GraphQLString ) ) }
                         }
