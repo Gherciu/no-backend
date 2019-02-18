@@ -40,11 +40,11 @@ const buildTablesGraphQlTypes = (tables) => {
 
                 }else{//register table type to tables types and tables row to tables row types
 
-                    tablesRowTypes[pluralToSingular(tableName)] = {type : buildTableRowGraphQlType(tableName,tableDesc,tablesRowTypes) }//singular row type
+                    tablesRowTypes[pluralToSingular(tableName)] = buildTableRowGraphQlType(tableName,tableDesc,tablesRowTypes) //singular row type
                     tablesTypes[tableName] = {
                         name:tableName,
                         description: `Table graphql type for table: ${tableName}`,
-                        type :new GraphQLNonNull(new GraphQLList( tablesRowTypes[pluralToSingular(tableName)].type )),
+                        type :new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( tablesRowTypes[pluralToSingular(tableName)] ) ) ),
                     }//plural table type
                 
                 }
@@ -59,8 +59,7 @@ const buildTablesGraphQlTypes = (tables) => {
     })
 
     return {
-        tablesTypes,
-        tablesRowTypes
+        tablesTypes
     }
 
 }

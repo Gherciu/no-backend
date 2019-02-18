@@ -2,21 +2,22 @@ import { GraphQLObjectType } from 'graphql'
 import buildGraphQlArgs from './helpers/buildGraphQlArgs'
 import {firstToUpperCase} from './helpers/textHelpers'
 
-const buildTablesGraphQlMutations = ( tables,tablesTypes,tablesRowTypes ) => {
+const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
 
     let mutationsMethods = ['insert','update','delete']
     let tablesMutationTypes = {}
 
     for (const tableTypeKey in tablesTypes) {
 
-        let tableDesc = tables.filter((tableObject)=> /*tableName*/Object.values(tableObject)[0] === tableTypeKey)
-            tableDesc = tableDesc[0].desc
+        let currentTableObject = tables.filter((tableObject)=> /*tableName*/Object.values(tableObject)[0] === tableTypeKey)
+        let tableName = Object.values(currentTableObject[0])[0]
+        let tableDesc = Object.values(currentTableObject[0])[1]
 
         mutationsMethods.forEach((mutationMethod) => {
             tablesMutationTypes[`${mutationMethod}${firstToUpperCase(tableTypeKey)}`] = {
                 ...tablesTypes[tableTypeKey],
                args: {
-                   ...buildGraphQlArgs(tableDesc,'mutation',mutationMethod)
+                   ...buildGraphQlArgs(tableName,tableDesc,'mutation',mutationMethod)
                }
            }
         })

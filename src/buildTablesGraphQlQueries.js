@@ -7,13 +7,14 @@ const buildTablesGraphQlQueries = (tables,tablesTypes) => {
 
     for (const tableTypeKey in tablesTypes) {
         
-        let tableDesc = tables.filter((tableObject)=> /*tableName*/Object.values(tableObject)[0] === tableTypeKey)
-            tableDesc = tableDesc[0].desc
+        let currentTableObject = tables.filter((tableObject)=> /*tableName*/Object.values(tableObject)[0] === tableTypeKey)
+        let tableName = Object.values(currentTableObject[0])[0]
+        let tableDesc = Object.values(currentTableObject[0])[1]
             
         tablesQueryTypes[tableTypeKey] = {
              ...tablesTypes[tableTypeKey],
             args: {
-                ...buildGraphQlArgs(tableDesc,'query')
+                ...buildGraphQlArgs(tableName,tableDesc,'query')
             }
         }
 

@@ -1,27 +1,78 @@
-import { GraphQLString,GraphQLInt,GraphQLObjectType } from 'graphql'
+import { GraphQLString,GraphQLInt,GraphQLInputObjectType,GraphQLList,GraphQLNonNull } from 'graphql'
 import getColumnGraphQlType from './getColumnGraphQlType'
+import { pluralToSingular, firstToUpperCase } from './textHelpers'
 
-const buildGraphQlArgs = ( tableDesc,argumentsFor,argumentsForMethod ) => {
-
+const filterArgs = {
+    filter: { 
+        type:
+            new GraphQLList( 
+                new GraphQLNonNull( 
+                    new GraphQLInputObjectType({
+                        name:'WHEREstatement',
+                        fields:{
+                            AND: { type: new GraphQLList( new GraphQLNonNull( GraphQLString ) ) },
+                            OR: { type: new GraphQLList( new GraphQLNonNull( GraphQLString ) ) }
+                        }
+                    })
+                ) 
+            )
+        }
+}
+const defaultArgs = {
+    id: { type: GraphQLInt }
+}
+const paginationArgs = {
+    limit: { type: GraphQLInt },
+    offset: { type: GraphQLInt },
+    orderBy: { type:GraphQLString }
+}
+const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod ) => {
+    
     let args = { }
 
     if(argumentsFor === 'mutation'){
 
         switch (argumentsForMethod) {
             case 'insert':{
-                tableDesc.forEach((tableDescObject) => {
-                    if(tableDescObject.Field !== 'id'){
-                        args[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
+                args = {
+                    [tableName]: {
+                        type: new GraphQLNonNull(
+                            new GraphQLList(
+                                new GraphQLNonNull(
+                                    new GraphQLInputObjectType({
+                                        name: `new${firstToUpperCase(pluralToSingular(tableName))}`,
+                                        description:`Table row graphql type for table : ${tableName}`,
+                                        fields:() => {
+                                            let fields = {}
+                                            tableDesc.forEach((tableDescObject) => {
+                                                if(tableDescObject.Field !== 'id'){
+                                                    fields[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
+                                                }
+                                            })
+                                            return fields
+                                        }
+                                    })
+                                )
+                            )
+                        )
                     }
-                })
+                }
                 break;
             } 
             case 'update':{
-                args['id'] = { type: GraphQLInt }
+                args = {
+                    ...defaultArgs,
+                    ...filterArgs,
+                    ...paginationArgs
+                }
                 break;
             }   
             case 'delete':{
-                args['id'] = { type: GraphQLInt }
+                args = {
+                    ...defaultArgs,
+                    ...filterArgs,
+                    ...paginationArgs
+                }
                 break;
             }            
             default:{
@@ -33,10 +84,11 @@ const buildGraphQlArgs = ( tableDesc,argumentsFor,argumentsForMethod ) => {
     }
     if(argumentsFor === 'query'){
         
-        args['id'] = { type: GraphQLInt }
-        args['limit'] = { type: GraphQLInt }
-        args['offset'] = { type: GraphQLInt }
-        args['orderBy'] = { type: GraphQLString }
+        args = {
+            ...defaultArgs,
+            ...filterArgs,
+            ...paginationArgs
+        }
         
     }
 
