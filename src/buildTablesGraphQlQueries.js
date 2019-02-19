@@ -1,4 +1,3 @@
-import { GraphQLObjectType } from 'graphql'
 import buildGraphQlArgs from './helpers/buildGraphQlArgs'
 
 const buildTablesGraphQlQueries = (tables,tablesTypes) => {
@@ -21,13 +20,7 @@ const buildTablesGraphQlQueries = (tables,tablesTypes) => {
     }
 
     return {
-        query: new GraphQLObjectType({
-            name: 'Query',
-            description:'GraphQl root query type',
-            fields: {
-                ...tablesQueryTypes
-            }
-        })
+        tablesQueryTypes
     }
 
 }

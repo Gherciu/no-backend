@@ -4,18 +4,16 @@ import { pluralToSingular, firstToUpperCase } from './textHelpers'
 
 const filterArgs = {
     filter: { 
-        type:
-            new GraphQLList( 
-                new GraphQLNonNull( 
+        type: new GraphQLList(
+                 new GraphQLNonNull(
                     new GraphQLInputObjectType({
-                        name:'WHEREstatement',
+                        name:'filter',
                         fields:{
-                            WHERE: { type: new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( GraphQLString ) ) ) },
-                            AND: { type: new GraphQLList( new GraphQLNonNull( GraphQLString ) ) },
-                            OR: { type: new GraphQLList( new GraphQLNonNull( GraphQLString ) ) }
+                            AND: { type: new GraphQLNonNull( new GraphQLList( new GraphQLNonNull(GraphQLString) ) ) },
+                            OR: { type: new GraphQLList( new GraphQLNonNull(GraphQLString) ) },
                         }
                     })
-                ) 
+                 )
             )
         }
 }
