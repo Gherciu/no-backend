@@ -2,8 +2,8 @@ import { GraphQLString,GraphQLInt,GraphQLInputObjectType,GraphQLList,GraphQLNonN
 import getColumnGraphQlType from './getColumnGraphQlType'
 import { pluralToSingular, firstToUpperCase } from './textHelpers'
 
-const filterArgs = {
-    filter: { 
+const filtersArgs = {
+    filters: { 
         type: new GraphQLList(
                  new GraphQLNonNull(
                     new GraphQLInputObjectType({
@@ -61,7 +61,7 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
             case 'update':{
                 args = {
                     ...defaultArgs,
-                    ...filterArgs,
+                    ...filtersArgs,
                     ...paginationArgs
                 }
                 break;
@@ -69,7 +69,7 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
             case 'delete':{
                 args = {
                     ...defaultArgs,
-                    ...filterArgs,
+                    ...filtersArgs,
                     ...paginationArgs
                 }
                 break;
@@ -85,7 +85,7 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
         
         args = {
             ...defaultArgs,
-            ...filterArgs,
+            ...filtersArgs,
             ...paginationArgs
         }
         

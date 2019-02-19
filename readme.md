@@ -53,7 +53,7 @@ console.log(`Server started at port : ${port}`)
 ```
 **open browser on ```http://localhost:3000/api``` and see the result**
 
-![no-backend](/no-backend-resultat.png)
+![no-backend](https://github.com/Gherciu/no-backend/blob/master/no-backend-result.png?raw=true)
 
 
 ## Links
