@@ -1,4 +1,4 @@
-import { tablesPluralSuffix } from './strings'
+import { tablesPluralSuffix } from './constants'
 
 export const isPlural = (text) => {
     if(new RegExp(/\_/ig).test(text))   

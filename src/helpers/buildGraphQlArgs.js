@@ -75,7 +75,7 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
                 break;
             }            
             default:{
-                throw new TypeError('Error:Undefined argumentsForMethod')
+                throw new TypeError('Error:Undefined argumentsForMethod type')
             }
                 
         }

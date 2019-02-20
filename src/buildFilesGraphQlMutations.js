@@ -1,4 +1,5 @@
 import { GraphQLScalarType,GraphQLObjectType,GraphQLNonNull,GraphQLList,GraphQLString } from 'graphql'
+import { filesMutationsMethods } from './helpers/constants'
 
 const fileOutputType = new GraphQLObjectType({
     name:'file',
@@ -22,11 +23,10 @@ const fileInputType = new GraphQLScalarType({
 
 const buildFilesGraphQlMutations = ( options ) => {
 
-    const mutationsMethods = ['_upload_Files','_delete_Files']
-    let filesMutationTypes = {}
+    let filesMutationsTypes = {}
 
-    mutationsMethods.forEach((mutationMethod)=>{
-        filesMutationTypes[mutationMethod] = {
+    filesMutationsMethods.forEach((mutationMethod)=>{
+        filesMutationsTypes[mutationMethod] = {
             name:mutationMethod,
             description:mutationMethod.split('_').map((textPart)=>textPart.toLowerCase()).join(' '),
             type: new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( fileOutputType ) ) ),
@@ -37,7 +37,7 @@ const buildFilesGraphQlMutations = ( options ) => {
     })
 
     return {
-        filesMutationTypes
+        filesMutationsTypes
     }
 
 }

@@ -1,8 +1,8 @@
 import optionsValidator from './optionsValidator'
 import noBackendController from './noBackendController'
-import dbProvider from './dbProvider'
-import buildTablesGraphQlSchema from './buildTablesGraphQlSchema'
-import buildTablesGraphQlResolvers from './buildTablesGraphQlResolvers'
+import dbProvider from './helpers/dbProvider'
+import buildGraphQlSchema from './buildGraphQlSchema'
+import buildGraphQlResolvers from './buildGraphQlResolvers'
 import tablesValidator from './tablesValidator'
 
 const noBackend = async ( options )=>{
@@ -30,8 +30,8 @@ const noBackend = async ( options )=>{
     
         }else{
     
-            let schema    = await buildTablesGraphQlSchema(options,tables,db)
-            let resolvers = await buildTablesGraphQlResolvers(options,tables,db);
+            let schema    = await buildGraphQlSchema(options,tables,db)
+            let resolvers = await buildGraphQlResolvers(options,tables,db);
           
             return noBackendController( options,schema,resolvers )
     

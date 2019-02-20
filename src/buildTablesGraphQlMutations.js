@@ -1,10 +1,10 @@
 import buildGraphQlArgs from './helpers/buildGraphQlArgs'
 import {firstToUpperCase} from './helpers/textHelpers'
+import { tablesMutationsMethods } from './helpers/constants'
 
 const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
 
-    let mutationsMethods = ['insert','update','delete']
-    let tablesMutationTypes = {}
+    let tablesMutationsTypes = {}
 
     for (const tableTypeKey in tablesTypes) {
 
@@ -12,8 +12,8 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
         let tableName = Object.values(currentTableObject[0])[0]
         let tableDesc = Object.values(currentTableObject[0])[1]
 
-        mutationsMethods.forEach((mutationMethod) => {
-            tablesMutationTypes[`${mutationMethod}${firstToUpperCase(tableTypeKey)}`] = {
+        tablesMutationsMethods.forEach((mutationMethod) => {
+            tablesMutationsTypes[`${mutationMethod}${firstToUpperCase(tableTypeKey)}`] = {
                 ...tablesTypes[tableTypeKey],
                args: {
                    ...buildGraphQlArgs(tableName,tableDesc,'mutation',mutationMethod)
@@ -24,7 +24,7 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
     }
 
     return {
-        tablesMutationTypes
+        tablesMutationsTypes
     }
 
 }
