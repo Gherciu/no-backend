@@ -1,7 +1,3 @@
-
-import {isEmpty} from './helpers/objectsHelpers'
-import {singularToPlural} from './helpers/textHelpers'
-
 const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
 
     let tablesQuerysResolvers = {}

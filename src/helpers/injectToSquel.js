@@ -21,7 +21,7 @@ const injectToSquel = (db,squel,filters,limit,offset,order) => {
                 }
                 if(filterStatementObject.or){
                     filterStatementObject.or.forEach((orStatementObject) => {
-                        filterStatementObjectExpresion = filterStatementObjectExpresion.or( `${orStatementObject.columnName} ${orStatementObject.columnName.operator} ?`,orStatementObject.expression )
+                        filterStatementObjectExpresion = filterStatementObjectExpresion.or( `${orStatementObject.columnName} ${orStatementObject.operator} ?`,orStatementObject.expression )
                     })
                 }
                 squel = squel.where(
