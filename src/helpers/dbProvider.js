@@ -27,6 +27,9 @@ export default class dbProvider {
         }
         return this
     }
+    squel(){
+        return squel
+    }
     exec(query){
         return this.pool.query( typeof query === 'string' ? query : query.toString() )
     }
@@ -35,5 +38,11 @@ export default class dbProvider {
     }
     insert(){
         return squel.insert()
+    }
+    update(){
+        return squel.update()
+    }
+    delete(){
+        return squel.delete()
     }
 }

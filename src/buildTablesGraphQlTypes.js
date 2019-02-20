@@ -40,7 +40,7 @@ const buildTablesGraphQlTypes = (tables) => {
                 tablesTypes[tableName] = {
                     name:tableName,
                     description: `Table graphql type for table: ${tableName}`,
-                    type :new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( tablesRowTypes[pluralToSingular(tableName)] ) ) ),
+                    type : new GraphQLList( new GraphQLNonNull( tablesRowTypes[pluralToSingular(tableName)] ) ),
                 }//plural table type
             
             }

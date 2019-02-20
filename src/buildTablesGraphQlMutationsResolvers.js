@@ -2,6 +2,7 @@
 import { tablesMutationsMethods } from './helpers/constants'
 import { firstToUpperCase } from './helpers/textHelpers'
 import getInsertIds from './helpers/getInsertIds'
+import injectToSquel from './helpers/injectToSquel'
 
 const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
@@ -23,29 +24,28 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                             .into(tableName)
                             .setFieldsRows(
                                 root[tableName]
-                            )
+                            )   
                         )
-                        if(statementResult){
-                            return await db.exec(
-                                db.select()
-                                .from(tableName)
-                                .where(`id IN ( ${getInsertIds(statementResult).join(',')} )`)
-                            )
-                        }else{
-                            throw new Error(`Error on insert new items in table ${tableName}!`)
-                        }
+
+                        return {...statementResult,insertIds:getInsertIds(statementResult)}
                         
                     }
                     break
                 }  
                 case 'update':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async () => {
-                
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (root,args,context) => {
+                        
+                        let squel = db.update().table(tableName).setFields(root.newValue)
+                        squel = injectToSquel( db,squel,root.filters,root.order,root.limit )
+                        let statementResult = await db.exec( squel )
+
+                        return {...statementResult,insertIds:getInsertIds(statementResult)}
+
                     }
                     break
                 }  
                 case 'delete':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async () => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (root,args,context) => {
                 
                     }
                     break

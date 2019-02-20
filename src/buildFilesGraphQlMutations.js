@@ -29,9 +29,9 @@ const buildFilesGraphQlMutations = ( options ) => {
         filesMutationsTypes[mutationMethod] = {
             name:mutationMethod,
             description:mutationMethod.split('_').map((textPart)=>textPart.toLowerCase()).join(' '),
-            type: new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( fileOutputType ) ) ),
+            type:  new GraphQLList( new GraphQLNonNull( fileOutputType ) ) ,
             args:{
-                files: { type:new GraphQLNonNull( new GraphQLList( new GraphQLNonNull( mutationMethod==='_delete_Files'? GraphQLString : fileInputType ) ) ) }
+                files: { type:new GraphQLList( new GraphQLNonNull( mutationMethod==='_delete_Files'? GraphQLString : fileInputType ) ) }
             }
         }
     })
