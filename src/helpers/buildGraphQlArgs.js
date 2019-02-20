@@ -95,21 +95,23 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
             case 'insert':{
                 args = {
                     [tableName]: {
-                        type: new GraphQLList(
-                            new GraphQLNonNull(
-                                new GraphQLInputObjectType({
-                                    name: `new${firstToUpperCase(pluralToSingular(tableName))}`,
-                                    description:`Table row graphql type for table : ${tableName}`,
-                                    fields:() => {
-                                        let fields = {}
-                                        tableDesc.forEach((tableDescObject) => {
-                                            if(tableDescObject.Field !== 'id'){
-                                                fields[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
-                                            }
-                                        })
-                                        return fields
-                                    }
-                                })
+                        type: new GraphQLNonNull(
+                            new GraphQLList(
+                                new GraphQLNonNull(
+                                    new GraphQLInputObjectType({
+                                        name: `new${firstToUpperCase(pluralToSingular(tableName))}`,
+                                        description:`Table row graphql type for table : ${tableName}`,
+                                        fields:() => {
+                                            let fields = {}
+                                            tableDesc.forEach((tableDescObject) => {
+                                                if(tableDescObject.Field !== 'id'){
+                                                    fields[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
+                                                }
+                                            })
+                                            return fields
+                                        }
+                                    })
+                                )
                             )
                         )
                     }
