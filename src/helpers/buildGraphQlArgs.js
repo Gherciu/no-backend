@@ -3,6 +3,46 @@ import { Kind } from 'graphql/language';
 import getColumnGraphQlType from './getColumnGraphQlType'
 import { pluralToSingular, firstToUpperCase } from './textHelpers'
 
+const expressionType = new GraphQLScalarType({
+    name: 'expression',
+    description: 'The `expression` scalar type represents a string,number or boolean.',
+    serialize(value) {
+        return value
+    },
+    parseValue(value) {
+        return value
+    },
+    parseLiteral(ast) {
+        if(ast.kind === Kind.INT){
+            return parseInt(ast.value)
+        }
+        else if(ast.kind === Kind.FLOAT){
+            return parseFloat(ast.value)
+        }
+        else if(ast.kind === Kind.BOOLEAN){
+            return ast.value
+        }
+        else if(ast.kind === Kind.STRING){
+            return ast.value.toString()
+        }
+        else{
+            throw new TypeError('`expression`: Expected type Int,Float or String, found other type!')
+        }
+    }
+})
+const whereInType = new GraphQLInputObjectType({
+    name:'whereInStatement',
+    description:'whereInStatement GraphQl type, usage ex:({ columnName:"id",values:[1,2,3,4] })',
+    fields:{
+        columnName:{type:new GraphQLNonNull(GraphQLString)},
+        values:{type:new GraphQLList(
+                new GraphQLNonNull(
+                    expressionType
+                )
+            )
+        }
+    }
+})
 const whereType = new GraphQLInputObjectType({
     name:'whereStatement',
     description:'whereStatement GraphQl type, usage ex:({ columnName:"id",clause:"< 3" })',
@@ -10,33 +50,7 @@ const whereType = new GraphQLInputObjectType({
         columnName:{type:new GraphQLNonNull(GraphQLString)},
         operator:{type:new GraphQLNonNull(GraphQLString)},
         expression:{type:new GraphQLNonNull(
-            new GraphQLScalarType({
-                name: 'expression',
-                description: 'The `expression` scalar type represents a string,number or boolean.',
-                serialize(value) {
-                    return value
-                },
-                parseValue(value) {
-                    return value
-                },
-                parseLiteral(ast) {
-                    if(ast.kind === Kind.INT){
-                        return parseInt(ast.value)
-                    }
-                    else if(ast.kind === Kind.FLOAT){
-                        return parseFloat(ast.value)
-                    }
-                    else if(ast.kind === Kind.BOOLEAN){
-                        return ast.value
-                    }
-                    else if(ast.kind === Kind.STRING){
-                        return ast.value.toString()
-                    }
-                    else{
-                        throw new TypeError('`expression`: Expected type Int,Float or String, found other type!')
-                    }
-                }
-            })
+            expressionType
         )}
     }
 })
@@ -47,8 +61,8 @@ const filtersArgs = {
                     new GraphQLInputObjectType({
                         name:'filter',
                         fields:{
-                            where:{type:new GraphQLNonNull(whereType)
-                            },
+                            andIn:{ type: new GraphQLList( new GraphQLNonNull(whereInType) ) },
+                            orIn:{ type: new GraphQLList( new GraphQLNonNull(whereInType) ) },
                             and: { type:  new GraphQLList( new GraphQLNonNull(whereType) ) },
                             or: { type: new GraphQLList( new GraphQLNonNull(whereType) ) },
                         }
@@ -57,12 +71,7 @@ const filtersArgs = {
             )
         }
 }
-const defaultArgs = {
-    id: { type: GraphQLInt }
-}
-const paginationArgs = {
-    limit: { type: GraphQLInt },
-    offset: { type: GraphQLInt },
+const orderArgs = {
     order: { type:new GraphQLList(
             new GraphQLNonNull(
                 new GraphQLInputObjectType({
@@ -126,17 +135,17 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
                             })
                         )
                     },
-                    ...defaultArgs,
                     ...filtersArgs,
-                    ...paginationArgs
+                    ...orderArgs,
+                    limit: { type: GraphQLInt },
                 }
                 break;
             }   
             case 'delete':{
                 args = {
-                    ...defaultArgs,
                     ...filtersArgs,
-                    ...paginationArgs
+                    ...orderArgs,
+                    limit: { type: GraphQLInt }
                 }
                 break;
             }            
@@ -149,10 +158,11 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
     }
     if(argumentsFor === 'query'){
         
-        args = {
-            ...defaultArgs,
+        args ={
             ...filtersArgs,
-            ...paginationArgs
+            ...orderArgs,
+            offset: { type: GraphQLInt },
+            limit: { type: GraphQLInt }
         }
         
     }

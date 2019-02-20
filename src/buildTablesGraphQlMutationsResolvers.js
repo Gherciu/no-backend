@@ -36,7 +36,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                     tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (root,args,context) => {
                         
                         let squel = db.update().table(tableName).setFields(root.newValue)
-                        squel = injectToSquel( db,squel,root.filters,root.order,root.limit )
+                        squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
                         let statementResult = await db.exec( squel )
 
                         return {...statementResult,insertIds:getInsertIds(statementResult)}
