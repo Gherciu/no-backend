@@ -1,3 +1,7 @@
+
+import injectToSquel from './helpers/injectToSquel'
+import getInsertIds from './helpers/getInsertIds'
+
 const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
 
     let tablesQuerysResolvers = {}
@@ -5,10 +9,17 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
     tables.forEach((tableObject) => {
 
         let tableName = Object.values(tableObject)[0]
-        let tableDesc = Object.values(tableObject)[1]
+        let tableDesc = Object.values(tableObject)[1] 
         
         tablesQuerysResolvers[tableName] = async (root,args,context) => {
-            return await db.exec( db.select().from(tableName) )
+            
+            let squel = db.select().from(tableName)
+            squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
+
+            let statementResult = await db.exec( squel )
+
+            return statementResult
+
         }
 
     })

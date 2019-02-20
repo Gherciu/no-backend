@@ -1,6 +1,6 @@
 const injectToSquel = (db,squel,filters,limit,offset,order) => {
-   
-        if(filters){
+
+    if(filters){
             filters.forEach((filterStatementObject) => {
                 let filterStatementObjectExpresion = db.squel().expr()
                 
@@ -31,7 +31,7 @@ const injectToSquel = (db,squel,filters,limit,offset,order) => {
         }
         if(order){
            order.forEach((orderStatement) => {
-                squel = squel.order(orderStatement.key,orderStatement.direction.toLowerCase()==='asc'?true:false)
+                squel = squel.order(orderStatement.columnName,orderStatement.direction.toLowerCase()==='asc'?true:false)
             })
         }
         if(limit){

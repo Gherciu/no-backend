@@ -77,7 +77,7 @@ const orderArgs = {
                 new GraphQLInputObjectType({
                     name:'orderStatement',
                     fields:{
-                        key:{type:new GraphQLNonNull(GraphQLString)},
+                        columnName:{type:new GraphQLNonNull(GraphQLString)},
                         direction:{type:new GraphQLNonNull(GraphQLString)}
                     }
                 })
