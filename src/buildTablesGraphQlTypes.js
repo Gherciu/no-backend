@@ -11,15 +11,15 @@ const buildTablesGraphQlTypes = (tables) => {
         if(!tablesTypes[tableName]){//if table is not already in tables types
 
             let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
-            let hasAddedRelationsTablesToTypes = false
+            let isAddedAllRelationsFieldsToTablesTypes = false
             relationsFields.forEach((relationFieldObjectItem)=>{//ceck if all relation fields(table column) has your type in tables types
 
                 if( tablesTypes[singularToPlural(relationFieldObjectItem.Field.split('_')[0])] ){
-                    hasAddedRelationsTablesToTypes = true
+                    isAddedAllRelationsFieldsToTablesTypes = true
                 }
 
             })
-            if(relationsFields.length > 0 && !hasAddedRelationsTablesToTypes){//if table has relations fields
+            if(relationsFields.length > 0 && !isAddedAllRelationsFieldsToTablesTypes){//if table has relations fields
 
                 relationsFields.forEach((relationFieldObjectItem)=>{//register all relations fields(table column) to tables types (ex:category_id ->> categorys:[category]!)
 

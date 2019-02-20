@@ -1,6 +1,7 @@
 
 import { tablesMutationsMethods } from './helpers/constants'
 import { firstToUpperCase } from './helpers/textHelpers'
+import getInsertIds from './helpers/getInsertIds'
 
 const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
@@ -25,18 +26,13 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                             )
                         )
                         if(statementResult){
-                            let insertIds = []
-                            for (let i = statementResult.insertId; i < (statementResult.insertId+statementResult.affectedRows); i++) {
-                                insertIds.push(i)
-                            }
-                           
                             return await db.exec(
                                 db.select()
                                 .from(tableName)
-                                .where(`id IN ( ${insertIds.join(',')} )`)
+                                .where(`id IN ( ${getInsertIds(statementResult).join(',')} )`)
                             )
                         }else{
-                            throw new Error(`Error on insert new items in ${tableName}!`)
+                            throw new Error(`Error on insert new items in table ${tableName}!`)
                         }
                         
                     }
