@@ -11,23 +11,29 @@ const buildGraphQlSchema = async (options,tables,db) => {
     let { tablesMutationsTypes } = await buildTablesGraphQlMutations( tables,tablesTypes )
     let { filesMutationsTypes } = await buildFilesGraphQlMutations( options )
 
-    return new GraphQLSchema({ 
-        query: new GraphQLObjectType({
-            name: 'Query',
-            description:'GraphQl root query type',
-            fields: {
-                ...tablesQuerysTypes
-            }
+    return {
+        schema: new GraphQLSchema({ 
+            query: new GraphQLObjectType({
+                name: 'Query',
+                description:'GraphQl root query type',
+                fields: {
+                    ...tablesQuerysTypes
+                }
+            }),
+            mutation:new GraphQLObjectType({
+                name: 'Mutation',
+                description:'GraphQl root mutation type',
+                fields: {
+                    ...tablesMutationsTypes,
+                    ...filesMutationsTypes
+                }
+            })
         }),
-        mutation:new GraphQLObjectType({
-            name: 'Mutation',
-            description:'GraphQl root mutation type',
-            fields: {
-                ...tablesMutationsTypes,
-                ...filesMutationsTypes
-            }
-        })
-    })
+        tablesTypes,
+        tablesQuerysTypes,
+        tablesMutationsTypes,
+        filesMutationsTypes
+    }
 
 }
 

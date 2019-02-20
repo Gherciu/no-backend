@@ -15,9 +15,9 @@ noBackend({
         password:'gherciu1',
         database:'test'
     }
-}).then((noBackendController) => {
+}).then((result) => {
 
-    app.use('/api',noBackendController)
+    app.use('/api',result.noBackendController)
 
 })
 

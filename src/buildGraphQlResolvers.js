@@ -7,9 +7,14 @@ const buildGraphQlResolvers = async (options,tables,db) => {
     let { tablesFilesMutationsResolvers } = {}
 
     return {
-        ...tablesQuerysResolvers,
-        ...tablesMutationsResolvers,
-        ...tablesFilesMutationsResolvers
+        resolvers:{
+            ...tablesQuerysResolvers,
+            ...tablesMutationsResolvers,
+            ...tablesFilesMutationsResolvers
+        },
+        tablesQuerysResolvers,
+        tablesMutationsResolvers,
+        tablesFilesMutationsResolvers
     }
 
 }

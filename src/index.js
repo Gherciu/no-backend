@@ -30,10 +30,25 @@ const noBackend = async ( options )=>{
     
         }else{
     
-            let schema    = await buildGraphQlSchema(options,tables,db)
-            let resolvers = await buildGraphQlResolvers(options,tables,db);
+            let { schema,tablesQuerysTypes,tablesMutationsTypes,filesMutationsTypes,tablesTypes }    = await buildGraphQlSchema(options,tables,db)
+            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers,tablesFilesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db);
           
-            return noBackendController( options,schema,resolvers )
+            return {
+
+                noBackendController: noBackendController( options,schema,resolvers ),
+                tablesTypes,
+                //tables queries & tables mutations --> schema
+                schema,
+                tablesQuerysTypes,
+                tablesMutationsTypes,
+                filesMutationsTypes,
+                ////tables queries resolvers & tables mutations resolvers --> resolvers
+                resolvers,
+                tablesQuerysResolvers,
+                tablesMutationsResolvers,
+                tablesFilesMutationsResolvers
+                
+            }
     
         }
     }
