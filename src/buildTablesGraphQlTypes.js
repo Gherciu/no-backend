@@ -14,7 +14,7 @@ const buildTablesGraphQlTypes = (tables) => {
             let isAddedAllRelationsFieldsToTablesTypes = false
             relationsFields.forEach((relationFieldObjectItem)=>{//ceck if all relation fields(table column) has your type in tables types
 
-                if( tablesTypes[singularToPlural(relationFieldObjectItem.Field.split('_')[0])] ){
+                if( tablesTypes[/*table name*/singularToPlural(relationFieldObjectItem.Field.split('_')[0])] ){
                     isAddedAllRelationsFieldsToTablesTypes = true
                 }
 
@@ -22,10 +22,10 @@ const buildTablesGraphQlTypes = (tables) => {
             if(relationsFields.length > 0 && !isAddedAllRelationsFieldsToTablesTypes){//if table has relations fields
 
                 relationsFields.forEach((relationFieldObjectItem)=>{//register all relations fields(table column) to tables types (ex:category_id ->> categorys:[category]!)
-
+                    
                     let relationTableDesc = []
                     tables.forEach(tableObjectItem=>{
-                        if(/*tableName*/Object.values(tableObjectItem)[0]===relationFieldObjectItem.Field.split('_')[0]){
+                        if(/*table name*/Object.values(tableObjectItem)[0]===singularToPlural(relationFieldObjectItem.Field.split('_')[0])){
                             relationTableDesc = Object.values(tableObjectItem)[1]/*table desc*/
                         }
                     })
@@ -54,6 +54,7 @@ const buildTablesGraphQlTypes = (tables) => {
     })
 
     return {
+        tablesRowTypes,
         tablesTypes
     }
 

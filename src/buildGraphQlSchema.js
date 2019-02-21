@@ -6,7 +6,7 @@ import buildFilesGraphQlMutations from './buildFilesGraphQlMutations'
 
 const buildGraphQlSchema = async (options,tables,db) => {
 
-    let { tablesTypes } = await buildTablesGraphQlTypes( tables )
+    let { tablesTypes,tablesRowTypes } = await buildTablesGraphQlTypes( tables )
     let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( tables,tablesTypes, )
     let { tablesMutationsTypes } = await buildTablesGraphQlMutations( tables,tablesTypes )
     let { filesMutationsTypes } = await buildFilesGraphQlMutations( options )
@@ -30,6 +30,7 @@ const buildGraphQlSchema = async (options,tables,db) => {
             })
         }),
         tablesTypes,
+        tablesRowTypes,
         tablesQuerysTypes,
         tablesMutationsTypes,
         filesMutationsTypes
