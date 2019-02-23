@@ -49,7 +49,6 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                         
                         let squel = db.delete().from(tableName)
                         squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
-
                         let statementResult = await db.exec( squel )
 
                         return {...statementResult,insertIds:getInsertIds(statementResult)}

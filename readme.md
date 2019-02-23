@@ -2,8 +2,10 @@
 <center><h1 align="center"> no-backend </h1></center>
 
 ### What do no-backend :
-* Transform your database into working GraphQl schema and create (queries,mutations) for this tables
-* Add (mutations) for files upload with GraphQl
+Transform your database into working GraphQl schema
+* Creates Querys and Querys resolvers for all tables
+* Creates Mutations and Mutations resolvers for all tables
+* Creates Subscriptions and Subscriptions resolvers for all tables
 
 ### Look at this small example 
 
@@ -35,7 +37,7 @@ app.use(express.json());
 noBackend({ 
     graphiql_storm:true, // A Web IDE for GraphQl
     connection:{
-        driver:'mysql', // mysql OR postgres OR sqlite
+        driver:'mysql',
         host:'localhost',
         user:'root',
         password:'test-password',

@@ -2,14 +2,12 @@ import { GraphQLObjectType,GraphQLSchema } from 'graphql'
 import buildTablesGraphQlTypes from './buildTablesGraphQlTypes'
 import buildTablesGraphQlQuerys from './buildTablesGraphQlQuerys'
 import buildTablesGraphQlMutations from './buildTablesGraphQlMutations'
-import buildFilesGraphQlMutations from './buildFilesGraphQlMutations'
 
 const buildGraphQlSchema = async (options,tables,db) => {
 
     let { tablesTypes,tablesRowTypes } = await buildTablesGraphQlTypes( tables )
     let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( tables,tablesTypes, )
     let { tablesMutationsTypes } = await buildTablesGraphQlMutations( tables,tablesTypes )
-    let { filesMutationsTypes } = await buildFilesGraphQlMutations( options )
 
     return {
         schema: new GraphQLSchema({ 
@@ -24,16 +22,14 @@ const buildGraphQlSchema = async (options,tables,db) => {
                 name: 'Mutation',
                 description:'GraphQl root mutation type',
                 fields: {
-                    ...tablesMutationsTypes,
-                    ...filesMutationsTypes
+                    ...tablesMutationsTypes
                 }
             })
         }),
         tablesTypes,
         tablesRowTypes,
         tablesQuerysTypes,
-        tablesMutationsTypes,
-        filesMutationsTypes
+        tablesMutationsTypes
     }
 
 }

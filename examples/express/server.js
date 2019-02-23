@@ -1,10 +1,10 @@
 const express = require('express');
-const noBackend = require('./../../dist/index')
+const path = require('path')
+const noBackend = require('./../../dist/index')//for users require('no-backend')
 
 const app = express();
 
 app.use(express.json());
-
 noBackend({ 
     graphiql_storm:true,
     connection:{
