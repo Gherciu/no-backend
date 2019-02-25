@@ -1,13 +1,13 @@
-import { GraphQLObjectType,GraphQLSchema } from 'graphql'
-import buildTablesGraphQlTypes from './buildTablesGraphQlTypes'
-import buildTablesGraphQlQuerys from './buildTablesGraphQlQuerys'
-import buildTablesGraphQlMutations from './buildTablesGraphQlMutations'
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
+import buildTablesGraphQlMutations from './buildTablesGraphQlMutations';
+import buildTablesGraphQlQuerys from './buildTablesGraphQlQuerys';
+import buildTablesGraphQlRowTypes from './buildTablesGraphQlRowTypes';
 
 const buildGraphQlSchema = async (options,tables,db) => {
 
-    let { tablesTypes,tablesRowTypes } = await buildTablesGraphQlTypes( tables )
-    let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( tables,tablesTypes, )
-    let { tablesMutationsTypes } = await buildTablesGraphQlMutations( tables,tablesTypes )
+    let { tablesRowTypes } = await buildTablesGraphQlRowTypes( tables )
+    let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( tables,tablesRowTypes )
+    let { tablesMutationsTypes } = await buildTablesGraphQlMutations( tables )
 
     return {
         schema: new GraphQLSchema({ 
@@ -26,7 +26,6 @@ const buildGraphQlSchema = async (options,tables,db) => {
                 }
             })
         }),
-        tablesTypes,
         tablesRowTypes,
         tablesQuerysTypes,
         tablesMutationsTypes

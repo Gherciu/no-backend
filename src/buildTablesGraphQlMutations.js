@@ -1,7 +1,7 @@
-import {GraphQLNonNull,GraphQLList,GraphQLObjectType,GraphQLInt,GraphQLString} from 'graphql'
-import buildGraphQlArgs from './helpers/buildGraphQlArgs'
-import {firstToUpperCase} from './helpers/textHelpers'
-import { tablesMutationsMethods } from './helpers/constants'
+import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
+import buildGraphQlArgs from './helpers/buildGraphQlArgs';
+import { tablesMutationsMethods } from './helpers/constants';
+import { firstToUpperCase } from './helpers/textHelpers';
 
 const statementResultType = new GraphQLObjectType({
     name:'statementResult',
@@ -20,14 +20,13 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
 
     let tablesMutationsTypes = {}
 
-    for (const tableTypeKey in tablesTypes) {
+    tables.forEach((tableObject)=> {
 
-        let currentTableObject = tables.filter((tableObject)=> /*tableName*/Object.values(tableObject)[0] === tableTypeKey)
-        let tableName = Object.values(currentTableObject[0])[0]
-        let tableDesc = Object.values(currentTableObject[0])[1]
+        let tableName = Object.values(tableObject)[0]
+        let tableDesc = Object.values(tableObject)[1]
 
         tablesMutationsMethods.forEach((mutationMethod) => {
-            tablesMutationsTypes[`${mutationMethod}${firstToUpperCase(tableTypeKey)}`] = {
+            tablesMutationsTypes[`${mutationMethod}${firstToUpperCase(tableName)}`] = {
                type: new GraphQLNonNull( statementResultType ),
                args: {
                    ...buildGraphQlArgs(tableName,tableDesc,'mutation',mutationMethod)
@@ -35,7 +34,7 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
            }
         })
 
-    }
+    })
 
     return {
         tablesMutationsTypes
