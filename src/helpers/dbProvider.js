@@ -1,6 +1,6 @@
-import mysql from  'mysql'
-import squel from 'squel'
-import util from 'util'
+import mysql from 'mysql';
+import squel from 'squel';
+import util from 'util';
 export default class dbProvider {
     constructor({connection}){
         if(connection.driver === 'mysql'){
@@ -31,7 +31,16 @@ export default class dbProvider {
         return squel
     }
     exec(query){
-        return this.pool.query( typeof query === 'string' ? query : query.toString() )
+        if(typeof query === 'string'){
+
+            return this.pool.query( query )
+
+        }else{
+
+            let params = query.toParam()
+            return this.pool.query( params.text,params.values )
+
+        }
     }
     select(){
         return squel.select()

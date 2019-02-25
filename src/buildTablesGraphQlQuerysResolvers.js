@@ -1,6 +1,6 @@
 
-import injectToSquel from './helpers/injectToSquel'
-import getRecursiveRelationTables from './helpers/getRecursiveRelationTables'
+import getRecursiveRelationTables from './helpers/getRecursiveRelationTables';
+import injectToSquel from './helpers/injectToSquel';
 
 const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
 
@@ -18,9 +18,9 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
             squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
 
             let statementResult = await db.exec( squel )
-            let result = await getRecursiveRelationTables(statementResult,relationsFields,tables,db)
+            let recursiveStatementResult = await getRecursiveRelationTables(statementResult,relationsFields,tables,db)
 
-            return result
+            return recursiveStatementResult
 
         }
 
