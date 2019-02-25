@@ -1,4 +1,5 @@
-import buildTableRowGraphQlType from './helpers/buildTableRowGraphQlType';
+import { GraphQLNonNull, GraphQLObjectType } from 'graphql';
+import getFieldGraphQlType from './helpers/getFieldGraphQlType';
 import { pluralToSingular, singularToPlural } from './helpers/textHelpers';
 
 const buildTablesGraphQlRowTypes = (tables) => {
@@ -36,7 +37,23 @@ const buildTablesGraphQlRowTypes = (tables) => {
 
             }else{//register tables row to tables row types
 
-                tablesRowTypes[pluralToSingular(tableName)] = buildTableRowGraphQlType(tableName,tableDesc,tablesRowTypes) //singular row type
+                tablesRowTypes[pluralToSingular(tableName)] = new GraphQLObjectType({
+                    name:pluralToSingular(tableName),
+                    description:`Table row graphql type for table : ${tableName}`,
+                    fields: () => {
+                        let tableFields = {}
+                        tableDesc.forEach((tableDescObject) => {
+            
+                            if( new RegExp(/\_/ig).test(tableDescObject.Field) ){//add table type to this field
+                                tableFields[`${tableDescObject.Field.split('_')[0]}`] = {type: new GraphQLNonNull( tablesRowTypes[`${tableDescObject.Field.split('_')[0]}`] )}
+                            }else{//add graphQl type to this field (table column)
+                                tableFields[tableDescObject.Field] = getFieldGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
+                            }
+            
+                        })
+                        return tableFields
+                    }
+                })
             
             }
 

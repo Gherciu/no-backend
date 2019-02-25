@@ -1,5 +1,5 @@
-import { graphql } from 'graphql'
-import renderGraphiQl from './renderGraphiQl'
+import { graphql } from 'graphql';
+import renderGraphiQlStorm from './renderGraphiQlStorm';
 
 const noBackendController = ( options,schema,resolvers ) => {
 
@@ -17,7 +17,7 @@ const noBackendController = ( options,schema,resolvers ) => {
 
             if(options.graphiql_storm){
                 //if graghiql is enabled and req type is get send this
-                res.status(200).send(renderGraphiQl(options,req))
+                res.status(200).send(renderGraphiQlStorm(options,req))
             }else{
                 //if graghiql is disabled and req type is get send bad request type
                 res.status(400).send('GET requests to this route is not allowed!')

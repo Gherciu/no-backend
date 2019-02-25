@@ -1,7 +1,7 @@
-import { GraphQLString,GraphQLInt,GraphQLInputObjectType,GraphQLScalarType,GraphQLList,GraphQLNonNull } from 'graphql'
+import { GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLScalarType, GraphQLString } from 'graphql';
 import { Kind } from 'graphql/language';
-import getColumnGraphQlType from './getColumnGraphQlType'
-import { pluralToSingular, firstToUpperCase } from './textHelpers'
+import getFieldGraphQlType from './getFieldGraphQlType';
+import { firstToUpperCase, pluralToSingular } from './textHelpers';
 
 const expressionType = new GraphQLScalarType({
     name: 'expression',
@@ -105,7 +105,7 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
                                             let fields = {}
                                             tableDesc.forEach((tableDescObject) => {
                                                 if(tableDescObject.Field !== 'id'){
-                                                    fields[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
+                                                    fields[tableDescObject.Field] = getFieldGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
                                                 }
                                             })
                                             return fields
@@ -129,7 +129,7 @@ const buildGraphQlArgs = ( tableName,tableDesc,argumentsFor,argumentsForMethod )
                                     let fields = {}
                                     tableDesc.forEach((tableDescObject) => {
                                         if(tableDescObject.Field !== 'id'){
-                                            fields[tableDescObject.Field] = getColumnGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
+                                            fields[tableDescObject.Field] = getFieldGraphQlType(tableDescObject.Type.toLowerCase(),tableDescObject.Null.toLowerCase()==='yes' ? true : false)
                                         }
                                     })
                                     return fields
