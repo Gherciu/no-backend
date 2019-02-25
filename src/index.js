@@ -31,12 +31,12 @@ const noBackend = async ( options )=>{
         }else{
     
             let { schema,tablesQuerysTypes,tablesMutationsTypes,filesMutationsTypes,tablesRowTypes }    = await buildGraphQlSchema(options,tables,db)
-            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers,filesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db);
+            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db);
           
             return {
 
                 noBackendController: noBackendController( options,schema,resolvers ),
-                //tables types
+                //tables row types
                 tablesRowTypes,
                 //tables queries & tables mutations --> schema
                 schema,
@@ -47,7 +47,6 @@ const noBackend = async ( options )=>{
                 resolvers,
                 tablesQuerysResolvers,
                 tablesMutationsResolvers,
-                filesMutationsResolvers,
                 //database provider
                 db
                 
