@@ -35,16 +35,13 @@ const injectToSquel = (db,squel,filters,limit,offset,order) => {
             })
         }
         if(limit){
-
             squel = squel.limit(limit)
-
-            if(offset){
-                squel = squel.offset(offset)
-            }
-
         }
-        if(offset && !limit){
-            throw new TypeError('Error: offset argument dont work without limit argument!')
+        if(offset){
+            if(!limit){//offset without limit dont work more info(https://dev.mysql.com/doc/refman/8.0/en/select.html#id4651990)
+                squel = squel.limit(/*some large number*/999999)
+            }
+            squel = squel.offset(offset)
         }
     
         return squel
