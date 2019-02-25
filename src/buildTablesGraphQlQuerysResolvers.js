@@ -13,7 +13,7 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
         let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
         
         tablesQuerysResolvers[tableName] = async (root,args,context) => {
-            
+
             let squel = db.select().from(tableName)
             squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
 

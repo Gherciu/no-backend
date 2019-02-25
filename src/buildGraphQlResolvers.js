@@ -1,5 +1,5 @@
-import buildTablesGraphQlMutationsResolvers from './buildTablesGraphQlMutationsResolvers'
-import buildTablesGraphQlQuerysResolvers from './buildTablesGraphQlQuerysResolvers'
+import buildTablesGraphQlMutationsResolvers from './buildTablesGraphQlMutationsResolvers';
+import buildTablesGraphQlQuerysResolvers from './buildTablesGraphQlQuerysResolvers';
 
 const buildGraphQlResolvers = async (options,tables,db) => {
 
