@@ -65,6 +65,36 @@ console.log(`Server started at port : 2626`)
 * 🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
 * 👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
 
+## Use with Apollo and GraphQl-Playground
+```js
+const { ApolloServer } = require('apollo-server');
+const noBackend = require('no-backend');
+
+(async () => {
+
+    const {typeDefs,resolvers} = await noBackend({ 
+        connection:{
+            driver:'mysql',
+            host:'localhost',
+            port:'3306',
+            user:'root',
+            password:'gherciu1',
+            database:'test'
+        }
+    });
+    
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers
+    });
+
+    server.listen().then(({ url }) => {
+    console.log(`🚀 Server ready at ${url}`)
+    });
+
+})();
+```
+
 -------------------------------------------------------------------------------------------------------
 
 #### If you like this repository star⭐ and watch👀 on  [GitHub](https://github.com/Gherciu/no-backend)
