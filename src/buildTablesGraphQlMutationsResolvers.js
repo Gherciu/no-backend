@@ -1,8 +1,8 @@
 
-import { tablesMutationsMethods } from './helpers/constants'
-import { firstToUpperCase } from './helpers/textHelpers'
-import getInsertIds from './helpers/getInsertIds'
-import injectToSquel from './helpers/injectToSquel'
+import { tablesMutationsMethods } from './helpers/constants';
+import getInsertIds from './helpers/getInsertIds';
+import injectToSquel from './helpers/injectToSquel';
+import { firstToUpperCase } from './helpers/textHelpers';
 
 const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
@@ -17,13 +17,14 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
             switch (mutationMethod) {
                 case 'insert':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async ( root,args,context ) => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async ( _,__,context ) => {
 
+                        let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
                         let statementResult = await db.exec(
                             db.insert()
                             .into(tableName)
                             .setFieldsRows(
-                                root[tableName]
+                                args[tableName]
                             )   
                         )
 
@@ -33,10 +34,11 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                     break
                 }  
                 case 'update':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (root,args,context) => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,__,context) => {
                         
-                        let squel = db.update().table(tableName).setFields(root.newValue)
-                        squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
+                        let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
+                        let squel = db.update().table(tableName).setFields(args.newValue)
+                        squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
                         let statementResult = await db.exec( squel )
 
                         return {...statementResult,insertIds:getInsertIds(statementResult)}
@@ -45,10 +47,11 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                     break
                 }  
                 case 'delete':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (root,args,context) => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,__,context) => {
                         
+                        let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
                         let squel = db.delete().from(tableName)
-                        squel = injectToSquel( db,squel,root.filters,root.limit,root.offset,root.order )
+                        squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
                         let statementResult = await db.exec( squel )
 
                         return {...statementResult,insertIds:getInsertIds(statementResult)}

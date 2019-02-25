@@ -1,3 +1,4 @@
+import { printSchema } from 'graphql';
 import buildGraphQlResolvers from './buildGraphQlResolvers';
 import buildGraphQlSchema from './buildGraphQlSchema';
 import dbProvider from './helpers/dbProvider';
@@ -35,7 +36,7 @@ const noBackend = async ( options )=>{
           
             return {
 
-                noBackendController: noBackendController( options,schema,resolvers ),
+                noBackendController: noBackendController( options,schema,{ ...tablesQuerysResolvers, ...tablesMutationsResolvers } ),
                 //tables row types
                 tablesRowTypes,
                 //tables queries & tables mutations --> schema
@@ -47,7 +48,9 @@ const noBackend = async ( options )=>{
                 tablesQuerysResolvers,
                 tablesMutationsResolvers,
                 //database provider
-                db
+                db,
+                //graphQl helpers
+                typeDefs : printSchema(schema) //schema in string format
                 
             }
     

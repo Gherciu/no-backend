@@ -29,29 +29,31 @@ npm i no-backend
 **index.js**
 ```js
 const express = require('express');
-const noBackend = require('no-backend')
-const app = express();
+const noBackend = require('no-backend');
 
+const app = express();
 app.use(express.json());
 
-noBackend({ 
-    graphiql_storm:true, // A Web IDE for GraphQl
-    connection:{
-        driver:'mysql',
-        host:'localhost',
-        user:'root',
-        password:'test-password',
-        database:'test-database'
-    }
-}).then(( noBackendController ) => {
+(async ()=>{
 
+    const {noBackendController} = await noBackend({ 
+        graphiql_storm:true,
+        connection:{
+            driver:'mysql',
+            host:'localhost',
+            port:'3306',
+            user:'root',
+            password:'gherciu1',
+            database:'test'
+        }
+    })
     app.use('/api',noBackendController)
 
-})
+})();
 
-const port = 3000;
-app.listen(port);
-console.log(`Server started at port : ${port}`)
+
+app.listen(2626);
+console.log(`Server started at port : 2626`)
 ```
 **open browser on ```http://localhost:3000/api``` and see the result**
 
