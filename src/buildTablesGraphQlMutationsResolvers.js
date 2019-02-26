@@ -1,8 +1,8 @@
 
-import { tablesMutationsMethods, tablesRules } from './helpers/constants';
+import { rules, tablesMutationsMethods } from './helpers/constants';
 import getInsertIds from './helpers/getInsertIds';
 import injectToSquel from './helpers/injectToSquel';
-import tablesRulesReader from './helpers/tablesRulesReader';
+import rulesReader from './helpers/rulesReader';
 import { firstToUpperCase } from './helpers/textHelpers';
 
 const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
@@ -20,7 +20,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                 case 'insert':{
                     tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async ( _,args,context ) => {
 
-                        let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['insert'],tableName)
+                        let isActionAllowed = rulesReader(options.rules,context.req,rules['insert'],tableName)
                         
                         if(isActionAllowed){
                             
@@ -35,7 +35,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                             return {...statementResult,insertIds:getInsertIds(statementResult)}
 
                         }else{
-                            throw new Error(`Action (${tablesRules['insert']}) is not allowed for table (${tableName})`)
+                            throw new Error(`Action (${rules['insert']}) is not allowed for table (${tableName})`)
                         }
                         
                     }
@@ -44,7 +44,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                 case 'update':{
                     tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,args,context) => {
                         
-                        let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['update'],tableName)
+                        let isActionAllowed = rulesReader(options.rules,context.req,rules['update'],tableName)
                         
                         if(isActionAllowed){
                             let squel = db.update().table(tableName).setFields(args.newValue)
@@ -53,7 +53,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
                             return {...statementResult,insertIds:getInsertIds(statementResult)}
                         }else{
-                            throw new Error(`Action (${tablesRules['update']}) is not allowed for table (${tableName})`)
+                            throw new Error(`Action (${rules['update']}) is not allowed for table (${tableName})`)
                         }
 
                     }
@@ -62,7 +62,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                 case 'delete':{
                     tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,args,context) => {
                         
-                        let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['delete'],tableName)
+                        let isActionAllowed = rulesReader(options.rules,context.req,rules['delete'],tableName)
                         
                         if(isActionAllowed){
                             let squel = db.delete().from(tableName)
@@ -71,7 +71,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
                             return {...statementResult,insertIds:getInsertIds(statementResult)}
                         }else{
-                            throw new Error(`Action (${tablesRules['delete']}) is not allowed for table (${tableName})`)
+                            throw new Error(`Action (${rules['delete']}) is not allowed for table (${tableName})`)
                         }
 
                     }

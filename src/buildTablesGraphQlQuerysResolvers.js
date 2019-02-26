@@ -1,8 +1,8 @@
 
-import { tablesRules } from './helpers/constants';
+import { rules } from './helpers/constants';
 import getRecursiveRelationTables from './helpers/getRecursiveRelationTables';
 import injectToSquel from './helpers/injectToSquel';
-import tablesRulesReader from './helpers/tablesRulesReader';
+import rulesReader from './helpers/rulesReader';
 
 const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
 
@@ -16,7 +16,7 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
         
         tablesQuerysResolvers[tableName] = async (_,args,context) => {
 
-            let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['read'],tableName)
+            let isActionAllowed = rulesReader(options.rules,context.req,rules['read'],tableName)
 
             if(isActionAllowed){
 
@@ -29,7 +29,7 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
                 return recursiveStatementResult
 
             }else{
-                throw new Error(`Action (${tablesRules['read']}) is not allowed for table (${tableName})`)
+                throw new Error(`Action (${rules['read']}) is not allowed for table (${tableName})`)
             }
 
         }

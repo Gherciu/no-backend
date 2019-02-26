@@ -127,16 +127,16 @@ app.use((req,res,next)=>{
             password:'gherciu1',
             database:'test'
         },
-        tablesRules:{//rules for all tables
-            read:false,//boolean
-            delete:(req)=>(req.user),//or a function that return boolean
-            insert:false,
-            update:undefined,//undefined --> true
+        rules:{//rules for all tables
+            _read:false,//boolean
+            _delete:(req)=>(req.user),//or a function that return boolean
+            _insert:false,
+            _update:undefined,//undefined --> true
             prducts:{//rules for a certain table
-                read:false,
-                insert:(req)=>(req.user.id === 1),//function that return boolean
-                update:true,
-                delete:true, 
+                _read:false,
+                _insert:(req)=>(req.user.id === 1),//function that return boolean
+                _update:true,
+                _delete:true, 
             }
         }
     })
