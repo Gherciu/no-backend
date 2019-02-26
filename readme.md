@@ -122,8 +122,10 @@ app.use((req,res,next)=>{
             database:'test'
         },
         tablesRules:{//rules for all tables
-            read:true,//boolean
+            read:false,//boolean
             delete:(req)=>(req.user),//or a function that return boolean
+            insert:false,
+            update:undefined,//undefined --> true
             prducts:{//rules for a certain table
                 read:false,
                 insert:(req)=>(req.user.id === 1),//function that return boolean
