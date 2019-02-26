@@ -16,6 +16,10 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
         
         tablesQuerysResolvers[tableName] = async (_,args,context) => {
 
+            if(args.__rawGraphQlRequest__){//if is a raw graphql request read more in file(buildNoBackendControllers.js)
+                context = {...args}
+                args = _
+            }
             let isActionAllowed = rulesReader(options.rules,context.req,rules['read'],tableName)
 
             if(isActionAllowed){

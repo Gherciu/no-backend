@@ -1,13 +1,23 @@
-import { buildSchema, graphql } from 'graphql';
+import { graphql } from 'graphql';
 import renderGraphiQlStorm from './renderGraphiQlStorm';
 
-const buildNoBackendControllers = async ( options,typeDefs,resolvers ) => {
+const buildNoBackendControllers = async ( options,schema,resolvers ) => {
 
     const noBackendExpressController = ( req,res,next ) => {
 
         if( req.method === 'POST' ){
-
-            graphql( buildSchema(typeDefs),req.body.query,resolvers,{req},req.body.variables )
+//<--------------------------------- read this section an update the code ------------------------------->
+            /**
+             * P.S maybe I missed something😅
+                In apollo and rest servers in resolvers parameter 1 is root 2 is args 3 is context but in graphql function 
+                first parameter is args 2 (resolvers|context) this is diferent and need modifications
+                How to possible fix this:
+                1.update or add other version of graphql
+                2.Aka (kostili) change the parameters structure in all resolvers (😓my way) __rawGraphQlRequest__
+                  to know that this request is being executed by raw graphql
+            */
+//<------------------------------------------------------------------------------------------------------>
+            graphql( schema,req.body.query,resolvers,{req,__rawGraphQlRequest__:true},req.body.variables )
             .then((response) => {
                 //send data or errors to client 
                 res.status(200).json(response)
