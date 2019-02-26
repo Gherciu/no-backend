@@ -7,8 +7,9 @@ const optionsValidator = (options)=>{
         return 'Error:Option connection is required!'
     }
     if(options.rules){
-        if(typeof options.rules !== 'object')
+        if(typeof options.rules !== 'object'){
             return 'Error:Option rules is not an object!'
+        }
     }
 
     return false

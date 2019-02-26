@@ -1,4 +1,4 @@
-const renderGraphiQlStorm = (options,req) => {
+const renderGraphiQlStorm = (options,route) => {
 
     return `<!DOCTYPE html>
         <html>
@@ -8,7 +8,7 @@ const renderGraphiQlStorm = (options,req) => {
             <body>
                 <script src='https://cdn.jsdelivr.net/npm/graphiql-storm@1.1.4/dist/index.js'></script>
                 <script>
-                    graphiQlStorm([{route:'${req.protocol + '://' + req.get('host') + req.originalUrl}'}])
+                    graphiQlStorm([{route:'${route}'}])
                 </script>
             </body>
         </html>`
