@@ -1,8 +1,8 @@
 import { printSchema } from 'graphql';
 import buildGraphQlResolvers from './buildGraphQlResolvers';
 import buildGraphQlSchema from './buildGraphQlSchema';
+import buildNoBackendControllers from './buildNoBackendControllers';
 import dbProvider from './helpers/dbProvider';
-import noBackendController from './noBackendController';
 import optionsValidator from './optionsValidator';
 import tablesValidator from './tablesValidator';
 
@@ -32,24 +32,26 @@ const noBackend = async ( options )=>{
         }else{
     
             let { schema,tablesQuerysTypes,tablesMutationsTypes,tablesRowTypes }    = await buildGraphQlSchema(options,tables,db)
-            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db);
-          
+            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db)
+            let { noBackendExpressController } = await buildNoBackendControllers(options,schema,{ ...tablesQuerysResolvers, ...tablesMutationsResolvers })
+            
             return {
 
-                noBackendController: noBackendController( options,schema,{ ...tablesQuerysResolvers, ...tablesMutationsResolvers } ),
+                //ready controllers
+                noBackendExpressController,
                 //tables row types
                 tablesRowTypes,
                 //tables queries & tables mutations --> schema
                 schema,
                 tablesQuerysTypes,
                 tablesMutationsTypes,
-                ////tables queries resolvers & tables mutations resolvers --> resolvers
+                //tables queries resolvers & tables mutations resolvers --> resolvers
                 resolvers,
                 tablesQuerysResolvers,
                 tablesMutationsResolvers,
                 //database provider
                 db,
-                //graphQl helpers
+                //helpers
                 typeDefs : printSchema(schema) //schema in string format
                 
             }
