@@ -11,12 +11,27 @@ const noBackend = require('./../../dist/index');//for users require('no-backend'
             user:'root',
             password:'gherciu1',
             database:'test'
+        },
+        tablesRules:{//rules for all tables (if rule is undefined==>true)
+            read:true,
+            delete:false,
+            products:{//rules for a certain table
+                read:true,
+                delete:(req)=>(req.user && req.user.id===1),
+                update:(req)=>false,
+                insert:(req)=>(req.user && req.user.name==='Gheorghe')
+            }
         }
     });
     
     const server = new ApolloServer({
         typeDefs,
-        resolvers
+        resolvers,
+        context: async ({req})=>{
+            return {
+                req
+            }
+        }
     });
 
     server.listen().then(({ url }) => {

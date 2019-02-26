@@ -33,7 +33,7 @@ const noBackend = async ( options )=>{
     
             let { schema,tablesQuerysTypes,tablesMutationsTypes,tablesRowTypes }    = await buildGraphQlSchema(options,tables,db)
             let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db)
-            let { noBackendExpressController } = await buildNoBackendControllers(options,schema,{ ...tablesQuerysResolvers, ...tablesMutationsResolvers })
+            let { noBackendExpressController } = await buildNoBackendControllers(options,printSchema(schema),{ ...tablesQuerysResolvers, ...tablesMutationsResolvers })
             
             return {
 

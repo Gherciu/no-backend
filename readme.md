@@ -85,7 +85,12 @@ const noBackend = require('no-backend');
     
     const server = new ApolloServer({
         typeDefs,
-        resolvers
+        resolvers,
+        context: async ({req})=>{
+            return {
+                req
+            }
+        }
     });
 
     server.listen().then(({ url }) => {
@@ -100,6 +105,7 @@ const noBackend = require('no-backend');
 by default all rules is equal to ```true``` if typeof certain rule is ```undefined``` this is equal to ```true```
 ```js
 const app = express();
+
 app.use(express.json());
 app.use((req,res,next)=>{
     req.user = {

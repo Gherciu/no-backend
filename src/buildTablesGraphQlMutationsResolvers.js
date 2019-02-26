@@ -1,7 +1,8 @@
 
-import { tablesMutationsMethods } from './helpers/constants';
+import { tablesMutationsMethods, tablesRules } from './helpers/constants';
 import getInsertIds from './helpers/getInsertIds';
 import injectToSquel from './helpers/injectToSquel';
+import tablesRulesReader from './helpers/tablesRulesReader';
 import { firstToUpperCase } from './helpers/textHelpers';
 
 const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
@@ -17,44 +18,61 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
 
             switch (mutationMethod) {
                 case 'insert':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async ( _,__,context ) => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async ( _,args,context ) => {
 
-                        let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
-                        let statementResult = await db.exec(
-                            db.insert()
-                            .into(tableName)
-                            .setFieldsRows(
-                                args[tableName]
-                            )   
-                        )
+                        let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['insert'],tableName)
+                        
+                        if(isActionAllowed){
+                            
+                            let statementResult = await db.exec(
+                                db.insert()
+                                .into(tableName)
+                                .setFieldsRows(
+                                    args[tableName]
+                                )   
+                            )
+    
+                            return {...statementResult,insertIds:getInsertIds(statementResult)}
 
-                        return {...statementResult,insertIds:getInsertIds(statementResult)}
+                        }else{
+                            throw new Error(`Action (${tablesRules['insert']}) is not allowed for table (${tableName})`)
+                        }
                         
                     }
                     break
                 }  
                 case 'update':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,__,context) => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,args,context) => {
                         
-                        let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
-                        let squel = db.update().table(tableName).setFields(args.newValue)
-                        squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
-                        let statementResult = await db.exec( squel )
+                        let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['update'],tableName)
+                        
+                        if(isActionAllowed){
+                            let squel = db.update().table(tableName).setFields(args.newValue)
+                            squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
+                            let statementResult = await db.exec( squel )
 
-                        return {...statementResult,insertIds:getInsertIds(statementResult)}
+                            return {...statementResult,insertIds:getInsertIds(statementResult)}
+                        }else{
+                            throw new Error(`Action (${tablesRules['update']}) is not allowed for table (${tableName})`)
+                        }
 
                     }
                     break
                 }  
                 case 'delete':{
-                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,__,context) => {
+                    tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,args,context) => {
                         
-                        let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
-                        let squel = db.delete().from(tableName)
-                        squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
-                        let statementResult = await db.exec( squel )
+                        let isActionAllowed = tablesRulesReader(options.tablesRules,context.req,tablesRules['delete'],tableName)
+                        
+                        if(isActionAllowed){
+                            let squel = db.delete().from(tableName)
+                            squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
+                            let statementResult = await db.exec( squel )
 
-                        return {...statementResult,insertIds:getInsertIds(statementResult)}
+                            return {...statementResult,insertIds:getInsertIds(statementResult)}
+                        }else{
+                            throw new Error(`Action (${tablesRules['delete']}) is not allowed for table (${tableName})`)
+                        }
 
                     }
                     break

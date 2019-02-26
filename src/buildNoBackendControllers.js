@@ -1,13 +1,13 @@
-import { graphql } from 'graphql';
+import { buildSchema, graphql } from 'graphql';
 import renderGraphiQlStorm from './renderGraphiQlStorm';
 
-const buildNoBackendControllers = async ( options,schema,resolvers ) => {
+const buildNoBackendControllers = async ( options,typeDefs,resolvers ) => {
 
     const noBackendExpressController = ( req,res,next ) => {
 
         if( req.method === 'POST' ){
 
-            graphql( schema,req.body.query,resolvers,{_noBackendRequestContext:req},req.body.variables )
+            graphql( buildSchema(typeDefs),req.body.query,resolvers,{req},req.body.variables )
             .then((response) => {
                 //send data or errors to client 
                 res.status(200).json(response)

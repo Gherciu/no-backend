@@ -23,8 +23,15 @@ app.use((req,res,next)=>{
             password:'gherciu1',
             database:'test'
         },
-        tablesRules:{//rules for all tables
-            read:(req)=>(req.user)
+        tablesRules:{//rules for all tables (if rule is undefined==>true)
+            read:true,
+            delete:false,
+            products:{//rules for a certain table
+                read:true,
+                delete:(req)=>(req.user && req.user.id===1),
+                update:(req)=>false,
+                insert:(req)=>(req.user && req.user.name==='Gheorghe')
+            }
         }
     })
     app.use('/api',noBackendExpressController)
