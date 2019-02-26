@@ -23,15 +23,8 @@ app.use((req,res,next)=>{
             password:'gherciu1',
             database:'test'
         },
-        rules:{//rules for all tables
-            read:true,//boolean
-            delete:(req)=>(req.user),//or a function that return boolean
-            prducts:{//rules for a certain table
-                read:false,
-                insert:(req)=>(req.user.id === 1),//function that return boolean
-                update:true,
-                delete:true, 
-            }
+        tablesRules:{//rules for all tables
+            read:(req)=>(req.user)
         }
     })
     app.use('/api',noBackendExpressController)

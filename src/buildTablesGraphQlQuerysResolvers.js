@@ -1,6 +1,8 @@
 
+import { tablesRules } from './helpers/constants';
 import getRecursiveRelationTables from './helpers/getRecursiveRelationTables';
 import injectToSquel from './helpers/injectToSquel';
+import tablesRulesReader from './helpers/tablesRulesReader';
 
 const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
 
@@ -13,15 +15,23 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
         let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
         
         tablesQuerysResolvers[tableName] = async (_,__,context) => {
+            
+            let isActionAllowed = tablesRulesReader(options.tablesRules,context._noBackendRequestContext,tablesRules['read'],tableName)
 
-            let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
-            let squel = db.select().from(tableName)
-            squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
+            if(isActionAllowed){
 
-            let statementResult = await db.exec( squel )
-            let recursiveStatementResult = await getRecursiveRelationTables(statementResult,relationsFields,tables,db)
+                let args = _?_:__ //for apollo resolvers (args = __) for graphql resolvers (args = _)
+                let squel = db.select().from(tableName)
+                squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
 
-            return recursiveStatementResult
+                let statementResult = await db.exec( squel )
+                let recursiveStatementResult = await getRecursiveRelationTables(statementResult,relationsFields,tables,db)
+
+                return recursiveStatementResult
+
+            }else{
+                throw new Error(`Action (${tablesRules['read']}) is not allowed for table (${tableName})`)
+            }
 
         }
 

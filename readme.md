@@ -95,7 +95,9 @@ const noBackend = require('no-backend');
 })();
 ```
 
-## with rules
+## with rules 
+
+by default all rules is equal to ```true``` if typeof certain rule is ```undefined``` this is equal to ```true```
 ```js
 const app = express();
 app.use(express.json());
@@ -119,7 +121,7 @@ app.use((req,res,next)=>{
             password:'gherciu1',
             database:'test'
         },
-        rules:{//rules for all tables
+        tablesRules:{//rules for all tables
             read:true,//boolean
             delete:(req)=>(req.user),//or a function that return boolean
             prducts:{//rules for a certain table

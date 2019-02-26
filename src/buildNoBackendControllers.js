@@ -7,7 +7,7 @@ const buildNoBackendControllers = async ( options,schema,resolvers ) => {
 
         if( req.method === 'POST' ){
 
-            graphql( schema,req.body.query,resolvers,{...req},req.body.variables )
+            graphql( schema,req.body.query,resolvers,{_noBackendRequestContext:req},req.body.variables )
             .then((response) => {
                 //send data or errors to client 
                 res.status(200).json(response)
