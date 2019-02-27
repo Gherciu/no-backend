@@ -61,9 +61,11 @@ console.log(`Server started at port : 2626`)
 
 
 ## Links
-* 📘 [Documentation](https://github.com/Gherciu/no-backend/tree/master/docs)
 * 🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
 * 👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
+
+## Learn more about "no-backend" through examples 📒
+
 
 ## Use with apollo-server and graphql-playground
 ```js
