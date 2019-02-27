@@ -1,6 +1,6 @@
 {
   "name": "no-backend",
-  "version": "1.2.1",
+  "version": "1.2.3",
   "description": "A fast, simple and self-hosted backend as a service for your projects",
   "main": "dist/index.js",
   "scripts": {
@@ -16,7 +16,6 @@
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
-    "express-graphql": "^0.7.1",
     "graphql": "^14.0.2",
     "mysql": "^2.16.0",
     "squel": "^5.12.2"
