@@ -1,27 +1,42 @@
-const rulesReader = (rules,req,action,tableName)=>{
+import { rules } from './constants';
+
+const rulesReader = (optionsRules,action,tableName,req)=>{
 
     let isActionAllowed = true
 
-    if(rules && req){ 
+    if(optionsRules && optionsRules[action] && action === rules['exclude']){//_exculde
 
-        if(tableName && rules[tableName]){//get rule from table rules
-
-            if(typeof rules[tableName][action] === 'undefined'){
-                isActionAllowed = true
-            }else if(typeof rules[tableName][action] === 'function'){
-                isActionAllowed = rules[tableName][action](req)
+        if(Array.isArray(optionsRules[action])){
+            if(tableName){
+                isActionAllowed = optionsRules[action].filter((tableNameItem)=>tableName===tableNameItem).length > 0 ? false : true
             }else{
-                isActionAllowed = rules[tableName][action]
+                throw new Error('Error: tableName argument is required on rulesReader!');
+            }
+        }else{
+            throw new Error('Error: rule _exclude must be array, on rulesReader!');
+        }
+
+    }
+    if(optionsRules && req){//_read,_insert,_update,_delete
+
+        if(tableName && optionsRules[tableName]){//get rule from table rules
+
+            if(typeof optionsRules[tableName][action] === 'undefined'){
+                isActionAllowed = true
+            }else if(typeof optionsRules[tableName][action] === 'function'){
+                isActionAllowed = optionsRules[tableName][action](req)
+            }else{
+                isActionAllowed = optionsRules[tableName][action]
             }
     
         }else{//get rule from global rules
     
-            if(typeof rules[action] === 'undefined'){
+            if(typeof optionsRules[action] === 'undefined'){
                 isActionAllowed = true
-            }else if(typeof rules[action] === 'function'){
-                isActionAllowed = rules[action](req)
+            }else if(typeof optionsRules[action] === 'function'){
+                isActionAllowed = optionsRules[action](req)
             }else{
-                isActionAllowed = rules[action]
+                isActionAllowed = optionsRules[action]
             }
     
         }

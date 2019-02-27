@@ -13,27 +13,32 @@ const buildTablesGraphQlQuerysResolvers = async (options,tables,db) => {
         let tableName = Object.values(tableObject)[0]
         let tableDesc = Object.values(tableObject)[1]
         let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
-        
-        tablesQuerysResolvers[tableName] = async (_,args,context) => {
+        let isActionAllowed = rulesReader(options.rules,rules['exclude'],tableName)
 
-            if(args.__rawGraphQlRequest__){//if is a raw graphql request read more in file(buildNoBackendControllers.js)
-                context = {...args}
-                args = _
-            }
-            let isActionAllowed = rulesReader(options.rules,context.req,rules['read'],tableName)
+        if(isActionAllowed){
+            
+            tablesQuerysResolvers[tableName] = async (_,args,context) => {
 
-            if(isActionAllowed){
+                if(args.__rawGraphQlRequest__){//if is a raw graphql request read more in file(buildNoBackendControllers.js)
+                    context = {...args}
+                    args = _
+                }
+                let isActionAllowed = rulesReader(options.rules,rules['read'],tableName,context.req)
 
-                let squel = db.select().from(tableName)
-                squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
+                if(isActionAllowed){
 
-                let statementResult = await db.exec( squel )
-                let recursiveStatementResult = await getRecursiveRelationTables(statementResult,relationsFields,tables,db)
+                    let squel = db.select().from(tableName)
+                    squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
 
-                return recursiveStatementResult
+                    let statementResult = await db.exec( squel )
+                    let recursiveStatementResult = await getRecursiveRelationTables(statementResult,relationsFields,tables,db)
 
-            }else{
-                throw new Error(`Action (${rules['read']}) is not allowed for table (${tableName})`)
+                    return recursiveStatementResult
+
+                }else{
+                    throw new Error(`Action (${rules['read']}) is not allowed for table (${tableName})`)
+                }
+
             }
 
         }

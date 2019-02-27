@@ -27,7 +27,7 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
 
         tablesMutationsMethods.forEach((mutationMethod) => {
             tablesMutationsTypes[`${mutationMethod}${firstToUpperCase(tableName)}`] = {
-               type: new GraphQLNonNull( statementResultType ),
+               type: statementResultType,
                args: {
                    ...buildGraphQlArgs(tableName,tableDesc,'mutation',mutationMethod)
                }

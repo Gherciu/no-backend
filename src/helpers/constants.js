@@ -4,5 +4,6 @@ export const rules = {
     read: '_read',
     update:'_update',
     delete:'_delette',
-    insert:'_insert'
+    insert:'_insert',
+    exclude:'_exclude'
 }

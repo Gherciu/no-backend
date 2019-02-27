@@ -14,6 +14,7 @@ const noBackend = require('./../../dist/index');//for users require('no-backend'
         },
         rules:{//rules for all tables (if rule is undefined==>true)
             _read:true,
+            _exclude:["categorys_shops","categorys"],//exclude a certain table from schema
             products:{//rules for a certain table
                 _read:true,
                 _update:(req)=>true,

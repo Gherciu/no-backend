@@ -132,12 +132,15 @@ app.use((req,res,next)=>{
             _delete:(req)=>(req.user),//or a function that return boolean
             _insert:false,
             _update:undefined,//undefined --> true
-            prducts:{//rules for a certain table
+            _exclude:["categorys_shops","categorys"],//exclude a certain table from schema
+
+            products:{//rules for a certain table
                 _read:false,
                 _insert:(req)=>(req.user.id === 1),//function that return boolean
                 _update:true,
                 _delete:true, 
             }
+            
         }
     })
     app.use('/api',noBackendExpressController)
