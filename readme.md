@@ -104,6 +104,8 @@ const noBackend = require('no-backend');
 
 by default all rules is equal to ```true``` if typeof certain rule is ```undefined``` this is equal to ```true```
 ```js
+const express = require('express');
+const noBackend = require('no-backend');
 const app = express();
 
 app.use(express.json());
@@ -155,7 +157,7 @@ app.listen(2626);
 
 ```js
 const { GraphQLServer } = require('graphql-yoga')
-const noBackend = require('./../../dist/index');//for users require('no-backend')
+const noBackend = require('no-backend');
 
 (async () => {
 
