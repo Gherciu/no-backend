@@ -66,8 +66,7 @@ console.log(`Server started at port : 2626`)
 
 ## Learn more about "no-backend" through examples 📒
 
-
-## Use with apollo-server and graphql-playground
+### Use with apollo-server and graphql-playground
 ```js
 const { ApolloServer } = require('apollo-server');
 const noBackend = require('no-backend');
@@ -102,7 +101,7 @@ const noBackend = require('no-backend');
 })();
 ```
 
-## With rules 
+### With rules 
 
 by default all rules is equal to ```true``` if typeof certain rule is ```undefined``` this is equal to ```true```
 ```js
@@ -155,7 +154,7 @@ app.use((req,res,next)=>{
 app.listen(2626);
 ```
 
-## Use with graphql-yoga and ( graphiql-storm OR graphql-playground )
+### Use with graphql-yoga and ( graphiql-storm OR graphql-playground )
 
 ```js
 const { GraphQLServer } = require('graphql-yoga')
