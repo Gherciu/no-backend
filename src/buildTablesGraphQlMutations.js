@@ -1,6 +1,7 @@
 import { GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLObjectType, GraphQLString } from 'graphql';
 import buildGraphQlArgs from './helpers/buildGraphQlArgs';
-import { tablesMutationsMethods } from './helpers/constants';
+import { rules, tablesMutationsMethods } from './helpers/constants';
+import rulesReader from './helpers/rulesReader';
 import { firstToUpperCase } from './helpers/textHelpers';
 
 const statementResultType = new GraphQLObjectType({
@@ -16,7 +17,7 @@ const statementResultType = new GraphQLObjectType({
         insertIds:{type:new GraphQLNonNull(new GraphQLList(GraphQLInt))}
     }
 })  
-const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
+const buildTablesGraphQlMutations = ( options,tables,tablesTypes ) => {
 
     let tablesMutationsTypes = {}
 
@@ -24,15 +25,18 @@ const buildTablesGraphQlMutations = ( tables,tablesTypes ) => {
 
         let tableName = Object.values(tableObject)[0]
         let tableDesc = Object.values(tableObject)[1]
+        let isActionAllowed = rulesReader(options.rules,rules['exclude'],tableName)
 
-        tablesMutationsMethods.forEach((mutationMethod) => {
-            tablesMutationsTypes[`${mutationMethod}${firstToUpperCase(tableName)}`] = {
-               type: statementResultType,
-               args: {
-                   ...buildGraphQlArgs(tableName,tableDesc,'mutation',mutationMethod)
-               }
-           }
-        })
+        if(isActionAllowed){
+            tablesMutationsMethods.forEach((mutationMethod) => {
+                tablesMutationsTypes[`${mutationMethod}${firstToUpperCase(tableName)}`] = {
+                type: statementResultType,
+                args: {
+                    ...buildGraphQlArgs(tableName,tableDesc,'mutation',mutationMethod)
+                }
+            }
+            })
+        }
 
     })
 

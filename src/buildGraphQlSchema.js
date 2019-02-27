@@ -6,8 +6,8 @@ import buildTablesGraphQlRowTypes from './buildTablesGraphQlRowTypes';
 const buildGraphQlSchema = async (options,tables,db) => {
 
     let { tablesRowTypes } = await buildTablesGraphQlRowTypes( tables )
-    let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( tables,tablesRowTypes )
-    let { tablesMutationsTypes } = await buildTablesGraphQlMutations( tables )
+    let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( options,tables,tablesRowTypes )
+    let { tablesMutationsTypes } = await buildTablesGraphQlMutations( options,tables )
 
     return {
         schema: new GraphQLSchema({ 
