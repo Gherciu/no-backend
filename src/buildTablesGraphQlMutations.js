@@ -14,10 +14,10 @@ const statementResultType = new GraphQLObjectType({
         fieldCount: {type:GraphQLInt},
         warningCount: {type:GraphQLInt},
         message:{type:GraphQLString},
-        insertIds:{type:new GraphQLNonNull(new GraphQLList(GraphQLInt))}
+        insertIds:{type:new GraphQLList(new GraphQLNonNull(GraphQLInt))}
     }
 })  
-const buildTablesGraphQlMutations = ( options,tables,tablesTypes ) => {
+const buildTablesGraphQlMutations = ( options,tables ) => {
 
     let tablesMutationsTypes = {}
 

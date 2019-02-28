@@ -1,5 +1,5 @@
 
-import { rules, tablesMutationsMethods } from './helpers/constants';
+import { rules, tablesMutationsMethods, tablesSubscriptionsMethods } from './helpers/constants';
 import getInsertIds from './helpers/getInsertIds';
 import injectToSquel from './helpers/injectToSquel';
 import rulesReader from './helpers/rulesReader';
@@ -38,7 +38,16 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                                         args[tableName]
                                     )   
                                 )
-        
+                                if(context.pubsub){//send to subscriptions
+
+                                    let insertRows = args[tableName]
+                                    
+                                    context.pubsub.publish(`${tablesSubscriptionsMethods['insert']}${firstToUpperCase(tableName)}`,{
+                                        [`onInsert${firstToUpperCase(tableName)}`]:insertRows
+                                    })
+
+                                }
+
                                 return {...statementResult,insertIds:getInsertIds(statementResult)}
 
                             }else{
@@ -66,7 +75,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                                 squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
                                 let statementResult = await db.exec( squel )
 
-                                return {...statementResult,insertIds:getInsertIds(statementResult)}
+                                return {...statementResult}
                             }else{
                                 throw new Error(`Action (${rules['update']}) is not allowed for table (${tableName})`)
                             }
@@ -92,7 +101,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                                 squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
                                 let statementResult = await db.exec( squel )
 
-                                return {...statementResult,insertIds:getInsertIds(statementResult)}
+                                return {...statementResult}
                             }else{
                                 throw new Error(`Action (${rules['delete']}) is not allowed for table (${tableName})`)
                             }

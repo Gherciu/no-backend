@@ -1,21 +1,16 @@
-import { GraphQLObjectType, GraphQLSchema, GraphQLString } from 'graphql';
+import { GraphQLObjectType, GraphQLSchema } from 'graphql';
 import buildTablesGraphQlMutations from './buildTablesGraphQlMutations';
 import buildTablesGraphQlQuerys from './buildTablesGraphQlQuerys';
 import buildTablesGraphQlRowTypes from './buildTablesGraphQlRowTypes';
+import buildTablesGraphQlSubscriptions from './buildTablesGraphQlSubscriptions';
 
 const buildGraphQlSchema = async (options,tables,db) => {
 
     let { tablesRowTypes } = await buildTablesGraphQlRowTypes( tables )
     let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( options,tables,tablesRowTypes )
     let { tablesMutationsTypes } = await buildTablesGraphQlMutations( options,tables )
-    let tablesSubscriptionsTypes = {
-        somethingChanged:{
-            name:'somethingChanged',
-            description: `something changed type`,
-            type :GraphQLString 
-        }
-    }
-
+    let { tablesSubscriptionsTypes } = await buildTablesGraphQlSubscriptions( options,tables,tablesRowTypes )
+    
     return {
         schema: new GraphQLSchema({ 
             query: new GraphQLObjectType({
