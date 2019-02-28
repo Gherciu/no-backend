@@ -1,5 +1,6 @@
-const { GraphQLServer } = require('graphql-yoga')
+const { GraphQLServer,PubSub } = require('graphql-yoga')
 const noBackend = require('./../../dist/index');//for users require('no-backend')
+const pubsub = new PubSub();
 
 (async () => {
 
@@ -29,9 +30,11 @@ const noBackend = require('./../../dist/index');//for users require('no-backend'
         resolvers,
         context: (req) => {
             return {
-                req
+                req,
+                pubsub//add PubSub to context
             }
         },
+        subscriptions:'/',
         middlewares:[async (resolve, root, args, context, info)=>{
             context.req.user = {id:1}//auth imitation
             return await resolve(root, args, context, info)
@@ -40,6 +43,6 @@ const noBackend = require('./../../dist/index');//for users require('no-backend'
 
     server.express.get('/',noBackendExpressController)//remove this line of code if you do not use graphiql-storm
 
-    server.start({port:3001,playground:"/playground"},() => console.log('Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )'))
+    server.start({port:3001,playground:"/playground"},() => console.log(`Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )`))
 
 })();

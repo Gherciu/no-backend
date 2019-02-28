@@ -31,9 +31,9 @@ const noBackend = async ( options )=>{
     
         }else{
     
-            let { schema,tablesQuerysTypes,tablesMutationsTypes,tablesRowTypes }    = await buildGraphQlSchema(options,tables,db)
-            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers } = await buildGraphQlResolvers(options,tables,db)
-            let { noBackendExpressController } = await buildNoBackendControllers(options,schema,{...tablesQuerysResolvers, ...tablesMutationsResolvers})//for raw graphql request read more in file(buildNoBackendControllers.js)
+            let { schema,tablesQuerysTypes,tablesMutationsTypes,tablesSubscriptionsTypes,tablesRowTypes }    = await buildGraphQlSchema(options,tables,db)
+            let { resolvers,tablesQuerysResolvers,tablesMutationsResolvers,tablesSubscriptionsResolvers } = await buildGraphQlResolvers(options,tables,db)
+            let { noBackendExpressController } = await buildNoBackendControllers(options,schema,{...tablesQuerysResolvers, ...tablesMutationsResolvers, ...tablesSubscriptionsResolvers})//for raw graphql request read more in file(buildNoBackendControllers.js)
             
             return {
 
@@ -41,18 +41,19 @@ const noBackend = async ( options )=>{
                 noBackendExpressController,
                 //tables row types
                 tablesRowTypes,
-                //tables queries & tables mutations --> schema
+                //tables queries & tables mutations & tables subscriptions --> schema
                 schema,
+                typeDefs : printSchema(schema), //schema in string format
                 tablesQuerysTypes,
                 tablesMutationsTypes,
-                //tables queries resolvers & tables mutations resolvers --> resolvers
+                tablesSubscriptionsTypes,
+                //tables queries resolvers & tables mutations resolvers & tables subscriptions resolvers --> resolvers
                 resolvers,
                 tablesQuerysResolvers,
                 tablesMutationsResolvers,
-                //database provider
-                db,
-                //helpers
-                typeDefs : printSchema(schema) //schema in string format
+                tablesSubscriptionsResolvers,
+                //providers
+                db
                 
             }
     

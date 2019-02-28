@@ -91,11 +91,12 @@ const noBackend = require('no-backend');
             return {
                 req
             }
-        }
+        },
+        subscriptions:'/'
     });
 
-    server.listen().then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`)
+    server.listen().then(({ url, subscriptionsUrl }) => {
+        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
     });
 
 })();
@@ -188,7 +189,8 @@ const noBackend = require('no-backend');
         middlewares:[async (resolve, root, args, context, info)=>{
             context.req.user = {id:1}//auth imitation
             return await resolve(root, args, context, info)
-        }]
+        }],
+        subscriptions:'/'
     });
 
     server.express.get('/',noBackendExpressController)//remove this line of code if you do not use graphiql-storm
@@ -198,6 +200,47 @@ const noBackend = require('no-backend');
 })();
 ```
 
+## With subscriptions (work with apollo-server and graphql-yoga)
+
+```js
+const { ApolloServer } = require('apollo-server');
+const noBackend = require('no-backend');
+const {PubSub} = require('graphql-subscriptions');
+//const {PubSub} = require('graphql-yoga')/if you use graphql-yoga
+
+const pubsub = new PubSub();
+
+(async () => {
+
+    const {typeDefs,resolvers} = await noBackend({ 
+        connection:{
+            driver:'mysql',
+            host:'localhost',
+            port:'3306',
+            user:'root',
+            password:'gherciu1',
+            database:'test'
+        }
+    });
+    
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context: async ({req})=>{
+            return {
+                req,
+                pubsub
+            }
+        },
+        subscriptions:'/'
+    });
+
+    server.listen().then(({ url, subscriptionsUrl }) => {
+        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
+    });
+
+})();
+```
 -------------------------------------------------------------------------------------------------------
 
 #### If you like this repository star⭐ and watch👀 on  [GitHub](https://github.com/Gherciu/no-backend)

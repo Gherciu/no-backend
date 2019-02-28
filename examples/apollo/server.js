@@ -1,5 +1,8 @@
 const { ApolloServer } = require('apollo-server');
 const noBackend = require('./../../dist/index');//for users require('no-backend')
+const {PubSub} = require('graphql-subscriptions')
+
+const pubsub = new PubSub();
 
 (async () => {
 
@@ -27,13 +30,15 @@ const noBackend = require('./../../dist/index');//for users require('no-backend'
         resolvers,
         context: async ({req})=>{
             return {
-                req
+                req,
+                pubsub
             }
-        }
+        },
+        subscriptions:'/'
     });
 
-    server.listen().then(({ url }) => {
-    console.log(`🚀 Server ready at ${url}`)
+    server.listen().then(({ url, subscriptionsUrl }) => {
+        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
     });
 
 })();
