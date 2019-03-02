@@ -1,6 +1,6 @@
 
 import { rules, tablesMutationsMethods, tablesSubscriptionsMethods } from './helpers/constants';
-import getInsertIds from './helpers/getInsertIds';
+import getInseretIds from './helpers/getInseretIds';
 import getRecursiveRelationTables from './helpers/getRecursiveRelationTables';
 import injectToSquel from './helpers/injectToSquel';
 import rulesReader from './helpers/rulesReader';
@@ -21,7 +21,8 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                 case 'insert':{
                     let isActionAllowed = rulesReader(options.rules,rules['exclude'],tableName)
 
-                    if(isActionAllowed){
+                    if(isActionAllowed){//if is not table excluded from schema
+                        
                         tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async ( _,args,context ) => {
 
                             if(args.__rawGraphQlRequest__){//if is a raw graphql request read more in file(buildNoBackendControllers.js)
@@ -40,24 +41,36 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                                     )   
                                 )
                                 
-                                if(context.pubsub && statementResult && getInsertIds(statementResult).length>0){//send to subscriptions
-                                    
-                                    let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
-                                    let insertRows = await db.exec(
-                                        db.select()
-                                        .from(tableName)
-                                        .where('id IN ?',getInsertIds(statementResult))
-                                    )
-                                    let recursiveStatementResult = await getRecursiveRelationTables(insertRows,relationsFields,tables,db)
-                                    
-                                    context.pubsub.publish(`${tablesSubscriptionsMethods['insert']}${firstToUpperCase(tableName)}`,{
-                                        [`${tablesSubscriptionsMethods['insert']}${firstToUpperCase(tableName)}`]:recursiveStatementResult
-                                    })
+                                if(statementResult){
 
+                                    if(context.pubsub && statementResult.insertId>0){//send to subscriptions
+                                    
+                                        let rowsInseret = await db.exec(
+                                            db.select()
+                                            .from(tableName)
+                                            .where('id IN ?',getInseretIds(statementResult))
+                                        )
+    
+                                        if(rowsInseret && Array.isArray(rowsInseret)){
+    
+                                            let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
+                                            let recursiveStatementResult = await getRecursiveRelationTables(rowsInseret,relationsFields,tables,db)
+                                            
+                                            context.pubsub.publish(`${tablesSubscriptionsMethods['insert']}${firstToUpperCase(tableName)}`,{
+                                                [`${tablesSubscriptionsMethods['insert']}${firstToUpperCase(tableName)}`]:recursiveStatementResult
+                                            })
+    
+                                        }else{
+                                            throw new Error(`Error: on get ${mutationMethod} rows from ${tableName}`)
+                                        }
+
+                                    }
+
+                                    return {...statementResult,insertIds:getInseretIds(statementResult)}
+
+                                }else{
+                                    throw new Error(`Error: on ${mutationMethod} from ${tableName}!`)
                                 }
-
-                                return {...statementResult,insertIds:getInsertIds(statementResult)}
-
                             }else{
                                 throw new Error(`Action (${rules['insert']}) is not allowed for table (${tableName})`)
                             }
@@ -69,7 +82,8 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                 case 'update':{
                     let isActionAllowed = rulesReader(options.rules,rules['exclude'],tableName)
 
-                    if(isActionAllowed){
+                    if(isActionAllowed){//if is not table excluded from schema
+
                         tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,args,context) => {
                             
                             if(args.__rawGraphQlRequest__){//if is a raw graphql request read more in file(buildNoBackendControllers.js)
@@ -80,33 +94,43 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                             
                             if(isActionAllowed){
                                 
-                                let squel = db.update().table(tableName).setFields(args.newValue)
-                                squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
-                                let statementResult = await db.exec( squel )
+                                let rowsToUpdate = await db.exec(
+                                    injectToSquel( db, db.select().from(tableName), args.filters, args.limit, args.offset, args.order )
+                                );
 
-                                if(context.pubsub && statementResult){//send to subscriptions
+                                if(rowsToUpdate && Array.isArray(rowsToUpdate)){
 
-                                    let squel = db.select().from(tableName)
-                                    squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
-                                    let updatedRows = await db.exec( squel )
+                                    let statementResult = await db.exec( 
+                                        db.update().table(tableName)
+                                        .where('id IN ?',rowsToUpdate.map((row)=>row.id))
+                                        .setFields(args.newValue)
+                                    );
+    
+                                    if(statementResult){
 
-                                    if(updatedRows && updatedRows.length>0){
+                                        if(context.pubsub && statementResult.changedRows && statementResult.changedRows>0){//send to subscriptions
+    
+                                            let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
+                                            let recursiveStatementResult = await getRecursiveRelationTables(rowsToUpdate,relationsFields,tables,db)
+                                            
+                                            context.pubsub.publish(`${tablesSubscriptionsMethods['update']}${firstToUpperCase(tableName)}`,{
+                                                [`${tablesSubscriptionsMethods['update']}${firstToUpperCase(tableName)}`]:recursiveStatementResult
+                                            })
+        
+                                        }
+    
+                                        return {...statementResult,updatedIds:rowsToUpdate.map((row)=>row.id)}
 
-                                        let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
-                                        let recursiveStatementResult = await getRecursiveRelationTables(updatedRows,relationsFields,tables,db)
-                                        
-                                        context.pubsub.publish(`${tablesSubscriptionsMethods['update']}${firstToUpperCase(tableName)}`,{
-                                            [`${tablesSubscriptionsMethods['update']}${firstToUpperCase(tableName)}`]:recursiveStatementResult
-                                        })
-
+                                    }else{
+                                        throw new Error(`Error: on ${mutationMethod} from ${tableName}!`)
                                     }
-
+                                }else{
+                                    throw new Error(`Error: on get rows to ${mutationMethod} from ${tableName}`)
                                 }
-
-                                return {...statementResult}
                             }else{
                                 throw new Error(`Action (${rules['update']}) is not allowed for table (${tableName})`)
                             }
+
                         }
 
                     }
@@ -115,7 +139,7 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                 case 'delete':{
                     let isActionAllowed = rulesReader(options.rules,rules['exclude'],tableName)
 
-                    if(isActionAllowed){
+                    if(isActionAllowed){//if is not table excluded from schema
                        
                         tablesMutationsResolvers[`${mutationMethod}${firstToUpperCase(tableName)}`] = async (_,args,context) => {
                             
@@ -128,28 +152,41 @@ const buildTablesGraphQlMutationsResolvers = async (options,tables,db) => {
                             if(isActionAllowed){
 
                                 let rowsToDelete = await db.exec(
-                                    injectToSquel( db.select().from(tableName),args.filters,args.limit,args.offset,args.order )
-                                )
-                                console.log(rowsToDelete)
-                                // let squel = db.delete().from(tableName)
-                                // squel = injectToSquel( db,squel,args.filters,args.limit,args.offset,args.order )
-                                // let statementResult = await db.exec( squel )
+                                    injectToSquel( db, db.select().from(tableName), args.filters, args.limit, args.offset, args.order )
+                                );
+                                
+                                if(rowsToDelete && Array.isArray(rowsToDelete)){
+                                   
+                                    let statementResult = await db.exec( 
+                                        db.delete().from(tableName)
+                                        .where('id In ?',rowsToDelete.map((row)=>row.id))
+                                     );
+    
+                                    if(statementResult){
 
-                                // if(context.pubsub && rowsToDelete && rowsToDelete.length>0){//send to subscriptions
+                                        if(context.pubsub && statementResult.affectedRows && statementResult.affectedRows>0 && rowsToDelete && rowsToDelete.length>0){//send to subscriptions
+    
+                                            let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
+                                            let recursiveStatementResult = await getRecursiveRelationTables(rowsToDelete,relationsFields,tables,db)
+                                            
+                                            context.pubsub.publish(`${tablesSubscriptionsMethods['delete']}${firstToUpperCase(tableName)}`,{
+                                                [`${tablesSubscriptionsMethods['delete']}${firstToUpperCase(tableName)}`]:recursiveStatementResult
+                                            })
+        
+                                        }
+        
+                                        return {...statementResult,deletedIds:rowsToDelete.map((row)=>row.id)}
 
-                                //     let relationsFields = tableDesc.filter((item)=>new RegExp(/\_/ig).test(item.Field))
-                                //     let recursiveStatementResult = await getRecursiveRelationTables(rowsToDelete,relationsFields,tables,db)
-                                    
-                                //     context.pubsub.publish(`${tablesSubscriptionsMethods['delete']}${firstToUpperCase(tableName)}`,{
-                                //         [`${tablesSubscriptionsMethods['delete']}${firstToUpperCase(tableName)}`]:recursiveStatementResult
-                                //     })
-
-                                // }
-
-                                // return {...statementResult}
+                                    }else{
+                                        throw new Error(`Error: on ${mutationMethod} from ${tableName}!`)
+                                    }
+                                }else{
+                                    throw new Error(`Error: on get rows to ${mutationMethod} from ${tableName}`)
+                                }
                             }else{
                                 throw new Error(`Action (${rules['delete']}) is not allowed for table (${tableName})`)
                             }
+                            
                         }
 
                     }

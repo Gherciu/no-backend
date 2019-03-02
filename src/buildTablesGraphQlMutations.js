@@ -14,7 +14,9 @@ const statementResultType = new GraphQLObjectType({
         fieldCount: {type:GraphQLInt},
         warningCount: {type:GraphQLInt},
         message:{type:GraphQLString},
-        insertIds:{type:new GraphQLList(new GraphQLNonNull(GraphQLInt))}
+        inseretIds:{type:new GraphQLList(new GraphQLNonNull(GraphQLInt))},
+        deletedIds:{type:new GraphQLList(new GraphQLNonNull(GraphQLInt))},
+        updatedIds:{type:new GraphQLList(new GraphQLNonNull(GraphQLInt))}
     }
 })  
 const buildTablesGraphQlMutations = ( options,tables ) => {
