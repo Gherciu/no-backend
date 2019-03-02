@@ -43,6 +43,6 @@ const pubsub = new PubSub();
 
     server.express.get('/',noBackendExpressController)//remove this line of code if you do not use graphiql-storm
 
-    server.start({port:3001,playground:"/playground"},() => console.log(`Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )`))
+    server.start({port:3001,playground:"/playground",tracing:true},() => console.log(`Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )`))
 
 })();

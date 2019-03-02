@@ -34,7 +34,8 @@ const pubsub = new PubSub();
                 pubsub
             }
         },
-        subscriptions:'/'
+        subscriptions:'/',
+        tracing:true
     });
 
     server.listen().then(({ url, subscriptionsUrl }) => {
