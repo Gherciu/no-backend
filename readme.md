@@ -200,7 +200,7 @@ const noBackend = require('no-backend');
 })();
 ```
 
-## With subscriptions (work with apollo-server and graphql-yoga)
+## With subscriptions (work if pubsub is provided)
 
 ```js
 const { ApolloServer } = require('apollo-server');
