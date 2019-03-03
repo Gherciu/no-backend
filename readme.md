@@ -36,7 +36,7 @@ app.use(express.json());
 
 (async ()=>{
 
-    const {noBackendController} = await noBackend({ 
+    const {noBackendExpressController} = await noBackend({ 
         graphiql_storm:true,
         connection:{
             driver:'mysql',
@@ -47,7 +47,7 @@ app.use(express.json());
             database:'test'
         }
     })
-    app.use('/api',noBackendController)
+    app.use('/api',noBackendExpressController)
 
 })();
 
