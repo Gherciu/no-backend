@@ -7,7 +7,7 @@ import {
     GraphQLString
 } from "graphql";
 import { Kind } from "graphql/language";
-import { tablesSubscriptionsMethods } from "./constants";
+import { filterTypeArgs, tablesSubscriptionsMethods } from "./constants";
 import getFieldGraphQlType from "./getFieldGraphQlType";
 import { firstToUpperCase, pluralToSingular } from "./textHelpers";
 
@@ -58,10 +58,10 @@ const filtersArgs = {
                 new GraphQLInputObjectType({
                     name: "filter",
                     fields: {
-                        andIn: { type: new GraphQLList(new GraphQLNonNull(whereInType)) },
-                        orIn: { type: new GraphQLList(new GraphQLNonNull(whereInType)) },
-                        and: { type: new GraphQLList(new GraphQLNonNull(whereType)) },
-                        or: { type: new GraphQLList(new GraphQLNonNull(whereType)) }
+                        [filterTypeArgs["andIn"]]: { type: new GraphQLList(new GraphQLNonNull(whereInType)) },
+                        [filterTypeArgs["orIn"]]: { type: new GraphQLList(new GraphQLNonNull(whereInType)) },
+                        [filterTypeArgs["and"]]: { type: new GraphQLList(new GraphQLNonNull(whereType)) },
+                        [filterTypeArgs["or"]]: { type: new GraphQLList(new GraphQLNonNull(whereType)) }
                     }
                 })
             )
