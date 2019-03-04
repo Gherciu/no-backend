@@ -15,6 +15,22 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
             }
         }
         if (filterMethod === filterTypeArgs["orIn"]) {
+            let isMinOneStatementValid = false;
+            for (const filterValueObjectItem of filterValue) {
+                let columnName = filterValueObjectItem.columnName;
+                let columnValue = payload[columnName];
+                let values = filterValueObjectItem.values;
+                if (values.filter(value => value === columnValue).length > 0) {
+                    //if one of "orIn statement" match the payload
+                    isMinOneStatementValid = true;
+                    break;
+                }
+            }
+            if (isMinOneStatementValid) {
+                isPayloadValid = true;
+            } else {
+                isPayloadValid = false;
+            }
         }
         if (filterMethod === filterTypeArgs["and"]) {
         }
