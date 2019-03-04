@@ -200,13 +200,13 @@ const noBackend = require('no-backend');
 })();
 ```
 
-## With subscriptions (work if pubsub is provided)
+## With subscriptions (work if pubsub and withFilter is provided)
 
 ```js
 const { ApolloServer } = require('apollo-server');
 const noBackend = require('no-backend');
-const {PubSub} = require('graphql-subscriptions');
-//const {PubSub} = require('graphql-yoga')/if you use graphql-yoga
+const {PubSub,withFilter} = require('graphql-subscriptions');
+//const {PubSub,withFilter} = require('graphql-yoga')/if you use graphql-yoga
 
 const pubsub = new PubSub();
 
@@ -229,7 +229,8 @@ const pubsub = new PubSub();
         context: async ({req})=>{
             return {
                 req,
-                pubsub
+                pubsub,
+                withFilter
             }
         },
         subscriptions:'/'
