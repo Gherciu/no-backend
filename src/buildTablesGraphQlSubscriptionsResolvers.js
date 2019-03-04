@@ -58,7 +58,7 @@ const buildTablesGraphQlSubscriptionsResolvers = async (options, tables) => {
 
                     if (isActionAllowed) {
                         tablesSubscriptionsResolvers[`${subscriptionMethod}${firstToUpperCase(tableName)}`] = {
-                            subscribe: (_, args, context) => {
+                            subscribe: (_, args, context, info) => {
                                 if (args.__rawGraphQlRequest__) {
                                     //if is a raw graphql request read more in file(buildNoBackendControllers.js)
                                     context = { ...args };
@@ -99,7 +99,7 @@ const buildTablesGraphQlSubscriptionsResolvers = async (options, tables) => {
 
                     if (isActionAllowed) {
                         tablesSubscriptionsResolvers[`${subscriptionMethod}${firstToUpperCase(tableName)}`] = {
-                            subscribe: (_, args, context) => {
+                            subscribe: (_, args, context, info) => {
                                 if (args.__rawGraphQlRequest__) {
                                     //if is a raw graphql request read more in file(buildNoBackendControllers.js)
                                     context = { ...args };

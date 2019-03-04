@@ -33,8 +33,10 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
             }
         }
         if (filterMethod === filterTypeArgs["and"]) {
+            //TODO: add a 'and statement' validator
         }
         if (filterMethod === filterTypeArgs["or"]) {
+            //TODO: add a 'or statement' validator
         }
     }
     return isPayloadValid;
