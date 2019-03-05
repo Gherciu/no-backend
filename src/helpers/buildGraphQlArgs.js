@@ -1,4 +1,5 @@
 import {
+    GraphQLEnumType,
     GraphQLInputObjectType,
     GraphQLInt,
     GraphQLList,
@@ -7,7 +8,7 @@ import {
     GraphQLString
 } from "graphql";
 import { Kind } from "graphql/language";
-import { filterTypeArgs, tablesSubscriptionsMethods } from "./constants";
+import { comparisonOperators, filterTypeArgs, tablesSubscriptionsMethods } from "./constants";
 import getFieldGraphQlType from "./getFieldGraphQlType";
 import { firstToUpperCase, pluralToSingular } from "./textHelpers";
 
@@ -44,10 +45,41 @@ const whereInType = new GraphQLInputObjectType({
 });
 const whereType = new GraphQLInputObjectType({
     name: "whereStatement",
-    description: 'whereStatement GraphQl type, usage ex:({ columnName:"id",clause:"< 3" })',
     fields: {
         columnName: { type: new GraphQLNonNull(GraphQLString) },
-        comparisonOperator: { type: new GraphQLNonNull(GraphQLString) },
+        comparisonOperator: {
+            type: new GraphQLNonNull(
+                new GraphQLEnumType({
+                    name: "comparisonOperator",
+                    values: {
+                        [comparisonOperators["eq"].name]: {
+                            value: comparisonOperators["eq"].value,
+                            description: comparisonOperators["eq"].description
+                        },
+                        [comparisonOperators["notEq"].name]: {
+                            value: comparisonOperators["notEq"].value,
+                            description: comparisonOperators["notEq"].description
+                        },
+                        [comparisonOperators["gt"].name]: {
+                            value: comparisonOperators["gt"].value,
+                            description: comparisonOperators["gt"].description
+                        },
+                        [comparisonOperators["lt"].name]: {
+                            value: comparisonOperators["lt"].value,
+                            description: comparisonOperators["lt"].description
+                        },
+                        [comparisonOperators["gtOrEq"].name]: {
+                            value: comparisonOperators["gtOrEq"].value,
+                            description: comparisonOperators["gtOrEq"].description
+                        },
+                        [comparisonOperators["ltOrEq"].name]: {
+                            value: comparisonOperators["ltOrEq"].value,
+                            description: comparisonOperators["ltOrEq"].description
+                        }
+                    }
+                })
+            )
+        },
         expression: { type: new GraphQLNonNull(expressionType) }
     }
 });

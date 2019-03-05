@@ -19,10 +19,36 @@ export const filterTypeArgs = {
     orIn: "orIn"
 };
 export const comparisonOperators = {
-    gt: ">",
-    lt: "<",
-    gtOrEq: ">=",
-    ltOrEq: "<=",
-    eq: "=",
-    notEq: "!="
+    eq: {
+        name: "Equal",
+        value: "=",
+        description: "Returns true if the operands are equal."
+    },
+    notEq: {
+        name: "NotEqual",
+        value: "!=",
+        description: "Returns true if the operands are not equal."
+    },
+    gt: {
+        name: "GreaterThan",
+        value: ">",
+        description: "Returns true if the left operand is greater than the right operand."
+    },
+    lt: {
+        name: "LessThan",
+        value: "<",
+        description: "Returns true if the left operand is less than the right operand."
+    },
+    gtOrEq: {
+        name: "GreaterThanOrEqual",
+        value: ">=",
+        description:
+            "Returns true if the left operand is greater than the right operand or Returns true if the operands are equal."
+    },
+    ltOrEq: {
+        name: "LessThanOrEqual",
+        value: "<=",
+        description:
+            "Returns true if the left operand is less than the right operand or Returns true if the operands are equal."
+    }
 };

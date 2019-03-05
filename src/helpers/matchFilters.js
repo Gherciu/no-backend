@@ -36,37 +36,37 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
                 let columnValue = payload[columnName];
                 let operator = filterValueObjectItem.comparisonOperator;
                 let expression = filterValueObjectItem.expression;
-                if (operator === comparisonOperators["eq"]) {
+                if (operator === comparisonOperators["eq"].name) {
                     if (columnValue !== expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["notEq"]) {
+                if (operator === comparisonOperators["notEq"].name) {
                     if (columnValue === expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gt"]) {
+                if (operator === comparisonOperators["gt"].name) {
                     if (columnValue < expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["lt"]) {
+                if (operator === comparisonOperators["lt"].name) {
                     if (columnValue > expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gtOrEq"]) {
+                if (operator === comparisonOperators["gtOrEq"].name) {
                     if (columnValue < expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["ltOrEq"]) {
+                if (operator === comparisonOperators["ltOrEq"].name) {
                     if (columnValue > expression) {
                         isPayloadValid = false;
                         break;
@@ -81,37 +81,37 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
                 let columnValue = payload[columnName];
                 let operator = filterValueObjectItem.comparisonOperator;
                 let expression = filterValueObjectItem.expression;
-                if (operator === comparisonOperators["eq"]) {
+                if (operator === comparisonOperators["eq"].name) {
                     if (columnValue === expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["notEq"]) {
+                if (operator === comparisonOperators["notEq"].name) {
                     if (columnValue !== expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gt"]) {
+                if (operator === comparisonOperators["gt"].name) {
                     if (columnValue > expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["lt"]) {
+                if (operator === comparisonOperators["lt"].name) {
                     if (columnValue < expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gtOrEq"]) {
+                if (operator === comparisonOperators["gtOrEq"].name) {
                     if (columnValue >= expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["ltOrEq"]) {
+                if (operator === comparisonOperators["ltOrEq"].name) {
                     if (columnValue <= expression) {
                         isMinOneStatementValid = true;
                         break;
