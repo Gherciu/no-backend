@@ -1,4 +1,4 @@
-import { filterTypeArgs } from "./constants";
+import { comparisonOperators, filterTypeArgs } from "./constants";
 
 const filtersValidator = (payload, filterMethod, filterValue) => {
     let isPayloadValid = true;
@@ -26,17 +26,101 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
                     break;
                 }
             }
-            if (isMinOneStatementValid) {
-                isPayloadValid = true;
-            } else {
+            if (!isMinOneStatementValid) {
                 isPayloadValid = false;
             }
         }
         if (filterMethod === filterTypeArgs["and"]) {
-            //TODO: add a 'and statement' validator
+            for (const filterValueObjectItem of filterValue) {
+                let columnName = filterValueObjectItem.columnName;
+                let columnValue = payload[columnName];
+                let operator = filterValueObjectItem.comparisonOperator;
+                let expression = filterValueObjectItem.expression;
+                if (operator === comparisonOperators["eq"]) {
+                    if (columnValue !== expression) {
+                        isPayloadValid = false;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["notEq"]) {
+                    if (columnValue === expression) {
+                        isPayloadValid = false;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["gt"]) {
+                    if (columnValue < expression) {
+                        isPayloadValid = false;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["lt"]) {
+                    if (columnValue > expression) {
+                        isPayloadValid = false;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["gtOrEq"]) {
+                    if (columnValue < expression) {
+                        isPayloadValid = false;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["ltOrEq"]) {
+                    if (columnValue > expression) {
+                        isPayloadValid = false;
+                        break;
+                    }
+                }
+            }
         }
         if (filterMethod === filterTypeArgs["or"]) {
-            //TODO: add a 'or statement' validator
+            let isMinOneStatementValid = false;
+            for (const filterValueObjectItem of filterValue) {
+                let columnName = filterValueObjectItem.columnName;
+                let columnValue = payload[columnName];
+                let operator = filterValueObjectItem.comparisonOperator;
+                let expression = filterValueObjectItem.expression;
+                if (operator === comparisonOperators["eq"]) {
+                    if (columnValue === expression) {
+                        isMinOneStatementValid = true;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["notEq"]) {
+                    if (columnValue !== expression) {
+                        isMinOneStatementValid = true;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["gt"]) {
+                    if (columnValue > expression) {
+                        isMinOneStatementValid = true;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["lt"]) {
+                    if (columnValue < expression) {
+                        isMinOneStatementValid = true;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["gtOrEq"]) {
+                    if (columnValue >= expression) {
+                        isMinOneStatementValid = true;
+                        break;
+                    }
+                }
+                if (operator === comparisonOperators["ltOrEq"]) {
+                    if (columnValue <= expression) {
+                        isMinOneStatementValid = true;
+                        break;
+                    }
+                }
+                if (!isMinOneStatementValid) {
+                    isPayloadValid = false;
+                }
+            }
         }
     }
     return isPayloadValid;

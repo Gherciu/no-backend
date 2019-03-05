@@ -18,3 +18,11 @@ export const filterTypeArgs = {
     andIn: "andIn",
     orIn: "orIn"
 };
+export const comparisonOperators = {
+    gt: ">",
+    lt: "<",
+    gtOrEq: ">=",
+    ltOrEq: "<=",
+    eq: "=",
+    notEq: "!="
+};

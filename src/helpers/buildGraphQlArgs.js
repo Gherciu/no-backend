@@ -47,7 +47,7 @@ const whereType = new GraphQLInputObjectType({
     description: 'whereStatement GraphQl type, usage ex:({ columnName:"id",clause:"< 3" })',
     fields: {
         columnName: { type: new GraphQLNonNull(GraphQLString) },
-        operator: { type: new GraphQLNonNull(GraphQLString) },
+        comparisonOperator: { type: new GraphQLNonNull(GraphQLString) },
         expression: { type: new GraphQLNonNull(expressionType) }
     }
 });
