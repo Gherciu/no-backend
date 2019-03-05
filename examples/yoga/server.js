@@ -17,7 +17,7 @@ const pubsub = new PubSub();
             //rules for all tables (if rule is undefined==>true)
             _read: true,
             _delete: true,
-            _exclude: ["categorys_shops", "categorys"], //exclude a certain table from schema
+            _exclude: ["categorys_shops", "shops"], //exclude a certain table from schema
             products: {
                 //rules for a certain table
                 _read: true,
