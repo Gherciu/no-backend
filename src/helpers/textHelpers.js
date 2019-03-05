@@ -2,14 +2,14 @@ import { tablesPluralSuffix } from "./constants";
 
 export const isPlural = text => {
     if (new RegExp(/\_/gi).test(text))
-        return text.split("_").filter(textPart => new RegExp(/^\w{1,}s$/).test(textPart)).length > 1 ? true : false;
-    return new RegExp(/^\w{1,}s$/).test(text);
+        return text.split("_").filter(textPart => new RegExp(/^\w{1,}s$/i).test(textPart)).length > 1 ? true : false;
+    return new RegExp(/^\w{1,}s$/i).test(text);
 };
 
 export const isSingular = text => {
     if (new RegExp(/\_/gi).test(text))
-        return text.split("_").filter(textPart => !new RegExp(/^\w{1,}s$/).test(textPart)).length > 1 ? true : false;
-    return !new RegExp(/^\w{1,}s$/).test(text);
+        return text.split("_").filter(textPart => !new RegExp(/^\w{1,}s$/i).test(textPart)).length > 1 ? true : false;
+    return !new RegExp(/^\w{1,}s$/i).test(text);
 };
 
 export const singularToPlural = text => {
