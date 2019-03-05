@@ -155,6 +155,49 @@ app.use((req,res,next)=>{
 app.listen(2626);
 ```
 
+### With subscriptions (work if pubsub and withFilter is provided)
+
+```js
+const { ApolloServer } = require('apollo-server');
+const noBackend = require('no-backend');
+const {PubSub,withFilter} = require('graphql-subscriptions');
+//const {PubSub,withFilter} = require('graphql-yoga')/if you use graphql-yoga
+
+const pubsub = new PubSub();
+
+(async () => {
+
+    const {typeDefs,resolvers} = await noBackend({ 
+        connection:{
+            driver:'mysql',
+            host:'localhost',
+            port:'3306',
+            user:'root',
+            password:'gherciu1',
+            database:'test'
+        }
+    });
+    
+    const server = new ApolloServer({
+        typeDefs,
+        resolvers,
+        context: async ({req})=>{
+            return {
+                req,
+                pubsub,
+                withFilter
+            }
+        },
+        subscriptions:'/'
+    });
+
+    server.listen().then(({ url, subscriptionsUrl }) => {
+        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
+    });
+
+})();
+```
+
 ### Use with graphql-yoga and ( graphiql-storm OR graphql-playground )
 
 ```js
@@ -196,49 +239,6 @@ const noBackend = require('no-backend');
     server.express.get('/',noBackendExpressController)//remove this line of code if you do not use graphiql-storm
 
     server.start({port:3001,playground:"/playground"},() => console.log('Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )'))
-
-})();
-```
-
-## With subscriptions (work if pubsub and withFilter is provided)
-
-```js
-const { ApolloServer } = require('apollo-server');
-const noBackend = require('no-backend');
-const {PubSub,withFilter} = require('graphql-subscriptions');
-//const {PubSub,withFilter} = require('graphql-yoga')/if you use graphql-yoga
-
-const pubsub = new PubSub();
-
-(async () => {
-
-    const {typeDefs,resolvers} = await noBackend({ 
-        connection:{
-            driver:'mysql',
-            host:'localhost',
-            port:'3306',
-            user:'root',
-            password:'gherciu1',
-            database:'test'
-        }
-    });
-    
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        context: async ({req})=>{
-            return {
-                req,
-                pubsub,
-                withFilter
-            }
-        },
-        subscriptions:'/'
-    });
-
-    server.listen().then(({ url, subscriptionsUrl }) => {
-        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
-    });
 
 })();
 ```
