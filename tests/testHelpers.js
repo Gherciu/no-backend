@@ -7,15 +7,15 @@ const connection = {
     database: "test"
 };
 
-const fakeGraphQuery = `
-{
-    products:{
-        id
-    }
-}
-`;
+const getProductsQuery = () => {
+    return `query{
+        products{
+            id
+        }
+    }`;
+};
 
 module.exports = {
     connection,
-    fakeGraphQuery
+    getProductsQuery
 };

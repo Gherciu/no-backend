@@ -1,6 +1,6 @@
 const noBackend = require("./../dist/index");
 const { graphql } = require("graphql");
-const { connection, fakeGraphQuery } = require("./testHelpers");
+const { connection, getProductsQuery } = require("./testHelpers");
 
 test("Happy Path", async () => {
     expect.assertions(2);
@@ -14,10 +14,18 @@ test("Happy Path", async () => {
             resolvers: expect.any(Object)
         })
     );
-    const graphResponse = await graphql(result.schema, fakeGraphQuery, result.resolvers, null, null);
+    const graphResponse = await graphql(
+        result.schema,
+        getProductsQuery(),
+        result.resolvers,
+        { __rawGraphQlRequest__: true },
+        null
+    );
     expect(graphResponse).toEqual(
         expect.objectContaining({
-            data: expect.any(Object)
+            data: expect.objectContaining({
+                products: expect.any(Array)
+            })
         })
     );
 });
