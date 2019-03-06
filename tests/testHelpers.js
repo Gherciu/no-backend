@@ -7,6 +7,15 @@ const connection = {
     database: "test"
 };
 
+const fakeGraphQuery = `
+{
+    products:{
+        id
+    }
+}
+`;
+
 module.exports = {
-    connection
+    connection,
+    fakeGraphQuery
 };

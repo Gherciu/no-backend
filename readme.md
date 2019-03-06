@@ -24,7 +24,7 @@ categorys table:
  
 **cli**
 ```bash
-npm i no-backend
+npm i no-backend graphql
 ```
 **index.js**
 ```js
