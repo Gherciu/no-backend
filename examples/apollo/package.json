@@ -1,16 +1,20 @@
 {
-  "name": "apollo",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "apollo-server": "^2.4.8",
-    "graphql-subscriptions": "^1.0.0",
-    "graphql": "^14.0.2"
-  }
+    "name": "apollo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "apollo-server": "^2.4.8",
+        "graphql-subscriptions": "^1.0.0",
+        "graphql": "^14.0.2"
+    },
+    "resolutions": {
+        "graphql": "^14.0.2",
+        "**/graphql": "^14.0.2"
+    }
 }

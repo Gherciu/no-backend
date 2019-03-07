@@ -1,37 +1,41 @@
-import { GraphQLObjectType, GraphQLSchema } from 'graphql';
-import buildTablesGraphQlMutations from './buildTablesGraphQlMutations';
-import buildTablesGraphQlQuerys from './buildTablesGraphQlQuerys';
-import buildTablesGraphQlRowTypes from './buildTablesGraphQlRowTypes';
-import buildTablesGraphQlSubscriptions from './buildTablesGraphQlSubscriptions';
+import { GraphQLObjectType, GraphQLSchema } from "graphql";
+import buildTablesGraphQlMutations from "./buildTablesGraphQlMutations";
+import buildTablesGraphQlQuerys from "./buildTablesGraphQlQuerys";
+import buildTablesGraphQlRowTypes from "./buildTablesGraphQlRowTypes";
+import buildTablesGraphQlSubscriptions from "./buildTablesGraphQlSubscriptions";
+import { extensions } from "./helpers/constants";
+import getOptionsExtensions from "./helpers/getOptionsExtensions";
 
-const buildGraphQlSchema = async (options,tables,db) => {
+const buildGraphQlSchema = async (options, tables, db) => {
+    let { tablesRowTypes } = await buildTablesGraphQlRowTypes(tables);
+    let { tablesQuerysTypes } = await buildTablesGraphQlQuerys(options, tables, tablesRowTypes);
+    let { tablesMutationsTypes } = await buildTablesGraphQlMutations(options, tables);
+    let { tablesSubscriptionsTypes } = await buildTablesGraphQlSubscriptions(options, tables, tablesRowTypes);
 
-    let { tablesRowTypes } = await buildTablesGraphQlRowTypes( tables )
-    let { tablesQuerysTypes } = await buildTablesGraphQlQuerys( options,tables,tablesRowTypes )
-    let { tablesMutationsTypes } = await buildTablesGraphQlMutations( options,tables )
-    let { tablesSubscriptionsTypes } = await buildTablesGraphQlSubscriptions( options,tables,tablesRowTypes )
-    
     return {
-        schema: new GraphQLSchema({ 
+        schema: new GraphQLSchema({
             query: new GraphQLObjectType({
-                name: 'Query',
-                description:'GraphQl root query type',
+                name: "Query",
+                description: "GraphQl root query type",
                 fields: {
-                    ...tablesQuerysTypes
+                    ...tablesQuerysTypes,
+                    ...getOptionsExtensions(options, extensions["query"])
                 }
             }),
-            mutation:new GraphQLObjectType({
-                name: 'Mutation',
-                description:'GraphQl root mutation type',
+            mutation: new GraphQLObjectType({
+                name: "Mutation",
+                description: "GraphQl root mutation type",
                 fields: {
-                    ...tablesMutationsTypes
+                    ...tablesMutationsTypes,
+                    ...getOptionsExtensions(options, extensions["mutation"])
                 }
             }),
-            subscription:new GraphQLObjectType({
-                name: 'Subscription',
-                description:'GraphQl root subscription type',
+            subscription: new GraphQLObjectType({
+                name: "Subscription",
+                description: "GraphQl root subscription type",
                 fields: {
-                    ...tablesSubscriptionsTypes
+                    ...tablesSubscriptionsTypes,
+                    ...getOptionsExtensions(options, extensions["subscription"])
                 }
             })
         }),
@@ -39,8 +43,7 @@ const buildGraphQlSchema = async (options,tables,db) => {
         tablesQuerysTypes,
         tablesMutationsTypes,
         tablesSubscriptionsTypes
-    }
+    };
+};
 
-}
-
-export default buildGraphQlSchema
+export default buildGraphQlSchema;

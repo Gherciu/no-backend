@@ -52,3 +52,9 @@ export const comparisonOperators = {
             "Returns true if the left operand is less than the right operand or Returns true if the operands are equal."
     }
 };
+export const extensions = {
+    query: "Query",
+    mutation: "Mutation",
+    subscription: "Subscription",
+    resolvers: "Resolvers"
+};
