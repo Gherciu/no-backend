@@ -1,5 +1,8 @@
 <p align="center"><img align="center" style="width:128px" src="https://github.com/Gherciu/no-backend/blob/master/no-backend.png?raw=true"/></p>
-<center><h1 align="center"> no-backend </h1></center>
+<center><h3 align="center"> no-backend </h3></center>
+<p align="center">A fast, simple and self-hosted GraphQl backend as a service for your projects</p>
+
+---
 
 ### What do no-backend :
 Transform your database into working GraphQl schema
@@ -9,13 +12,13 @@ Transform your database into working GraphQl schema
 
 ### Look at this small example 
 
-products table:
+#### products table:
 ------------------------------------
 | id | title | price | category_id |
 -----| ------|-------|-------------|
 | 1  | prod1 | 99    | 1           |
 
-categorys table:
+#### categorys table:
 -------------
  id | title |
 ----| ------|
@@ -30,12 +33,10 @@ npm i no-backend graphql
 ```js
 const express = require('express');
 const noBackend = require('no-backend');
-
 const app = express();
 app.use(express.json());
 
 (async ()=>{
-
     const {noBackendExpressController} = await noBackend({ 
         graphiql_storm:true,
         connection:{
@@ -48,9 +49,7 @@ app.use(express.json());
         }
     })
     app.use('/api',noBackendExpressController)
-
 })();
-
 
 app.listen(2626);
 console.log(`Server started at port : 2626`)
@@ -66,91 +65,38 @@ console.log(`Server started at port : 2626`)
 
 ## Learn more about "no-backend" through examples 📒
 
-### Use with apollo-server and graphql-playground
-```js
-const { ApolloServer } = require('apollo-server');
-const noBackend = require('no-backend');
-
-(async () => {
-
-    const {typeDefs,resolvers} = await noBackend({ 
-        connection:{
-            driver:'mysql',
-            host:'localhost',
-            port:'3306',
-            user:'root',
-            password:'gherciu1',
-            database:'test'
-        }
-    });
-    
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        context: async ({req})=>{
-            return {
-                req
-            }
-        },
-        subscriptions:'/'
-    });
-
-    server.listen().then(({ url, subscriptionsUrl }) => {
-        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
-    });
-
-})();
-```
-
 ### With rules 
 
-by default all rules is equal to ```true``` if typeof certain rule is ```undefined``` this is equal to ```true```
-```js
+by default all rules is equal to ```true``` 
+```diff
 const express = require('express');
 const noBackend = require('no-backend');
 const app = express();
-
 app.use(express.json());
-app.use((req,res,next)=>{
-    req.user = {
-        id:1,
-        name:'Gheorghe'
-    }
-    next()
-});
 
 (async ()=>{
-
     const { noBackendExpressController } = await noBackend({ 
         graphiql_storm:true,
         connection:{
-            driver:'mysql',
-            host:'localhost',
-            port:'3306',
-            user:'root',
-            password:'gherciu1',
-            database:'test'
+            ...connectionConfig
         },
-        rules:{//rules for all tables
-            _read:false,//boolean
-            _delete:(req)=>(req.user),//or a function that return boolean
-            _insert:false,
-            _update:undefined,//undefined --> true
-            _exclude:["categorys_shops","categorys"],//exclude a certain table from schema
-
-            products:{//rules for a certain table
-                _read:false,
-                _insert:(req)=>(req.user.id === 1),//function that return boolean
-                _update:true,
-                _delete:true, 
-            }
-            
-        }
++        rules:{//rules for all tables
++            _read:false,//boolean
++            _delete:(req)=>(req.user),//or a function that return boolean
++            _insert:false,
++            _update:true
++            _exclude:["categorys_shops","categorys"],//exclude a certain table from schema
++
++            products:{//rules for a certain table
++                _read:true,
++                _insert:(req)=>(req.user.id === 1),//function that return boolean
++                _update:true,
++                _delete:true, 
++            }
++        }
     })
     app.use('/api',noBackendExpressController)
-
 })();
-
 
 app.listen(2626);
 ```
@@ -161,7 +107,7 @@ app.listen(2626);
 const { ApolloServer } = require('apollo-server');
 const noBackend = require('no-backend');
 const {PubSub,withFilter} = require('graphql-subscriptions');
-//const {PubSub,withFilter} = require('graphql-yoga')/if you use graphql-yoga
+//const {PubSub,withFilter, GraphQLServer} = require('graphql-yoga')//if you use graphql-yoga
 
 const pubsub = new PubSub();
 
@@ -198,50 +144,6 @@ const pubsub = new PubSub();
 })();
 ```
 
-### Use with graphql-yoga and ( graphiql-storm OR graphql-playground )
-
-```js
-const { GraphQLServer } = require('graphql-yoga')
-const noBackend = require('no-backend');
-
-(async () => {
-
-    const {typeDefs,resolvers,noBackendExpressController} = await noBackend({ 
-        graphiql_storm:true,//remove this line of code if you do not use graphiql-storm
-        connection:{
-            driver:'mysql',
-            host:'localhost',
-            port:'3306',
-            user:'root',
-            password:'gherciu1',
-            database:'test'
-        },
-        rules:{//rules for all tables (if rule is undefined==>true)
-            _read:(req)=>(req.user.id === 1)
-        }
-    });
-    
-    const server = new GraphQLServer({
-        typeDefs,
-        resolvers,
-        context: (req) => {
-            return {
-                req
-            }
-        },
-        middlewares:[async (resolve, root, args, context, info)=>{
-            context.req.user = {id:1}//auth imitation
-            return await resolve(root, args, context, info)
-        }],
-        subscriptions:'/'
-    });
-
-    server.express.get('/',noBackendExpressController)//remove this line of code if you do not use graphiql-storm
-
-    server.start({port:3001,playground:"/playground"},() => console.log('Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )'))
-
-})();
-```
 -------------------------------------------------------------------------------------------------------
 
 #### If you like this repository star⭐ and watch👀 on  [GitHub](https://github.com/Gherciu/no-backend)
