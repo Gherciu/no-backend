@@ -73,7 +73,7 @@ const pubsub = new PubSub();
 })();
 ```
 
-**open browser on `http://localhost:3000/playground //✨Playground` or `http://localhost:3000 //🚀GraphiQl Storm`  and see the result**
+**open browser on (`http://localhost:3000/playground` ✨Playground or `http://localhost:3000` 🚀GraphiQl Storm)  and see the result**
 
 ![no-backend](https://github.com/Gherciu/no-backend/blob/master/no-backend-result.png?raw=true)
 
