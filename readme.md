@@ -90,7 +90,7 @@ by default all rules is equal to ```true```
     })
 ```
 
-### With subscriptions, work if pubsub and withFilter is provided ( [See also the example with Apollo Server](https://github.com/Gherciu/no-backend/tree/master/examples) )
+### With subscriptions, work if pubsub and withFilter is provided ( [See also the example with Apollo Server](https://github.com/Gherciu/no-backend/tree/master/examples/apollo) )
 
 ```diff
 + const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
