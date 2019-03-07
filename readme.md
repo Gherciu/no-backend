@@ -69,14 +69,7 @@ console.log(`Server started at port : 2626`)
 
 by default all rules is equal to ```true``` 
 ```diff
-const express = require('express');
-const noBackend = require('no-backend');
-const app = express();
-app.use(express.json());
-
-(async ()=>{
-    const { noBackendExpressController } = await noBackend({ 
-        graphiql_storm:true,
+   await noBackend({ 
         connection:{
             ...connectionConfig
         },
@@ -95,52 +88,39 @@ app.use(express.json());
 +            }
 +        }
     })
-    app.use('/api',noBackendExpressController)
-})();
-
-app.listen(2626);
 ```
 
-### With subscriptions (work if pubsub and withFilter is provided)
+### With subscriptions, work if pubsub and withFilter is provided ( [See also the example with Apollo Server](https://github.com/Gherciu/no-backend/tree/master/examples) )
 
-```js
-const { ApolloServer } = require('apollo-server');
-const noBackend = require('no-backend');
-const {PubSub,withFilter} = require('graphql-subscriptions');
-//const {PubSub,withFilter, GraphQLServer} = require('graphql-yoga')//if you use graphql-yoga
-
+```diff
+const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
+const noBackend = require("no-backend"); 
 const pubsub = new PubSub();
 
 (async () => {
-
-    const {typeDefs,resolvers} = await noBackend({ 
-        connection:{
-            driver:'mysql',
-            host:'localhost',
-            port:'3306',
-            user:'root',
-            password:'gherciu1',
-            database:'test'
+    const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
+        graphiql_storm: true, //remove this line of code if you do not use graphiql-storm
+        connection: {
+            ...connectionConfig
         }
     });
-    
-    const server = new ApolloServer({
-        typeDefs,
-        resolvers,
-        context: async ({req})=>{
-            return {
-                req,
-                pubsub,
-                withFilter
-            }
-        },
-        subscriptions:'/'
-    });
 
-    server.listen().then(({ url, subscriptionsUrl }) => {
-        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`)
++    const server = new GraphQLServer({
++        typeDefs,
++        resolvers,
++        context: req => {
++            return {
++                req,
++                pubsub,
++                withFilter
++            };
++        },
++        subscriptions: "/"
++    });
+    server.express.get("/", noBackendExpressController); //remove this line of code if you do not use graphiql-storm
+    server.start({ port: 3001, playground: "/playground", tracing: true }, () =>{
+       console.log(`Server is running on http://localhost:3001  ( ✨ Playground: http://localhost:3001/playground OR 🚀 GraphiQl Storm: http://localhost:3001 )`);
     });
-
 })();
 ```
 
