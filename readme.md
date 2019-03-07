@@ -65,7 +65,7 @@ const pubsub = new PubSub();
         subscriptions: "/"
     });
 
-    server.start({ port: 3000, playground: "/playground", tracing: true }, () =>{
+    server.start({ port: 3000 }, () =>{
         console.log( 'Server is running on http://localhost:3000');
     });
 })();
