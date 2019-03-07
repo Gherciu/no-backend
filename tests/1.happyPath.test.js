@@ -11,14 +11,22 @@ test("Happy Path", async () => {
         expect.objectContaining({
             typeDefs: expect.any(String),
             schema: expect.any(Object),
-            resolvers: expect.any(Object)
+            resolvers: expect.any(Object),
+            tablesQuerysResolvers: expect.any(Object),
+            tablesMutationsResolvers: expect.any(Object),
+            tablesSubscriptionsResolvers: expect.any(Object)
         })
     );
     const graphResponse = await graphql(
         result.schema,
         getProductsQuery(),
-        result.resolvers,
+        {
+            ...result.tablesQuerysResolvers,
+            ...result.tablesMutationsResolvers,
+            ...result.tablesSubscriptionsResolvers
+        },
         { __rawGraphQlRequest__: true },
+        null,
         null
     );
     expect(graphResponse).toEqual(
