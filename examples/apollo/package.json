@@ -12,9 +12,5 @@
         "apollo-server": "^2.4.8",
         "graphql-subscriptions": "^1.0.0",
         "graphql": "^14.0.2"
-    },
-    "resolutions": {
-        "graphql": "^14.0.2",
-        "**/graphql": "^14.0.2"
     }
 }

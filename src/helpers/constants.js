@@ -56,5 +56,10 @@ export const extensions = {
     query: "Query",
     mutation: "Mutation",
     subscription: "Subscription",
-    resolvers: "Resolvers"
+    resolvers: {
+        _name: "Resolvers",
+        query: "Query",
+        mutation: "Mutation",
+        subscription: "Subscription"
+    }
 };

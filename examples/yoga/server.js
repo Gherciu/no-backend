@@ -47,18 +47,24 @@ const pubsub = new PubSub();
             //         type: GraphQLString
             //     }
             // },
-            Resolvers: {
-                hello: (_, args, { req, pubsub }) => "Hi!",
-                echo: (_, args, { req, pubsub }) => {
-                    pubsub.publish("echo_topic", { echo: args.value });
-                    return args.value;
-                },
-                onEcho: {
-                    subscribe: (_, args, { req, pubsub, withFilter }) => {
-                        return pubsub.asyncIterator("echo_topic");
-                    }
-                }
-            }
+            // Resolvers: {
+            //     Query: {
+            //         hello: (_, args, { req, pubsub }) => "Hi!"
+            //     },
+            //     Mutation: {
+            //         echo: (_, args, { req, pubsub }) => {
+            //             pubsub.publish("echo_topic", { echo: args.value });
+            //             return args.value;
+            //         }
+            //     },
+            //     Subscription: {
+            //         onEcho: {
+            //             subscribe: (_, args, { req, pubsub, withFilter }) => {
+            //                 return pubsub.asyncIterator("echo_topic");
+            //             }
+            //         }
+            //     }
+            // }
         }
     });
 
