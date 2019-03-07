@@ -93,9 +93,9 @@ by default all rules is equal to ```true```
 ### With subscriptions, work if pubsub and withFilter is provided ( [See also the example with Apollo Server](https://github.com/Gherciu/no-backend/tree/master/examples) )
 
 ```diff
-const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
-const noBackend = require("no-backend"); 
-const pubsub = new PubSub();
++ const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
++ const noBackend = require("no-backend"); 
++ const pubsub = new PubSub();
 
 (async () => {
     const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
@@ -118,8 +118,8 @@ const pubsub = new PubSub();
 +        subscriptions: "/"
 +    });
     server.express.get("/", noBackendExpressController); //remove this line of code if you do not use graphiql-storm
-    server.start({ port: 3001, playground: "/playground", tracing: true }, () =>{
-       console.log(`Server is running on http://localhost:3001  ( ✨ Playground: http://localhost:3001/playground OR 🚀 GraphiQl Storm: http://localhost:3001 )`);
+    server.start({ port: 3001, playground: "/playground"}, () =>{
+       console.log('Server is running on http://localhost:3001  ( ✨ Playground: http://localhost:3001/playground OR 🚀 GraphiQl Storm: http://localhost:3001 )');
     });
 })();
 ```
