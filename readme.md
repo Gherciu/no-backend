@@ -17,15 +17,11 @@ Transform your database into working GraphQl schema
 
 #### products table:
 
----
-
 | id  | title | price | category_id |
 | --- | ----- | ----- | ----------- |
 | 1   | prod1 | 99    | 1           |
 
 #### categorys table:
-
----
 
 | id  | title |
 | --- | ----- |
@@ -84,7 +80,6 @@ console.log(`Server started at port : 2626`);
 
 (async () => {
     const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
-        graphiql_storm: true, //remove this line of code if you do not use graphiql-storm
         connection: {
             ...connectionConfig
         }
@@ -102,9 +97,8 @@ console.log(`Server started at port : 2626`);
 +        },
 +        subscriptions: "/"
 +    });
-    server.express.get("/", noBackendExpressController); //remove this line of code if you do not use graphiql-storm
-    server.start({ port: 3001, playground: "/playground"}, () =>{
-       console.log('Server is running on http://localhost:3001  ( ✨ Playground: http://localhost:3001/playground OR 🚀 GraphiQl Storm: http://localhost:3001 )');
+    server.start({ port: 3001}, () =>{
+       console.log('Server is running on http://localhost:3001');
     });
 })();
 ```
