@@ -14,7 +14,6 @@
     "author": "Gherciu Gheorghe",
     "license": "ISC",
     "dependencies": {
-        "express": "^4.16.4",
-        "graphql": "^14.0.2"
+        "express": "^4.16.4"
     }
 }

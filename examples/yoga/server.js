@@ -31,7 +31,7 @@ const pubsub = new PubSub();
             //         name: "hello",
             //         type: new GraphQLNonNull(GraphQLString)
             //     }
-            // },
+            // }
             // Mutation: {
             //     echo: {
             //         name: "echo",

@@ -2,12 +2,11 @@ const path = require("path");
 
 module.exports = {
     target: "node",
-    mode: "none",
     entry: ["@babel/polyfill", path.join(__dirname, "./src/index.js")],
     output: {
         path: path.join(__dirname, "./dist/"),
         filename: "index.js",
-        library: "",
+        library: "noBackend",
         libraryTarget: "commonjs2",
         libraryExport: "default"
     },

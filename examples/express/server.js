@@ -25,6 +25,14 @@ app.use(express.json());
                 _read: true,
                 _update: req => true
             }
+        },
+        extend: {
+            // Query: {
+            //     hello: {
+            //         name: "hello",
+            //         type: new GraphQLNonNull(GraphQLString)
+            //     }
+            // }
         }
     });
     app.use("/api", noBackendExpressController);
