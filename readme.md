@@ -35,7 +35,7 @@ npm i no-backend graphql
 
 **index.js**
 
-See more examples with ( [Express](https://github.com/Gherciu/no-backend/tree/master/examples/express), [Apollo-Servers](https://github.com/Gherciu/no-backend/tree/master/examples/apollo) and [GraphQL-Yoga](https://github.com/Gherciu/no-backend/tree/master/examples/yoga) )
+See more examples with ( [Express](https://github.com/Gherciu/no-backend/tree/master/examples/express), [Apollo-Server](https://github.com/Gherciu/no-backend/tree/master/examples/apollo) and [GraphQL-Yoga](https://github.com/Gherciu/no-backend/tree/master/examples/yoga) )
 ```js
 const { GraphQLServer, PubSub, withFilter } = require('graphql-yoga');
 const noBackend = require('no-backend'); 
@@ -43,7 +43,6 @@ const pubsub = new PubSub();
 
 (async () => {
     const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
-        graphiql_storm: true, //remove this line of code if you do not use graphiql-storm
         connection: {
             driver: "mysql",
             host: "localhost",
@@ -59,21 +58,20 @@ const pubsub = new PubSub();
         context: req => {
             return {
                 req,
-                pubsub, //add PubSub to context
+                pubsub, 
                 withFilter
             };
         },
         subscriptions: "/"
     });
 
-    server.express.get("/", noBackendExpressController); //remove this line of code if you do not use graphiql-storm
     server.start({ port: 3000, playground: "/playground", tracing: true }, () =>{
-        console.log( 'Server is running on http://localhost:3000  ( ✨ Playground: http://localhost:3000/playground OR 🚀 GraphiQl Storm: http://localhost:3000 )');
+        console.log( 'Server is running on http://localhost:3000');
     });
 })();
 ```
 
-**open browser on (`http://localhost:3000/playground` ✨Playground or `http://localhost:3000` 🚀GraphiQl Storm)  and see the result**
+**open browser on `http://localhost:3000`  and see the result**
 
 ![no-backend](https://github.com/Gherciu/no-backend/blob/master/no-backend-result.png?raw=true)
 
