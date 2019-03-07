@@ -34,16 +34,15 @@ npm i no-backend graphql
 ```
 
 **index.js**
-
+See more examples with ( [Express](https://github.com/Gherciu/no-backend/tree/master/examples/express), [Apollo-Servers](https://github.com/Gherciu/no-backend/tree/master/examples/apollo) and [GraphQL-Yoga](https://github.com/Gherciu/no-backend/tree/master/examples/yoga) )
 ```js
-const express = require("express");
-const noBackend = require("no-backend");
-const app = express();
-app.use(express.json());
+const { GraphQLServer, PubSub, withFilter } = require('graphql-yoga');
+const noBackend = require('no-backend'); 
+const pubsub = new PubSub();
 
 (async () => {
-    const { noBackendExpressController } = await noBackend({
-        graphiql_storm: true,
+    const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
+        graphiql_storm: true, //remove this line of code if you do not use graphiql-storm
         connection: {
             driver: "mysql",
             host: "localhost",
@@ -53,14 +52,27 @@ app.use(express.json());
             database: "test"
         }
     });
-    app.use("/api", noBackendExpressController);
-})();
+    const server = new GraphQLServer({
+        typeDefs,
+        resolvers,
+        context: req => {
+            return {
+                req,
+                pubsub, //add PubSub to context
+                withFilter
+            };
+        },
+        subscriptions: "/"
+    });
 
-app.listen(2626);
-console.log(`Server started at port : 2626`);
+    server.express.get("/", noBackendExpressController); //remove this line of code if you do not use graphiql-storm
+    server.start({ port: 3000, playground: "/playground", tracing: true }, () =>{
+        console.log( 'Server is running on http://localhost:3000  ( ✨ Playground: http://localhost:3000/playground OR 🚀 GraphiQl Storm: http://localhost:3000 )');
+    });
+})();
 ```
 
-**open browser on `http://localhost:3000/api` and see the result**
+**open browser on `http://localhost:3000/playground //✨Playground` or `http://localhost:3000 //🚀GraphiQl Storm`  and see the result**
 
 ![no-backend](https://github.com/Gherciu/no-backend/blob/master/no-backend-result.png?raw=true)
 
@@ -68,41 +80,7 @@ console.log(`Server started at port : 2626`);
 
 -   🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
 -   👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
-
-## Learn more about "no-backend" through examples 📒
-
-### With subscriptions, work if pubsub and withFilter is provided ( [See also the example with Apollo Server](https://github.com/Gherciu/no-backend/tree/master/examples/apollo) )
-
-```diff
-+ const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
-+ const noBackend = require("no-backend");
-+ const pubsub = new PubSub();
-
-(async () => {
-    const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
-        connection: {
-            ...connectionConfig
-        }
-    });
-
-+    const server = new GraphQLServer({
-+        typeDefs,
-+        resolvers,
-+        context: req => {
-+            return {
-+                req,
-+                pubsub,
-+                withFilter
-+            };
-+        },
-+        subscriptions: "/"
-+    });
-    server.start({ port: 3001}, () =>{
-       console.log('Server is running on http://localhost:3001');
-    });
-})();
-```
-
+---
 ### With rules
 
 by default all rules is equal to `true`
