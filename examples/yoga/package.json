@@ -4,12 +4,14 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "clean-install": "rm -rf ./node_modules && rm -rf ./package-lock.json && rm -rf ./yarn.lock && npm install"
     },
     "author": "",
     "license": "ISC",
     "dependencies": {
         "graphql-yoga": "^1.17.4",
-        "graphql": "^14.0.2"
+        "no-backend": "^1.5.0",
+        "graphql": "^14.1.1"
     }
 }

@@ -1,6 +1,6 @@
 const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
-const { GraphQLString, GraphQLNonNull } = require("graphql");
-const noBackend = require("./../../dist/index"); //for users require('no-backend')
+const { GraphQLString } = require("graphql");
+const noBackend = require("no-backend"); //for users require('no-backend')
 const pubsub = new PubSub();
 
 (async () => {
@@ -23,6 +23,40 @@ const pubsub = new PubSub();
                 //rules for a certain table
                 _read: true,
                 _update: req => true
+            }
+        },
+        extend: {
+            Query: {
+                hello: { type: GraphQLString }
+            },
+            Mutation: {
+                echo: {
+                    type: GraphQLString,
+                    args: {
+                        value: { type: GraphQLString }
+                    }
+                }
+            },
+            Subscription: {
+                onEcho: {
+                    type: GraphQLString
+                }
+            },
+            Resolvers: {
+                Query: {
+                    hello: () => "Hello!"
+                },
+                Mutation: {
+                    echo: (_, args, { req, pubsub, withFilter }) => {
+                        pubsub.publish("echo_topic", { onEcho: args.value });
+                        return args.value;
+                    }
+                },
+                Subscription: {
+                    onEcho: {
+                        subscribe: (_, args, { req, pubsub, withFilter }) => pubsub.asyncIterator("echo_topic")
+                    }
+                }
             }
         }
     });

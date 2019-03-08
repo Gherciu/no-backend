@@ -1,5 +1,6 @@
 const express = require("express");
-const noBackend = require("./../../dist/index"); //for users require('no-backend')
+const noBackend = require("no-backend");
+const { GraphQLString } = require("graphql");
 
 const app = express();
 app.use(express.json());
@@ -24,6 +25,29 @@ app.use(express.json());
                 //rules for a certain table
                 _read: true,
                 _update: req => true
+            }
+        },
+        extend: {
+            Query: {
+                hello: { type: GraphQLString }
+            },
+            Mutation: {
+                echo: {
+                    type: GraphQLString,
+                    args: {
+                        value: { type: GraphQLString }
+                    }
+                }
+            },
+            Resolvers: {
+                Query: {
+                    hello: () => "Hello!"
+                },
+                Mutation: {
+                    echo: (_, args, { req }) => {
+                        return args.value;
+                    }
+                }
             }
         }
     });

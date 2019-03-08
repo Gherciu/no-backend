@@ -38,11 +38,7 @@ const buildGraphQlSchema = async (options, tables, db) => {
                     ...getOptionsExtensions(options, extensions["subscription"])
                 }
             })
-        }),
-        tablesRowTypes,
-        tablesQuerysTypes,
-        tablesMutationsTypes,
-        tablesSubscriptionsTypes
+        })
     };
 };
 

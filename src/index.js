@@ -1,3 +1,4 @@
+import "@babel/polyfill";
 import { printSchema } from "graphql";
 import buildGraphQlResolvers from "./buildGraphQlResolvers";
 import buildGraphQlSchema from "./buildGraphQlSchema";
@@ -25,41 +26,22 @@ const noBackend = async options => {
         if (tablesValidatorMessage) {
             throw new TypeError(tablesValidatorMessage);
         } else {
-            let {
-                schema,
-                tablesQuerysTypes,
-                tablesMutationsTypes,
-                tablesSubscriptionsTypes,
-                tablesRowTypes
-            } = await buildGraphQlSchema(options, tables, db);
-            let {
-                resolvers,
-                tablesQuerysResolvers,
-                tablesMutationsResolvers,
-                tablesSubscriptionsResolvers
-            } = await buildGraphQlResolvers(options, tables, db);
+            let { schema } = await buildGraphQlSchema(options, tables, db);
+            let { resolvers } = await buildGraphQlResolvers(options, tables, db);
             let { noBackendExpressController } = await buildNoBackendControllers(options, schema, {
-                ...tablesQuerysResolvers,
-                ...tablesMutationsResolvers,
-                ...tablesSubscriptionsResolvers
+                ...resolvers.Query,
+                ...resolvers.Mutation,
+                ...resolvers.Subscription
             }); //for raw graphql request read more in file(buildNoBackendControllers.js)
 
             return {
                 //ready controllers for different frameworks
                 noBackendExpressController,
-                //tables row types
-                tablesRowTypes,
                 //tables queries & tables mutations & tables subscriptions --> schema
                 schema,
                 typeDefs: printSchema(schema), //schema in string format
-                tablesQuerysTypes,
-                tablesMutationsTypes,
-                tablesSubscriptionsTypes,
                 //tables queries resolvers & tables mutations resolvers & tables subscriptions resolvers --> resolvers
                 resolvers,
-                tablesQuerysResolvers,
-                tablesMutationsResolvers,
-                tablesSubscriptionsResolvers,
                 //providers
                 db
             };

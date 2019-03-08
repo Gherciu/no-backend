@@ -1,13 +1,12 @@
 {
     "name": "no-backend",
-    "version": "1.4.6",
+    "version": "1.5.0",
     "description": "A fast, simple and self-hosted backend as a service for your projects",
     "main": "dist/index.js",
     "scripts": {
         "test": "./node_modules/.bin/jest ./tests/*.test.js --detectOpenHandles --watch",
-        "build": "./node_modules/.bin/webpack --progress --mode=development",
-        "production": "./node_modules/.bin/webpack --progress --mode=production",
-        "watch": "./node_modules/.bin/webpack --progress  --mode=development",
+        "build": "rm -rf ./dist && ./node_modules/.bin/babel ./src --out-dir ./dist",
+        "watch": "./node_modules/.bin/babel ./src --out-dir ./dist  --watch",
         "clean-install": "rm -rf ./node_modules && rm -rf ./package-lock.json && npm install"
     },
     "keywords": [
@@ -26,10 +25,8 @@
         "@babel/cli": "^7.2.3",
         "@babel/core": "^7.2.2",
         "@babel/preset-env": "^7.3.1",
-        "babel-loader": "^8.0.5",
-        "jest": "^24.1.0",
-        "webpack": "^4.29.6",
-        "webpack-cli": "^3.2.3",
-        "graphql": "^14.1.1"
+        "babel-plugin-add-module-exports": "^1.0.0",
+        "graphql": "^14.1.1",
+        "jest": "^24.1.0"
     }
 }
