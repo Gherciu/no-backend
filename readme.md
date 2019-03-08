@@ -106,6 +106,54 @@ by default all rules is equal to `true`
     })
 ```
 
+### Extend schema
+
+by default all rules is equal to `true`
+
+```diff
++ const { GraphQLString } = require("graphql");
+
+   await noBackend({
+        connection:{
+            ...connectionConfig
+        },
++       extend:{
++            Query: {
++                hello: { type: GraphQLString }
++            },
++            Mutation: {
++                echo: {
++                    type: GraphQLString,
++                    args: {
++                        value: { type: GraphQLString }
++                    }
++                }
++            },
++            Subscription: {
++                onEcho: {
++                    type: GraphQLString
++                }
++            },
++            Resolvers: {
++                Query: {
++                    hello: () => "Hello!"
++                },
++                Mutation: {
++                    echo: (_, args, { req, pubsub, withFilter }) => {
++                        pubsub.publish("echo_topic", { onEcho: args.value });
++                        return args.value;
++                    }
++                },
++                Subscription: {
++                    onEcho: {
++                        subscribe: (_, args, { req, pubsub, withFilter }) => pubsub.asyncIterator("echo_topic")
++                    }
++                }
++            }
++        }
+    })
+```
+
 ---
 
 #### If you like this repository star⭐ and watch👀 on [GitHub](https://github.com/Gherciu/no-backend)
