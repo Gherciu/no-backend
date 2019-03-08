@@ -1,13 +1,4 @@
-import {
-    GraphQLEnumType,
-    GraphQLInputObjectType,
-    GraphQLInt,
-    GraphQLList,
-    GraphQLNonNull,
-    GraphQLScalarType,
-    GraphQLString
-} from "graphql";
-import { Kind } from "graphql/language";
+import { GraphQLEnumType, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLScalarType, GraphQLString, Kind } from "graphql";
 import { comparisonOperators, filterTypeArgs, tablesSubscriptionsMethods } from "./constants";
 import getFieldGraphQlType from "./getFieldGraphQlType";
 import { firstToUpperCase, pluralToSingular } from "./textHelpers";

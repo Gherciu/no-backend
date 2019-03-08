@@ -1,5 +1,4 @@
 const express = require("express");
-const { GraphQLNonNull, GraphQLString } = require("graphql");
 const noBackend = require("./../../dist/index"); //for users require('no-backend')
 
 const app = express();
@@ -25,14 +24,6 @@ app.use(express.json());
                 //rules for a certain table
                 _read: true,
                 _update: req => true
-            }
-        },
-        extend: {
-            Query: {
-                hello: {
-                    name: "hello",
-                    type: new GraphQLNonNull(GraphQLString)
-                }
             }
         }
     });

@@ -12,10 +12,9 @@ module.exports = {
     },
     externals: {
         graphql: {
-            commonjs: "graphql",
-            commonjs2: "graphql",
-            amd: "GraphQL",
-            root: "GraphQL"
+            root: "graphql",
+            commonjs: "GraphQL",
+            commonjs2: "GraphQL"
         }
     },
     module: {
