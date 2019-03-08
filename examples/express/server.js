@@ -1,4 +1,5 @@
 const express = require("express");
+const { GraphQLNonNull, GraphQLString } = require("graphql");
 const noBackend = require("./../../dist/index"); //for users require('no-backend')
 
 const app = express();
@@ -27,12 +28,12 @@ app.use(express.json());
             }
         },
         extend: {
-            // Query: {
-            //     hello: {
-            //         name: "hello",
-            //         type: new GraphQLNonNull(GraphQLString)
-            //     }
-            // }
+            Query: {
+                hello: {
+                    name: "hello",
+                    type: new GraphQLNonNull(GraphQLString)
+                }
+            }
         }
     });
     app.use("/api", noBackendExpressController);

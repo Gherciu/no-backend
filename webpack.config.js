@@ -11,7 +11,12 @@ module.exports = {
         libraryExport: "default"
     },
     externals: {
-        graphql: "graphql"
+        graphql: {
+            commonjs: "graphql",
+            commonjs2: "graphql",
+            amd: "GraphQL",
+            root: "GraphQL"
+        }
     },
     module: {
         rules: [
@@ -23,5 +28,6 @@ module.exports = {
                 }
             }
         ]
-    }
+    },
+    devtool: "eval"
 };
