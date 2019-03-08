@@ -16,10 +16,6 @@
     "license": "ISC",
     "dependencies": {
         "express": "^4.16.4",
-        "graphql": "^14.1.1",
-        "no-backend": "^1.4.5"
-    },
-    "resolutions": {
         "graphql": "^14.1.1"
     }
 }
