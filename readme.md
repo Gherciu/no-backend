@@ -108,8 +108,6 @@ by default all rules is equal to `true`
 
 ### Extend schema
 
-by default all rules is equal to `true`
-
 ```diff
 + const { GraphQLString } = require("graphql");
 
