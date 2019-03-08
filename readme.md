@@ -42,7 +42,7 @@ const noBackend = require('no-backend');
 const pubsub = new PubSub();
 
 (async () => {
-    const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
+    const { typeDefs, resolvers } = await noBackend({
         connection: {
             driver: "mysql",
             host: "localhost",
