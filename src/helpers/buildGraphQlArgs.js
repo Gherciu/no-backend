@@ -1,5 +1,5 @@
 import { GraphQLEnumType, GraphQLInputObjectType, GraphQLInt, GraphQLList, GraphQLNonNull, GraphQLScalarType, GraphQLString, Kind } from "graphql";
-import { comparisonOperators, filterTypeArgs, tablesSubscriptionsMethods } from "./constants";
+import { comparisonOperators, directionOperators, filterTypeArgs, tablesSubscriptionsMethods } from "./constants";
 import getFieldGraphQlType from "./getFieldGraphQlType";
 import { firstToUpperCase, pluralToSingular } from "./textHelpers";
 
@@ -99,7 +99,21 @@ const orderArgs = {
                     name: "orderStatement",
                     fields: {
                         columnName: { type: new GraphQLNonNull(GraphQLString) },
-                        direction: { type: new GraphQLNonNull(GraphQLString) }
+                        direction: {
+                            type: new GraphQLEnumType({
+                                name: "directionOperator",
+                                values: {
+                                    [directionOperators["asc"]]: {
+                                        value: directionOperators["asc"],
+                                        description: `Sort direction of result: ${directionOperators["asc"]}`
+                                    },
+                                    [directionOperators["desc"]]: {
+                                        value: directionOperators["desc"],
+                                        description: `Sort direction of result: ${directionOperators["desc"]}`
+                                    }
+                                }
+                            })
+                        }
                     }
                 })
             )

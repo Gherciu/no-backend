@@ -1,5 +1,5 @@
 const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
-const { GraphQLString } = require("graphql");
+const { GraphQLString, GraphQLList } = require("graphql");
 const noBackend = require("no-backend"); //for users require('no-backend')
 const pubsub = new PubSub();
 
@@ -27,7 +27,8 @@ const pubsub = new PubSub();
         },
         extend: {
             Query: {
-                hello: { type: GraphQLString }
+                hello: { type: GraphQLString },
+                getProducts: types => ({ type: new GraphQLList(types.product) })
             },
             Mutation: {
                 echo: {
@@ -44,7 +45,10 @@ const pubsub = new PubSub();
             },
             Resolvers: {
                 Query: {
-                    hello: () => "Hello!"
+                    hello: () => "Hello!",
+                    getProducts: async (_, arg, { connection }) => {
+                        return await connection.query("SELECT * FROM products");
+                    }
                 },
                 Mutation: {
                     echo: (_, args, { req, pubsub, withFilter }) => {

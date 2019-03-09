@@ -1,6 +1,6 @@
 {
     "name": "no-backend",
-    "version": "1.5.3",
+    "version": "1.5.4",
     "description": "A fast, simple and self-hosted backend as a service for your projects",
     "main": "dist/index.js",
     "scripts": {

@@ -1,6 +1,6 @@
 const express = require("express");
 const noBackend = require("no-backend");
-const { GraphQLString } = require("graphql");
+const { GraphQLString, GraphQLList } = require("graphql");
 
 const app = express();
 app.use(express.json());
@@ -29,7 +29,8 @@ app.use(express.json());
         },
         extend: {
             Query: {
-                hello: { type: GraphQLString }
+                hello: { type: GraphQLString },
+                getProducts: types => ({ type: new GraphQLList(types.product) })
             },
             Mutation: {
                 echo: {
@@ -46,6 +47,9 @@ app.use(express.json());
                 Mutation: {
                     echo: (_, args, { req }) => {
                         return args.value;
+                    },
+                    getProducts: async (_, arg, { connection }) => {
+                        return await connection.query("SELECT * FROM products");
                     }
                 }
             }

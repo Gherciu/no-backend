@@ -18,6 +18,10 @@ export const filterTypeArgs = {
     andIn: "andIn",
     orIn: "orIn"
 };
+export const directionOperators = {
+    asc: "ASC",
+    desc: "DESC"
+};
 export const comparisonOperators = {
     eq: {
         name: "Equal",
@@ -42,14 +46,12 @@ export const comparisonOperators = {
     gtOrEq: {
         name: "GreaterThanOrEqual",
         value: ">=",
-        description:
-            "Returns true if the left operand is greater than the right operand or Returns true if the operands are equal."
+        description: "Returns true if the left operand is greater than the right operand or Returns true if the operands are equal."
     },
     ltOrEq: {
         name: "LessThanOrEqual",
         value: "<=",
-        description:
-            "Returns true if the left operand is less than the right operand or Returns true if the operands are equal."
+        description: "Returns true if the left operand is less than the right operand or Returns true if the operands are equal."
     }
 };
 export const extensions = {

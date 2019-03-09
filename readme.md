@@ -144,7 +144,7 @@ by default all rules is equal to `true`
 +                    hello: () => ("Hello!"),
 +                    myProducts: async (_, args, { req, pubsub, connection }) => {
 +                        //connection ==> is equal to ( mysql.createPool({...connectionConfig}) )
-+                        return await connection.query("Select * from products");
++                        return await connection.query("SELECT * FROM products");
 +                    }
 +                },
 +                Mutation: {
