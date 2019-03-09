@@ -13,15 +13,27 @@ const buildGraphQlResolvers = async (options, tables, db) => {
         resolvers: {
             Query: {
                 ...tablesQuerysResolvers,
-                ...getOptionsExtensions(options, extensions["resolvers"]._name, extensions["resolvers"].query)
+                ...getOptionsExtensions(options, {
+                    extensionName: extensions["resolvers"]._name,
+                    extensionPartName: extensions["resolvers"].query,
+                    db
+                })
             },
             Mutation: {
                 ...tablesMutationsResolvers,
-                ...getOptionsExtensions(options, extensions["resolvers"]._name, extensions["resolvers"].mutation)
+                ...getOptionsExtensions(options, {
+                    extensionName: extensions["resolvers"]._name,
+                    extensionPartName: extensions["resolvers"].mutation,
+                    db
+                })
             },
             Subscription: {
                 ...tablesSubscriptionsResolvers,
-                ...getOptionsExtensions(options, extensions["resolvers"]._name, extensions["resolvers"].subscription)
+                ...getOptionsExtensions(options, {
+                    extensionName: extensions["resolvers"]._name,
+                    extensionPartName: extensions["resolvers"].subscription,
+                    db
+                })
             }
         }
     };

@@ -36,9 +36,10 @@ npm i no-backend graphql
 **index.js**
 
 See more examples with ( [Express](https://github.com/Gherciu/no-backend/tree/master/examples/express), [Apollo-Server](https://github.com/Gherciu/no-backend/tree/master/examples/apollo) and [GraphQL-Yoga](https://github.com/Gherciu/no-backend/tree/master/examples/yoga) )
+
 ```js
-const { GraphQLServer, PubSub, withFilter } = require('graphql-yoga');
-const noBackend = require('no-backend'); 
+const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
+const noBackend = require("no-backend");
 const pubsub = new PubSub();
 
 (async () => {
@@ -58,20 +59,20 @@ const pubsub = new PubSub();
         context: req => {
             return {
                 req,
-                pubsub, 
+                pubsub,
                 withFilter
             };
         },
         subscriptions: "/"
     });
 
-    server.start({ port: 3000 }, () =>{
-        console.log( 'Server is running on http://localhost:3000');
+    server.start({ port: 3000 }, () => {
+        console.log("Server is running on http://localhost:3000");
     });
 })();
 ```
 
-**open browser on `http://localhost:3000`  and see the result**
+**open browser on `http://localhost:3000` and see the result**
 
 ![no-backend](https://github.com/Gherciu/no-backend/blob/master/no-backend-result.png?raw=true)
 
@@ -79,7 +80,9 @@ const pubsub = new PubSub();
 
 -   🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
 -   👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
+
 ---
+
 ### With rules
 
 by default all rules is equal to `true`
@@ -106,18 +109,22 @@ by default all rules is equal to `true`
     })
 ```
 
-### Extend schema
+### Extend schema (mutations,querys,subscriptions) and resolvers
 
 ```diff
-+ const { GraphQLString } = require("graphql");
++ const { GraphQLString,GraphQLList } = require("graphql");
 
    await noBackend({
         connection:{
             ...connectionConfig
         },
-+       extend:{
++        extend: {
 +            Query: {
-+                hello: { type: GraphQLString }
++                hello: { type: GraphQLString },
++                myProducts: ( types ) => { //or a function
++                    //types ==> all types used to create the schema (inclusiv input types)
++                    return { type: new GraphQLList( types.product ) };
++                }
 +            },
 +            Mutation: {
 +                echo: {
@@ -134,17 +141,21 @@ by default all rules is equal to `true`
 +            },
 +            Resolvers: {
 +                Query: {
-+                    hello: () => "Hello!"
++                    hello: () => ("Hello!"),
++                    myProducts: async (_, args, { req, pubsub, connection }) => {
++                        //connection ==> is equal to ( mysql.createPool({...connectionConfig}) )
++                        return await connection.query("Select * from products");
++                    }
 +                },
 +                Mutation: {
-+                    echo: (_, args, { req, pubsub, withFilter }) => {
++                    echo: (_, args, { req, pubsub, connection }) => {
 +                        pubsub.publish("echo_topic", { onEcho: args.value });
 +                        return args.value;
 +                    }
 +                },
 +                Subscription: {
 +                    onEcho: {
-+                        subscribe: (_, args, { req, pubsub, withFilter }) => pubsub.asyncIterator("echo_topic")
++                        subscribe: (_, args, { req, pubsub, withFilter, connection }) => pubsub.asyncIterator("echo_topic")
 +                    }
 +                }
 +            }

@@ -26,7 +26,7 @@ const noBackend = async options => {
         if (tablesValidatorMessage) {
             throw new TypeError(tablesValidatorMessage);
         } else {
-            let { schema } = await buildGraphQlSchema(options, tables, db);
+            let { schema } = await buildGraphQlSchema(options, tables);
             let { resolvers } = await buildGraphQlResolvers(options, tables, db);
             let { noBackendExpressController } = await buildNoBackendControllers(options, schema, {
                 ...resolvers.Query,

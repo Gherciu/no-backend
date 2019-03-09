@@ -6,7 +6,7 @@ import buildTablesGraphQlSubscriptions from "./buildTablesGraphQlSubscriptions";
 import { extensions } from "./helpers/constants";
 import getOptionsExtensions from "./helpers/getOptionsExtensions";
 
-const buildGraphQlSchema = async (options, tables, db) => {
+const buildGraphQlSchema = async (options, tables) => {
     let { tablesRowTypes } = await buildTablesGraphQlRowTypes(tables);
     let { tablesQuerysTypes } = await buildTablesGraphQlQuerys(options, tables, tablesRowTypes);
     let { tablesMutationsTypes } = await buildTablesGraphQlMutations(options, tables);
@@ -19,7 +19,7 @@ const buildGraphQlSchema = async (options, tables, db) => {
                 description: "GraphQl root query type",
                 fields: {
                     ...tablesQuerysTypes,
-                    ...getOptionsExtensions(options, extensions["query"])
+                    ...getOptionsExtensions(options, { extensionName: extensions["query"], tablesRowTypes })
                 }
             }),
             mutation: new GraphQLObjectType({
@@ -27,7 +27,7 @@ const buildGraphQlSchema = async (options, tables, db) => {
                 description: "GraphQl root mutation type",
                 fields: {
                     ...tablesMutationsTypes,
-                    ...getOptionsExtensions(options, extensions["mutation"])
+                    ...getOptionsExtensions(options, { extensionName: extensions["mutation"], tablesRowTypes })
                 }
             }),
             subscription: new GraphQLObjectType({
@@ -35,7 +35,7 @@ const buildGraphQlSchema = async (options, tables, db) => {
                 description: "GraphQl root subscription type",
                 fields: {
                     ...tablesSubscriptionsTypes,
-                    ...getOptionsExtensions(options, extensions["subscription"])
+                    ...getOptionsExtensions(options, { extensionName: extensions["subscription"], tablesRowTypes })
                 }
             })
         })

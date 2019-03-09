@@ -1,5 +1,5 @@
 const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
-const { GraphQLString } = require("graphql");
+const { GraphQLString, GraphQLList } = require("graphql");
 const { connection } = require("./testHelpers");
 const noBackend = require("./../dist/index");
 const pubsub = new PubSub();
@@ -21,7 +21,12 @@ const pubsub = new PubSub();
         },
         extend: {
             Query: {
-                hello: { type: GraphQLString }
+                hello: { type: GraphQLString },
+                myProducts: types => {
+                    //or a function
+                    //types ==> all types used to create the schema (inclusiv input types)
+                    return { type: new GraphQLList(types.product) };
+                }
             },
             Mutation: {
                 echo: {
@@ -38,17 +43,21 @@ const pubsub = new PubSub();
             },
             Resolvers: {
                 Query: {
-                    hello: () => "Hello!"
+                    hello: (_, args, { req, pubsub, withFilter, connection }) => "Hello!",
+                    myProducts: async (_, args, { req, pubsub, withFilter, connection }) => {
+                        //connection ==> is equal to (mysql.createPool({...connectionConfig}))
+                        return await connection.query("Select * from products");
+                    }
                 },
                 Mutation: {
-                    echo: (_, args, { req, pubsub, withFilter }) => {
+                    echo: (_, args, { req, pubsub, withFilter, connection }) => {
                         pubsub.publish("echo_topic", { onEcho: args.value });
                         return args.value;
                     }
                 },
                 Subscription: {
                     onEcho: {
-                        subscribe: (_, args, { req, pubsub, withFilter }) => pubsub.asyncIterator("echo_topic")
+                        subscribe: (_, args, { req, pubsub, withFilter, connection }) => pubsub.asyncIterator("echo_topic")
                     }
                 }
             }
