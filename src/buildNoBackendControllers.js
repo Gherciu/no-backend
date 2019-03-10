@@ -1,6 +1,4 @@
-import { execute, graphql, subscribe } from "graphql";
-import { createServer } from "http";
-import { SubscriptionServer } from "subscriptions-transport-ws";
+import { graphql } from "graphql";
 import renderGraphiQlStorm from "./renderGraphiQlStorm";
 
 const buildNoBackendControllers = async (options, schema, resolvers) => {
@@ -29,23 +27,11 @@ const buildNoBackendControllers = async (options, schema, resolvers) => {
                     });
                 }
                 if (port) {
-                    const server = createServer(app);
-                    server.listen(port, () => {
-                        new SubscriptionServer(
-                            {
-                                execute,
-                                subscribe,
-                                schema
-                            },
-                            {
-                                server,
-                                path: endpoint
-                            }
-                        );
+                    app.listen(port,()=>{
                         if (cb) {
                             cb({ port });
                         }
-                    });
+                    })
                 } else {
                     throw new TypeError("Error:option port is required!");
                 }

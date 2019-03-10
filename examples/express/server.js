@@ -1,9 +1,6 @@
 const express = require("express");
 const noBackend = require("no-backend");
 const { GraphQLString, GraphQLList } = require("graphql");
-const { PubSub, withFilter } = require("graphql-subscriptions");
-
-const pubsub = new PubSub();
 
 const app = express();
 app.use(express.json());
@@ -42,11 +39,6 @@ app.use(express.json());
                     }
                 }
             },
-            Subscription: {
-                onEcho: {
-                    type: GraphQLString
-                }
-            },
             Resolvers: {
                 Query: {
                     hello: () => "Hello!",
@@ -59,17 +51,12 @@ app.use(express.json());
                         pubsub.publish("echo_topic", { onEcho: args.value });
                         return args.value;
                     }
-                },
-                Subscription: {
-                    onEcho: {
-                        subscribe: (_, args, { req, pubsub, withFilter }) => pubsub.asyncIterator("echo_topic")
-                    }
                 }
             }
         }
     });
 
-    noBackendExpressController({ app, port: 3000, endpoint: "/", graphiql_storm: "/", context: req => ({ req, pubsub, withFilter }) });
+    noBackendExpressController({ app, port: 3000, endpoint: "/", graphiql_storm: "/", context: req => ({ req })});
 })();
 app.listen(3000);
 console.log(`Server is running on http://localhost:3000`);
