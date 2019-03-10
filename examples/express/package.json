@@ -17,6 +17,7 @@
     "dependencies": {
         "express": "^4.16.4",
         "graphql": "^14.1.1",
-        "no-backend": "^1.5.4"
+        "graphql-subscriptions": "^1.0.0",
+        "no-backend": "^1.5.5"
     }
 }

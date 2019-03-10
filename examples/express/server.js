@@ -1,13 +1,15 @@
 const express = require("express");
 const noBackend = require("no-backend");
 const { GraphQLString, GraphQLList } = require("graphql");
+const { PubSub, withFilter } = require("graphql-subscriptions");
+
+const pubsub = new PubSub();
 
 const app = express();
 app.use(express.json());
 
 (async () => {
     const { noBackendExpressController } = await noBackend({
-        graphiql_storm: true,
         connection: {
             driver: "mysql",
             host: "localhost",
@@ -40,23 +42,34 @@ app.use(express.json());
                     }
                 }
             },
+            Subscription: {
+                onEcho: {
+                    type: GraphQLString
+                }
+            },
             Resolvers: {
                 Query: {
-                    hello: () => "Hello!"
-                },
-                Mutation: {
-                    echo: (_, args, { req }) => {
-                        return args.value;
-                    },
+                    hello: () => "Hello!",
                     getProducts: async (_, arg, { connection }) => {
                         return await connection.query("SELECT * FROM products");
+                    }
+                },
+                Mutation: {
+                    echo: (_, args, { req, pubsub, withFilter }) => {
+                        pubsub.publish("echo_topic", { onEcho: args.value });
+                        return args.value;
+                    }
+                },
+                Subscription: {
+                    onEcho: {
+                        subscribe: (_, args, { req, pubsub, withFilter }) => pubsub.asyncIterator("echo_topic")
                     }
                 }
             }
         }
     });
-    app.use("/api", noBackendExpressController);
-})();
 
-app.listen(2626);
-console.log(`Server started at port : 2626`);
+    app.use(noBackendExpressController({ endpoint: "/", graphiql_storm: "/", context: req => ({ req, pubsub, withFilter }) }));
+})();
+app.listen(3000);
+console.log(`Server is running on http://localhost:3000`);

@@ -4,8 +4,7 @@ const noBackend = require("no-backend"); //for users require('no-backend')
 const pubsub = new PubSub();
 
 (async () => {
-    const { typeDefs, resolvers, noBackendExpressController } = await noBackend({
-        graphiql_storm: true, //remove this line of code if you do not use graphiql-storm
+    const { typeDefs, resolvers } = await noBackend({
         connection: {
             driver: "mysql",
             host: "localhost",
@@ -84,11 +83,5 @@ const pubsub = new PubSub();
         ]
     });
 
-    server.express.get("/", noBackendExpressController); //remove this line of code if you do not use graphiql-storm
-
-    server.start({ port: 3001, playground: "/playground", tracing: true }, () =>
-        console.log(
-            `Server is running on http://localhost:3001  ( 🚀 GraphiQl Storm: http://localhost:3001  OR ✨ Playground: http://localhost:3001/playground )`
-        )
-    );
+    server.start({ port: 3001, tracing: true }, () => console.log(`Server is running on http://localhost:3001`));
 })();
