@@ -7,18 +7,6 @@ const { PubSub, withFilter } = require("graphql-subscriptions");
 const pubsub = new PubSub();
 
 const app = express();
-app.use((req, res, next) => {
-    res.set("Access-Control-Allow-Origin", "*");
-    res.set("Access-Control-Request-Method", "*");
-    res.set("Access-Control-Allow-Methods", "OPTIONS, GET");
-    res.set("Access-Control-Allow-Headers", "*");
-    if (req.method === "OPTIONS") {
-        res.status(200);
-        res.end();
-        return;
-    }
-    next();
-});
 app.use(express.json());
 
 (async () => {
