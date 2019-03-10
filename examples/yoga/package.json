@@ -12,6 +12,6 @@
     "dependencies": {
         "graphql": "^14.1.1",
         "graphql-yoga": "^1.17.4",
-        "no-backend": "^1.5.8"
+        "no-backend": "^1.6.0"
     }
 }
