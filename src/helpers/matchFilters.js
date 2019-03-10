@@ -36,37 +36,37 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
                 let columnValue = payload[columnName];
                 let operator = filterValueObjectItem.comparisonOperator;
                 let expression = filterValueObjectItem.expression;
-                if (operator === comparisonOperators["eq"].name) {
+                if (operator === comparisonOperators["eq"].name || operator === comparisonOperators["eq"].value) {
                     if (columnValue !== expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["notEq"].name) {
+                if (operator === comparisonOperators["notEq"].name || operator === comparisonOperators["notEq"].value) {
                     if (columnValue === expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gt"].name) {
+                if (operator === comparisonOperators["gt"].name || operator === comparisonOperators["gt"].value) {
                     if (columnValue < expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["lt"].name) {
+                if (operator === comparisonOperators["lt"].name || operator === comparisonOperators["lt"].value) {
                     if (columnValue > expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gtOrEq"].name) {
+                if (operator === comparisonOperators["gtOrEq"].name || operator === comparisonOperators["gtOrEq"].value) {
                     if (columnValue < expression) {
                         isPayloadValid = false;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["ltOrEq"].name) {
+                if (operator === comparisonOperators["ltOrEq"].name || operator === comparisonOperators["ltOrEq"].value) {
                     if (columnValue > expression) {
                         isPayloadValid = false;
                         break;
@@ -87,31 +87,31 @@ const filtersValidator = (payload, filterMethod, filterValue) => {
                         break;
                     }
                 }
-                if (operator === comparisonOperators["notEq"].name) {
+                if (operator === comparisonOperators["notEq"].name || operator === comparisonOperators["notEq"].value) {
                     if (columnValue !== expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gt"].name) {
+                if (operator === comparisonOperators["gt"].name || operator === comparisonOperators["gt"].value) {
                     if (columnValue > expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["lt"].name) {
+                if (operator === comparisonOperators["lt"].name || operator === comparisonOperators["lt"].value) {
                     if (columnValue < expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["gtOrEq"].name) {
+                if (operator === comparisonOperators["gtOrEq"].name || operator === comparisonOperators["gtOrEq"].value) {
                     if (columnValue >= expression) {
                         isMinOneStatementValid = true;
                         break;
                     }
                 }
-                if (operator === comparisonOperators["ltOrEq"].name) {
+                if (operator === comparisonOperators["ltOrEq"].name || operator === comparisonOperators["ltOrEq"].value) {
                     if (columnValue <= expression) {
                         isMinOneStatementValid = true;
                         break;
@@ -139,13 +139,7 @@ const matchFilters = (payload, { filters }) => {
                     //breackCheck1
                     for (let [filterObjectItemKey, filterObjectItemValue] of Object.entries(filterObject)) {
                         //breackCheck2
-                        if (
-                            !filtersValidator(
-                                payloadValueItem,
-                                filterTypeArgs[filterObjectItemKey],
-                                filterObjectItemValue
-                            )
-                        ) {
+                        if (!filtersValidator(payloadValueItem, filterTypeArgs[filterObjectItemKey], filterObjectItemValue)) {
                             payloadMatchFilters = false;
                             breackCheck2 = true;
                             break;
@@ -156,9 +150,7 @@ const matchFilters = (payload, { filters }) => {
                 if (breackCheck1) break;
             }
         } else {
-            throw new TypeError(
-                `Error: arg (filters) is ${typeof filters} but it must be an array --> on fn:matchFilters!`
-            );
+            throw new TypeError(`Error: arg (filters) is ${typeof filters} but it must be an array --> on fn:matchFilters!`);
         }
     }
 
