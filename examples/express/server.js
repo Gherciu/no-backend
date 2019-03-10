@@ -69,7 +69,7 @@ app.use(express.json());
         }
     });
 
-    app.use(noBackendExpressController({ endpoint: "/", graphiql_storm: "/", context: req => ({ req, pubsub, withFilter }) }));
+    noBackendExpressController({ app, port: 3000, endpoint: "/", graphiql_storm: "/", context: req => ({ req, pubsub, withFilter }) });
 })();
 app.listen(3000);
 console.log(`Server is running on http://localhost:3000`);

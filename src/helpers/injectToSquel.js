@@ -23,10 +23,13 @@ const injectToSquel = (db, squel, filters, limit, offset, order) => {
             }
             if (filterStatementObject.and) {
                 filterStatementObject.and.forEach(andStatementObject => {
+                    // console.log(andStatementObject.comparisonOperator);
                     filterStatementObjectExpresion = filterStatementObjectExpresion.and(
                         `${andStatementObject.columnName} ${
                             Object.values(comparisonOperators).find(
-                                operator => operator.name === andStatementObject.comparisonOperator
+                                operator =>
+                                    operator.name === andStatementObject.comparisonOperator ||
+                                    operator.value === andStatementObject.comparisonOperator
                             ).value
                         } ?`,
                         andStatementObject.expression
@@ -38,7 +41,8 @@ const injectToSquel = (db, squel, filters, limit, offset, order) => {
                     filterStatementObjectExpresion = filterStatementObjectExpresion.or(
                         `${orStatementObject.columnName} ${
                             Object.values(comparisonOperators).find(
-                                operator => operator.name === orStatementObject.comparisonOperator
+                                operator =>
+                                    operator.name === orStatementObject.comparisonOperator || operator.value === orStatementObject.comparisonOperator
                             ).value
                         } ?`,
                         orStatementObject.expression
@@ -50,10 +54,7 @@ const injectToSquel = (db, squel, filters, limit, offset, order) => {
     }
     if (order) {
         order.forEach(orderStatement => {
-            squel = squel.order(
-                orderStatement.columnName,
-                orderStatement.direction.toLowerCase() === "asc" ? true : false
-            );
+            squel = squel.order(orderStatement.columnName, orderStatement.direction.toLowerCase() === "asc" ? true : false);
         });
     }
     if (limit) {

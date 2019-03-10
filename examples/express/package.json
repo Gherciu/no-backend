@@ -18,6 +18,6 @@
         "express": "^4.16.4",
         "graphql": "^14.1.1",
         "graphql-subscriptions": "^1.0.0",
-        "no-backend": "^1.5.5"
+        "no-backend": "^1.5.6"
     }
 }

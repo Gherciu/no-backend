@@ -1,6 +1,6 @@
 {
     "name": "no-backend",
-    "version": "1.5.5",
+    "version": "1.5.7",
     "description": "A fast, simple and self-hosted backend as a service for your projects",
     "main": "dist/index.js",
     "scripts": {
@@ -19,15 +19,17 @@
     "dependencies": {
         "@babel/polyfill": "^7.2.5",
         "mysql": "^2.16.0",
-        "squel": "^5.12.2"
+        "squel": "^5.12.2",
+        "subscriptions-transport-ws": "^0.9.15"
     },
     "devDependencies": {
         "@babel/cli": "^7.2.3",
         "@babel/core": "^7.2.2",
         "@babel/preset-env": "^7.3.1",
         "babel-plugin-add-module-exports": "^1.0.0",
+        "express": "^4.16.4",
         "graphql": "^14.1.1",
-        "graphql-yoga": "^1.17.4",
+        "graphql-subscriptions": "^1.0.0",
         "jest": "^24.1.0"
     }
 }
