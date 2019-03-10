@@ -23,7 +23,6 @@ const injectToSquel = (db, squel, filters, limit, offset, order) => {
             }
             if (filterStatementObject.and) {
                 filterStatementObject.and.forEach(andStatementObject => {
-                    // console.log(andStatementObject.comparisonOperator);
                     filterStatementObjectExpresion = filterStatementObjectExpresion.and(
                         `${andStatementObject.columnName} ${
                             Object.values(comparisonOperators).find(
