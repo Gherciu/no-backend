@@ -1,7 +1,6 @@
-const { ApolloServer } = require("apollo-server");
+const { ApolloServer,PubSub, withFilter } = require("apollo-server");
 const { GraphQLString, GraphQLList } = require("graphql");
 const noBackend = require("no-backend");
-const { PubSub, withFilter } = require("graphql-subscriptions");
 
 const pubsub = new PubSub();
 
