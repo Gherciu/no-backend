@@ -1,3 +1,5 @@
+/******* This example is very complex! Show most of the possibilities of "no-backend" *******/
+
 const { GraphQLServer, PubSub, withFilter } = require("graphql-yoga");
 const { GraphQLString, GraphQLList } = require("graphql");
 const noBackend = require("no-backend"); //for users require('no-backend')

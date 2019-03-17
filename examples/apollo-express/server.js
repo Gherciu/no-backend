@@ -1,9 +1,12 @@
 /******* This example is very complex! Show most of the possibilities of "no-backend" *******/
 
-const { ApolloServer, PubSub, withFilter } = require("apollo-server");
+const { ApolloServer, PubSub, withFilter } = require("apollo-server-express");
 const { GraphQLString, GraphQLList } = require("graphql");
 const noBackend = require("no-backend");
+const { createServer } = require("http");
+const express = require("express");
 
+const app = express();
 const pubsub = new PubSub();
 
 (async () => {
@@ -66,7 +69,7 @@ const pubsub = new PubSub();
         }
     });
 
-    const server = new ApolloServer({
+    const apolloServer = new ApolloServer({
         typeDefs,
         resolvers,
         context: async ({ req }) => {
@@ -79,8 +82,16 @@ const pubsub = new PubSub();
         subscriptions: "/",
         tracing: true
     });
+    apolloServer.applyMiddleware({ app, path: "/" });
+    const httpServer = createServer(app);
 
-    server.listen().then(({ url, subscriptionsUrl }) => {
-        console.log(`🚀 Server ready at ${url} and subscriptions server at ${subscriptionsUrl}`);
+    apolloServer.installSubscriptionHandlers(httpServer);
+
+    httpServer.listen({ port: 3000 }, () => {
+        console.log(
+            `🚀 Server ready at http://localhost:3000${apolloServer.graphqlPath} and subscriptions server at ws://localhost:3000${
+                apolloServer.subscriptionsPath
+            }`
+        );
     });
 })();

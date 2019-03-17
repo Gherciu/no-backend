@@ -1,0 +1,19 @@
+{
+    "name": "apollo-express",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "clean-install": "rm -rf ./node_modules && rm -rf ./package-lock.json && rm -rf ./yarn.lock && npm install"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "apollo-server-express": "^2.4.8",
+        "express": "^4.16.4",
+        "graphql": "^14.1.1",
+        "no-backend": "^1.6.0"
+    }
+}

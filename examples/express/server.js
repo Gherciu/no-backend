@@ -1,3 +1,5 @@
+/******* This example is very complex! Show most of the possibilities of "no-backend" *******/
+
 const express = require("express");
 const noBackend = require("no-backend");
 const { GraphQLString, GraphQLList } = require("graphql");
