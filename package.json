@@ -28,5 +28,10 @@
         "babel-plugin-add-module-exports": "^1.0.0",
         "graphql": "^14.1.1",
         "jest": "^24.1.0"
+    },
+    "majestic": {
+        "args": [
+            "--detectOpenHandles"
+        ]
     }
 }
