@@ -18,7 +18,11 @@
     "url": "Gherciu/no-backend",
     "type": "git"
   },
-  "author": "Gherciu Gheorghe",
+  "author": {
+		"name": "Gherciu Gheorghe",
+		"email": "gherciu553@gmail.com",
+		"url": "https://gherciu.github.io/portfolio/"
+	},
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
