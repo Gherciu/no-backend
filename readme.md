@@ -176,7 +176,7 @@ by default all rules is equal to `true`
 
 ## Author
 
-**@Gherciu/no-backend** © [GHERCIU](https://github.com/Gherciu), Released under the [MIT](./LICENSE) License.<br>
+**[@Gherciu/no-backend](https://github.com/Gherciu/no-backend)** © [GHERCIU](https://github.com/Gherciu), Released under the [MIT](https://github.com/Gherciu/no-backend/blob/master/LICENSE) License.<br>
 Authored and maintained by GHERCIU with help from contributors ([list](https://github.com/Gherciu/no-backend/contributors)).
 
 #### If you like this repository star⭐ and watch👀 on [GitHub](https://github.com/Gherciu/no-backend)
