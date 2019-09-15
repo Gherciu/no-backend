@@ -1,6 +1,6 @@
 {
   "name": "no-backend",
-  "version": "1.6.2",
+  "version": "1.6.3",
   "description": "A fast, simple and self-hosted backend as a service for your projects",
   "main": "dist/index.js",
   "scripts": {
@@ -19,10 +19,10 @@
     "type": "git"
   },
   "author": {
-		"name": "Gherciu Gheorghe",
-		"email": "gherciu553@gmail.com",
-		"url": "https://gherciu.github.io/portfolio/"
-	},
+    "name": "Gherciu Gheorghe",
+    "email": "gherciu553@gmail.com",
+    "url": "https://gherciu.github.io/portfolio/"
+  },
   "license": "ISC",
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
