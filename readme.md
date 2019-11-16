@@ -1,7 +1,7 @@
 <p align="center"><img align="center" style="width:128px" src="https://github.com/Gherciu/no-backend/blob/master/no-backend.png?raw=true"/></p>
 
 <center><h3 align="center"> no-backend </h3></center>
-<p align="center">A fast, simple and self-hosted GraphQl backend as a service for your projects</p>
+<p align="center">Creates dynamic GraphQl api's based on your database schama. A fast, simple and self-hosted GraphQl backend as a service for your projects</p>
 
 ---
 
