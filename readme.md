@@ -9,9 +9,9 @@
 
 Transform your database into working GraphQl schema
 
--   Creates Querys and Querys resolvers for all tables
--   Creates Mutations and Mutations resolvers for all tables
--   Creates Subscriptions and Subscriptions resolvers for all tables
+- Creates Querys and Querys resolvers for all tables
+- Creates Mutations and Mutations resolvers for all tables
+- Creates Subscriptions and Subscriptions resolvers for all tables
 
 ### Look at this small example
 
@@ -43,32 +43,32 @@ const noBackend = require("no-backend");
 const pubsub = new PubSub();
 
 (async () => {
-    const { typeDefs, resolvers } = await noBackend({
-        connection: {
-            driver: "mysql",
-            host: "localhost",
-            port: "3306",
-            user: "root",
-            password: "gherciu1",
-            database: "test"
-        }
-    });
-    const server = new GraphQLServer({
-        typeDefs,
-        resolvers,
-        context: req => {
-            return {
-                req,
-                pubsub,
-                withFilter
-            };
-        },
-        subscriptions: "/"
-    });
+  const { typeDefs, resolvers } = await noBackend({
+    connection: {
+      driver: "mysql",
+      host: "localhost",
+      port: "3306",
+      user: "root",
+      password: "gherciu1",
+      database: "test"
+    }
+  });
+  const server = new GraphQLServer({
+    typeDefs,
+    resolvers,
+    context: req => {
+      return {
+        req,
+        pubsub,
+        withFilter
+      };
+    },
+    subscriptions: "/"
+  });
 
-    server.start({ port: 3000 }, () => {
-        console.log("Server is running on http://localhost:3000");
-    });
+  server.start({ port: 3000 }, () => {
+    console.log("Server is running on http://localhost:3000");
+  });
 })();
 ```
 
@@ -78,8 +78,8 @@ const pubsub = new PubSub();
 
 ## Links
 
--   🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
--   👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
+- 🔥 [GraphiQl Storm](https://github.com/Gherciu/graphiql-storm)
+- 👉 [Examples](https://github.com/Gherciu/no-backend/tree/master/examples)
 
 ---
 
@@ -165,7 +165,6 @@ by default all rules is equal to `true`
 
 ---
 
-
 ## Contributing
 
 1. Fork it!
@@ -174,10 +173,13 @@ by default all rules is equal to `true`
 4. Push to the branch: `git push origin my-new-feature`
 5. Submit a pull request :D
 
+#### Or you can sponsor via [Open Collective](https://opencollective.com/gherciu-gheorghe/)
+
+[![Open Collective](https://opencollective.com/gherciu-gheorghe/tiers/sponsor.svg?avatarHeight=60)](https://opencollective.com/gherciu-gheorghe/)
+
 ## Author
 
 **[@Gherciu/no-backend](https://github.com/Gherciu/no-backend)** © [GHERCIU](https://github.com/Gherciu), Released under the [MIT](https://github.com/Gherciu/no-backend/blob/master/LICENSE) License.<br>
 Authored and maintained by GHERCIU with help from contributors ([list](https://github.com/Gherciu/no-backend/contributors)).
 
 #### If you like this repository star⭐ and watch👀 on [GitHub](https://github.com/Gherciu/no-backend)
-
