@@ -9,7 +9,7 @@
 
 Transform your database into working GraphQl schema
 
-- Creates Querys and Querys resolvers for all tables
+- Creates Queries and Queries resolvers for all tables
 - Creates Mutations and Mutations resolvers for all tables
 - Creates Subscriptions and Subscriptions resolvers for all tables
 
